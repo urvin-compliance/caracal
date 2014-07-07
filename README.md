@@ -44,41 +44,40 @@ For each Caracal request, the following document structure will be created and z
 
 The following provides a brief description for each component of the final document:
 
-**_rels/**
-
+**_rels/**  
 Not populated. Required to comply with OpenXML schema.
 
-**docProps/app.xml**
+**docProps/app.xml**  
 Specifies the name of the application that generated the document.
 
-**docProps/core.xml** 
+**docProps/core.xml**  
 Specifies the title of the document.
 
-**word/_rels/document.xml.rels**
+**word/_rels/document.xml.rels**  
 Defines an internal identifier and type with all external content items (images, links, etc). This file is generated automatically by the library based on other user directives.
 
-**word/media/**
+**word/media/**  
 A collection of media assets (each of which should have an entry in document.xml.rels).
 
-**word/document.xml**
+**word/document.xml**  
 The main content file for the document.
 
-**word/fontTable.xml**
+**word/fontTable.xml**  
 Specifies the fonts used in the document.
 
-**word/footer.xml**
+**word/footer.xml**  
 Defines the formatting of the document footer.
 
-**word/numbering.xml**
+**word/numbering.xml**  
 Defines ordered and unordered list styles.
 
-**word/settings.xml**
+**word/settings.xml**  
 Defines global directives for the document (e.g., whether to show background images, tab widths, etc). Also, establishes compatibility with older versions on Word.
 
-**word/styles.xml**
+**word/styles.xml**  
 Defines all paragraph and table styles used through the document.  Caracal adds a default set of styles to match its HTML-like content syntax.  These defaults can be overridden.
  
-**[Content_Types].xml**
+**[Content_Types].xml**  
 Pairs extensions and XML files with schema content types so Word can parse them correctly. This file is generated automatically by the library based on other user directives.
 
 
