@@ -20,31 +20,32 @@ Many people don't know that .docx files are little more than a zipped collection
 
 For each Caracal request, the following document structure will be created and zipped into the final output file:
 
-example.docx
-  |- _rels
-  |- docProps
-    |- app.xml
-    |- core.xml
-  |- word
-    |- _rels
-      |- document.xml.rels
-    |- media
-      |- image001.png
-      |- image002.png
-      ...
-    |- document.xml
-    |- fontTable.xml
-    |- footer.xml
-    |- numbering.xml
-    |- settings.xml
-    |- styles.xml
-  |- [Content_Types].xml
+    example.docx
+      |- _rels
+      |- docProps
+        |- app.xml
+        |- core.xml
+      |- word
+        |- _rels
+          |- document.xml.rels
+        |- media
+          |- image001.png
+          |- image002.png
+          ...
+        |- document.xml
+        |- fontTable.xml
+        |- footer.xml
+        |- numbering.xml
+        |- settings.xml
+        |- styles.xml
+      |- [Content_Types].xml
 
 ### File Descriptions
 
 The following provides a brief description for each component of the final document:
 
 **_rels/**
+
 Not populated. Required to comply with OpenXML schema.
 
 **docProps/app.xml**
