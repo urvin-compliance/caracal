@@ -91,7 +91,7 @@ All font sizes are measure in half points.  A font size of 24 is equivalent to 1
 **Twips**  
 A twip is 1/20 of a point.  Word documents are printed at 72dpi.  1in == 72pt == 1440 twips.  In Word documents, pixels are equivalent to twips.
 
-**EMUs (English Metric Unit)**
+**EMUs (English Metric Unit)**  
 EMUs are a virtual unit designed to facilitate the smooth conversion between inches, milliimeters, and pixels for images and vector graphics.  1in == 914400 EMUs == 72dpi x 100 x 254.
 
 
@@ -111,7 +111,9 @@ The final output document's title can be set at initialization or via the `name=
 
 ### Page Size
 
-Page dimensions can be set using the `page_size` method.  The method accepts two parameters for controlling the width and height of the document.  *Pages default to the United States standard A4, portrait dimensions (8.5in x 11in).*
+Page dimensions can be set using the `page_size` method.  The method accepts two parameters for controlling the width and height of the document. 
+
+*Pages default to the United States standard A4, portrait dimensions (8.5in x 11in).*
 
     # options via block
     docx.page_size do
@@ -130,7 +132,8 @@ The `page_size` command will produce the following XML:
 
 ### Page Margins
 
-Page margins can be set using the `page_margins` method.  The method accepts four parameters for controlling the margins of the document.  *Margins default to 1.0in for all sides.*
+Page margins can be set using the `page_margins` method.  The method accepts four parameters for controlling the margins of the document.  
+*Margins default to 1.0in for all sides.*
 
     # options via block
     docx.page_margins do
@@ -165,7 +168,9 @@ The `page` command will produce the following XML:
 
 ### Page Numbers
 
-Page numbers can be added to the footer via the `page_numbers` method.  The method accepts an optional parameter for controlling the alignment of the text. *Page numbers are turned off by default.*
+Page numbers can be added to the footer via the `page_numbers` method.  The method accepts an optional parameter for controlling the alignment of the text. 
+
+*Page numbers are turned off by default.*
 
     # no options
     docx.page_numbers true
@@ -178,7 +183,9 @@ Page numbers can be added to the footer via the `page_numbers` method.  The meth
     # options via hash
     docx.page_numbers true, align: :right
     
-The default command will produce the following `footer.xml` file contents. *It will also automatically add the correct notation to the `w:sectPr` node of the `document.xml` file.
+The default command will produce the following `footer.xml` file contents. 
+
+*It will also automatically add the correct notation to the `w:sectPr` node of the `document.xml` file.*
 
     <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
     <w:ftr xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:sl="http://schemas.openxmlformats.org/schemaLibrary/2006/main" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture" xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" xmlns:lc="http://schemas.openxmlformats.org/drawingml/2006/lockedCanvas" xmlns:dgm="http://schemas.openxmlformats.org/drawingml/2006/diagram">
@@ -291,7 +298,9 @@ The `p` block above will yield the following XML:
 
 ### Headers
 
-Headers can be added using the `h1`, `h2`, etc. methods.  Text within a header block can be further defined using the `text` method. *Ultimately, headers are just paragraphs that use header styles.*
+Headers can be added using the `h1`, `h2`, etc. methods.  Text within a header block can be further defined using the `text` method. 
+
+*Ultimately, headers are just paragraphs that use header styles.*
 
     docx.h3 'Heading 3'
     
