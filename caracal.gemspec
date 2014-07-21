@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'nokogiri', '~> 1.6'
   spec.add_dependency 'rubyzip',  '~> 1.1'
+  spec.add_dependency 'tilt',     '~> 2.0'
   
   spec.add_development_dependency 'appraisal',        '~> 1.0'
   spec.add_development_dependency 'bundler',          '~> 1.6'
