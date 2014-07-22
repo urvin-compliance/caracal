@@ -77,37 +77,6 @@ module Caracal
     end
 
 
-    #-------------------------------------------------------------
-    # Private Methods
-    #-------------------------------------------------------------
-    private
-    
-    #============ RENDERERS =====================================
-    
-    def render_app(zip)
-      content = ::Caracal::Renderers::AppRenderer.render(self)
-      
-      zip.put_next_entry('docProps/app.xml')
-      zip.write(content)
-    end
-    
-    def render_core(zip)
-      content = ::Caracal::Renderers::CoreRenderer.render(self)
-      
-      zip.put_next_entry('docProps/core.xml')
-      zip.write(content)
-    end
-    
-    def render_relationships; end
-    def render_settings; end
-    def render_fonts; end
-    def render_styles; end
-    def render_numbering; end
-    def render_footer; end
-    def render_document; end
-    def render_content_types; end
-    
-    
     #============ PAGE SETTINGS =================================
     
     # This method controls the name of the output file. Defaults to the name of the library.
@@ -170,5 +139,35 @@ module Caracal
     end
     
     
+    #-------------------------------------------------------------
+    # Private Methods
+    #-------------------------------------------------------------
+    private
+    
+    #============ RENDERERS =====================================
+    
+    def render_app(zip)
+      content = ::Caracal::Renderers::AppRenderer.render(self)
+      
+      zip.put_next_entry('docProps/app.xml')
+      zip.write(content)
+    end
+    
+    def render_core(zip)
+      content = ::Caracal::Renderers::CoreRenderer.render(self)
+      
+      zip.put_next_entry('docProps/core.xml')
+      zip.write(content)
+    end
+    
+    def render_relationships; end
+    def render_settings; end
+    def render_fonts; end
+    def render_styles; end
+    def render_numbering; end
+    def render_footer; end
+    def render_document; end
+    def render_content_types; end
+        
   end
 end
