@@ -47,8 +47,8 @@ module Caracal
     
     # This method instantiates a new word document.
     #
-    def initialize(name = DEFAULT_SETTINGS[:name], &block)
-      file_name    name
+    def initialize(name = nil, &block)
+      file_name    name || DEFAULT_SETTINGS[:name]
       page_margins DEFAULT_SETTINGS[:margins]
       page_numbers DEFAULT_SETTINGS[:numbers]
       page_size    DEFAULT_SETTINGS[:size]
