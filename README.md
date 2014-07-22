@@ -97,17 +97,17 @@ EMUs are a virtual unit designed to facilitate the smooth conversion between inc
 
 ## Syntax
 
-In the following examples, the variable `docx` is assumed to be an instance of Caracal::Package.
+In the following examples, the variable `docx` is assumed to be an instance of Caracal::Document.
 
-    docx = Caracal::Package.new('Example Document')
+    docx = Caracal::Document.new('example_document.docx')
 
 ### File Name
 
-The final output document's title can be set at initialization or via the `name=` method.
+The final output document's title can be set at initialization or via the `file_name` method.
 
     docx = Caracal::Document.new('Example Document')
     
-    docx.name = 'Different Name'
+    docx.file_name 'different_name.docx'
 
 ### Page Size
 
@@ -124,7 +124,7 @@ Page dimensions can be set using the `page_size` method.  The method accepts two
     # options via hash
     docx.page_size width: 12240, height: 15840
     
-The `page_size` command will produce the following XML:
+The `page_size` command will produce the following XML in the `document.xml` file:
 
     <w:sectPr>
       <w:pgSz w:w="12240" w:h="15840"/>
@@ -146,7 +146,7 @@ Page margins can be set using the `page_margins` method.  The method accepts fou
     # options via hash
     docx.page_margins left: 720, right: 720, top: 1440, bottom: 1440
     
-The `page_margins` command above will produce the following XML:
+The `page_margins` command above will produce the following XML in the `document.xml` file:
 
     <w:sectPr>
       <w:pgMar w:left="720" w:right="720" w:top="1440" w:bottom="1440"/>
@@ -158,7 +158,7 @@ Page breaks can be added via the `page` method.  The method accepts no parameter
 
     docx.page     # starts a new page. 
     
-The `page` command will produce the following XML:
+The `page` command will produce the following XML in the `document.xml` file:
 
     <w:p w:rsidP="00000000" w:rsidRPr="00000000" w:rsidR="00000000" w:rsidDel="00000000" w:rsidRDefault="00000000">
       <w:r w:rsidRPr="00000000" w:rsidR="00000000" w:rsidDel="00000000">
@@ -230,9 +230,9 @@ Style classes can be added using the `style` method.  The method accepts several
     docx.style do
       type    :paragraph        # :paragraph or :table
       id      'Heading1'        # sets the internal identifier for the style.
-      name    'Heading 1'       # set the friendly name of the style.
+      name    'heading 1'       # set the friendly name of the style.
       font    'Droid Serif'     # sets the font family.
-      size    28                # set the font size. units in twips.
+      size    28                # set the font size. units in half points.
       base    'Normal'          # establishes from which style this style inherits attributes.
       next    'Normal'          # establishes which style follows the termination of the text run using this style.
     end
@@ -257,7 +257,7 @@ The `style` command above would produce the following XML:
     
 ### Text
 
-Text can be added using the `p` method.  Text within a `p` block can be further defined using the `text` method.
+Text can be added using the `p` method.  Text within a `p` block can be further defined using the `text` method.  The `text` method takes a text string and the optional parameters `class`, `bold`, `italic`, and `underline`.  The `p` either takes a block of `text`-like commands or formats exactly a `text` command itself.
 
     docx.p do
       text 'Here is a sentence with a '
@@ -265,7 +265,9 @@ Text can be added using the `p` method.  Text within a `p` block can be further 
       text ' to something awesome', bold: true
     end
     
-The `p` block above will yield the following XML:
+    docx.p 'some text', class: 'my_style'
+    
+The first `p` block above will yield the following XML:
 
     <w:p w:rsidP="00000000" w:rsidRPr="00000000" w:rsidR="00000000" w:rsidDel="00000000" w:rsidRDefault="00000000">
       <w:pPr>
@@ -440,8 +442,8 @@ Horizontal rules can be added using the `hr` method.  The method accepts several
     docx.hr do
       color   '333333'      # controls the color of the line. defaults to auto.
       line    :double       # controls the line style (single or double). defaults to single.
-      size    16            # controls the thickness of the line. units in twips. defaults to 4.
-      spacing 4             # controls the spacing around the line. units in twips. defaults to 1.
+      size    8             # controls the thickness of the line. units in 1/8 points. defaults to 4.
+      spacing 4             # controls the spacing around the line. units in points. defaults to 1.
     end
     
     # options via hash
@@ -561,8 +563,8 @@ The `ul` and `li` commands with default properties will produce the following XM
 
 Tables can be added using the `table` method.  The method accepts several optional paramters to control the layout and style of the table cells.
 
-    table data, border: true do
-      row_style  rows(0), background_color: '4a86e8', bold: true
+    table data, border: 8 do
+      cell_style  rows(0), background_color: '4a86e8', bold: true
     end
     
 Given the a data structure with two rows and five columns, the `table` method would produce the following XML:
@@ -869,10 +871,14 @@ The `br` command will produce the folowing XML:
       </w:r>
     </w:p>
     
-    
+
+## Template Rendering
+
+Caracal includes [Tilt](https://github.com/rtomayko/tilt) integration to facilitate its inclusion in other frameworks.  Rails integration can be added via the [Caracal-Rails](https://github.com/ibpinc/caracal-rails) gem.
+
 ## Defaults
 
-[Unsure how best to handle this without code exploration.]
+[Unsure how best to handle this without code exploration. Not a critical element for the first version.]
 
 
 ## Contributing
