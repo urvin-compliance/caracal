@@ -35,17 +35,37 @@ module Caracal
     
     
     #-------------------------------------------------------------
-    # Public Methods
+    # Public Class Methods
     #-------------------------------------------------------------
     
-    # This method creates and renders a new word document.
+    # This method renders a new Word document and returns it as a
+    # a string.
     #
-    def self.generate(name = nil, &block)
-      docx = new(name, &block)
-      docx.render
+    def self.render(name = nil, &block)
+      docx   = new(name, &block)
+      buffer = docx.render
+      
+      buffer.rewind
+      buffer.sysread
     end
     
-    # This method instantiates a new word document.
+    # This method renders a new Word document and saves it to the
+    # file system.
+    #
+    def self.save(name = nil, &block)
+      docx   = new(name, &block)
+      buffer = docx.render
+      
+      File.open("tmp/caracal/#{ name }", 'w') { |f| f.write(buffer.string) }
+    end
+    
+    
+    
+    #-------------------------------------------------------------
+    # Public Instance Methods
+    #-------------------------------------------------------------
+    
+   # This method instantiates a new word document.
     #
     def initialize(name = nil, &block)
       file_name    name || DEFAULT_SETTINGS[:name]
@@ -58,7 +78,11 @@ module Caracal
       end
     end
     
-    # This method renders the word document instance.
+    
+    #============ RENDERING =================================
+    
+    # This method renders the word document instance into 
+    # a string buffer.
     #
     def render
       buffer = ::Zip::OutputStream.write_buffer do |zip|
@@ -73,7 +97,6 @@ module Caracal
         # render_document(zip)
         # render_content_types(zip)
       end
-      File.open("tmp/#{ name }", 'w') { |f| f.write(buffer.string) }
     end
 
 
@@ -140,7 +163,7 @@ module Caracal
     
     
     #-------------------------------------------------------------
-    # Private Methods
+    # Private Instance Methods
     #-------------------------------------------------------------
     private
     

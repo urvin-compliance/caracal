@@ -8,7 +8,7 @@ module Tilt
     
     def prepare
       @code =<<-RUBY
-        Caracal::Document.generate do |docx|
+        Caracal::Document.render do |docx|
           #{ data }
         end
       RUBY
