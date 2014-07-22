@@ -83,10 +83,16 @@ Pairs extensions and XML files with schema content types so Word can parse them 
 
 ## Units
 
-OpenXML uses three basic units.
+OpenXML uses a few basic units.
+
+**Points**  
+Most spacing declarations are measured in full points.
 
 **Half Points**  
 All font sizes are measure in half points.  A font size of 24 is equivalent to 12pt.
+
+**Eighth Points**  
+Borders are measured in 1/8 points.  A border size of 4 is equivalent to 0.5pt.
 
 **Twips**  
 A twip is 1/20 of a point.  Word documents are printed at 72dpi.  1in == 72pt == 1440 twips.  In Word documents, pixels are equivalent to twips.
