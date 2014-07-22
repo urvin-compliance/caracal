@@ -369,22 +369,22 @@ The `link` command with default properties will produce the following XML output
     
 ### Images
 
-Images can be added by using the `image` method.  The method accepts several optional parameters for controlling the style and placement of the asset.
+Images can be added by using the `img` method.  The method accepts several optional parameters for controlling the style and placement of the asset.
   
     # no options
-    docx.image image_url('example.png)
+    docx.img image_url('example.png)
     
     # options via block
-    docx.image image_url('example.png') do
+    docx.img image_url('example.png') do
       width   396         # sets the image width. units specified in pixels.
       height  216         # sets the image height. units specified in pixels.
       align   right       # controls the justification of the image. default is :left.
     end
     
     # options via hash
-    docx.image image_url('example.png'), width: 396, height: 216, align: :right
+    docx.img image_url('example.png'), width: 396, height: 216, align: :right
 
-The `image` command with default properties will produce the following XML output:
+The `img` command with default properties will produce the following XML output:
 
     <w:p w:rsidP="00000000" w:rsidRPr="00000000" w:rsidR="00000000" w:rsidDel="00000000" w:rsidRDefault="00000000">
       <w:pPr>
@@ -881,6 +881,7 @@ The `br` command will produce the folowing XML:
 ## Template Rendering
 
 Caracal includes [Tilt](https://github.com/rtomayko/tilt) integration to facilitate its inclusion in other frameworks.  Rails integration can be added via the [Caracal-Rails](https://github.com/ibpinc/caracal-rails) gem.
+
 
 ## Defaults
 
