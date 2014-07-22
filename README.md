@@ -111,9 +111,9 @@ In the following examples, the variable `docx` is assumed to be an instance of C
 
 The final output document's title can be set at initialization or via the `file_name` method.
 
-    docx = Caracal::Document.new('Example Document')
+    docx = Caracal::Document.new('example_document.docx')
     
-    docx.file_name 'different_name.docx'
+    docx.file_name 'example_document.docx'
 
 ### Page Size
 
