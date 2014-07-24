@@ -115,6 +115,12 @@ The final output document's title can be set at initialization or via the `file_
     
     docx.file_name 'example_document.docx'
 
+The current document name can be returned by invoking the `name` method:
+
+    docx.name    # => 'example_document.docx'
+    
+*The default file name is caracal.docx.*
+
 ### Page Size
 
 Page dimensions can be set using the `page_size` method.  The method accepts two parameters for controlling the width and height of the document. 
