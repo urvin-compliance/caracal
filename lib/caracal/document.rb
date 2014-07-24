@@ -6,15 +6,10 @@ module Caracal
     #-------------------------------------------------------------
     
     # accessors
-    attr_reader :page_margin_left
-    attr_reader :page_margin_right
-    attr_reader :page_margin_top
-    attr_reader :page_margin_bottom
     attr_reader :page_number_show
     attr_reader :page_number_align
-    attr_reader :page_width
-    attr_reader :page_height
     
+
     # mixins
     include Caracal::Core::FileName
     include Caracal::Core::PageSettings
@@ -27,8 +22,8 @@ module Caracal
     # This method renders a new Word document and returns it as a
     # a string.
     #
-    def self.render(name = nil, &block)
-      docx   = new(name, &block)
+    def self.render(f_name = nil, &block)
+      docx   = new(f_name, &block)
       buffer = docx.render
       
       buffer.rewind
@@ -38,11 +33,11 @@ module Caracal
     # This method renders a new Word document and saves it to the
     # file system.
     #
-    def self.save(name = nil, &block)
-      docx   = new(name, &block)
+    def self.save(f_name = nil, &block)
+      docx   = new(f_name, &block)
       buffer = docx.render
       
-      File.open("./#{ name }", 'w') { |f| f.write(buffer.string) }
+      File.open("./#{ docx.name }", 'w') { |f| f.write(buffer.string) }
     end
     
     
@@ -54,16 +49,31 @@ module Caracal
    # This method instantiates a new word document.
     #
     def initialize(name = nil, &block)
-      file_name  name
-      page_size
-      page_margins
-      # page_numbers DEFAULT_SETTINGS[:numbers]
-      # page_size    DEFAULT_SETTINGS[:size]
-      
-      if block
+      file_name    name
+      page_size 
+      page_margins 
+      # page_numbers
+               
+      if block_given?
         (block.arity < 1) ? instance_eval(&block) : block[self]
       end
     end
+    
+    # # This method controls whether page numbers are displayed in the footer and, if so,
+    # # which alignment is used. Defaults to nil
+    # #
+    # #
+    # def page_numbers(value)
+    #   show  = !!value
+    #   align = value.to_s.to_sym unless value.nil?
+    #
+    #   if show && ![:left, :center, :right].include?(value)
+    #     raise Caracal::Errors::InvalidPageSetting, "page_numbers method only accepts nil, :left, :center, or :right."
+    #   else
+    #     @page_number_show  = show
+    #     @page_number_align = align
+    #   end
+    # end
     
     
     #============ RENDERING =================================
@@ -81,32 +91,10 @@ module Caracal
         # render_styles(zip)
         # render_numbering(zip)
         # render_footer(zip)
-        # render_document(zip)
+        render_document(zip)
         # render_content_types(zip)
       end
     end
-
-
-    #============ PAGE SETTINGS =================================
-    
-    
-    
-    # This method controls whether page numbers are displayed in the footer and, if so,
-    # which alignment is used. Defaults to nil
-    #
-    #
-    # def page_numbers(value)
-    #   show  = !!value
-    #   align = value.to_s.to_sym unless value.nil?
-    #
-    #   if show && ![:left, :center, :right].include?(value)
-    #     raise Caracal::Errors::InvalidPageSetting, "page_numbers method only accepts nil, :left, :center, or :right."
-    #   else
-    #     @page_number_show  = show
-    #     @page_number_align = align
-    #   end
-    # end
-    
     
     
     
@@ -131,13 +119,19 @@ module Caracal
       zip.write(content)
     end
     
+    def render_document(zip)
+      content = ::Caracal::Renderers::DocumentRenderer.render(self)
+      
+      zip.put_next_entry('word/document.xml')
+      zip.write(content)
+    end
+    
     def render_relationships; end
     def render_settings; end
     def render_fonts; end
     def render_styles; end
     def render_numbering; end
     def render_footer; end
-    def render_document; end
     def render_content_types; end
         
   end

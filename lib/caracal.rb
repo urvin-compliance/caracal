@@ -17,6 +17,7 @@ require 'caracal/core/page_settings'
 require 'caracal/renderers/xml_renderer'
 require 'caracal/renderers/app_renderer'
 require 'caracal/renderers/core_renderer'
+require 'caracal/renderers/document_renderer'
 
 # document
 require 'caracal/document'
