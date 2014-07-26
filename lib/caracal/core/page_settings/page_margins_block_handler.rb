@@ -18,7 +18,7 @@ module Caracal
           if block_given?
             (block.arity < 1) ? instance_eval(&block) : block[self]
           else
-            raise Caracal::Errors::NoBlockGivenError, "PageMarginsBlockHandler must be passed a block."
+            raise Caracal::Errors::NoBlockGivenError, 'PageMarginsBlockHandler must be passed a block.'
           end
         end
         

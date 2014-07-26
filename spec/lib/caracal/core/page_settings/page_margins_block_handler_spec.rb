@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Caracal::Core::PageSettings::PageMarginsBlockHandler do
   subject do 
-    Caracal::Core::PageSettings::PageMarginsBlockHandler.new do
+    described_class.new do
       top     1441
       bottom  1442
       left    1443

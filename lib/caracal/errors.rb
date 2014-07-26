@@ -1,5 +1,10 @@
 module Caracal
   module Errors
+    # This error is raised whenever a page number method is called with 
+    # an invalid argument value.
+    #
+    InvalidPageNumberError = Class.new(StandardError)
+    
     # This error is raised whenever a page setting method is called with 
     # an invalid argument value.
     #

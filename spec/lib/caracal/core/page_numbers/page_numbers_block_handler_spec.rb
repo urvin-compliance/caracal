@@ -1,10 +1,9 @@
 require 'spec_helper'
 
-describe Caracal::Core::PageSettings::PageSizeBlockHandler do
+describe Caracal::Core::PageNumbers::PageNumbersBlockHandler do
   subject do 
     described_class.new do
-      width  15840
-      height 12240
+      align :right
     end
   end
   
@@ -16,8 +15,7 @@ describe Caracal::Core::PageSettings::PageSizeBlockHandler do
     
     # accessors
     describe 'accessors' do
-      it { expect(subject.page_width).to eq 15840 }
-      it { expect(subject.page_height).to eq 12240 }
+      it { expect(subject.number_align).to eq :right }
     end
     
   end
@@ -29,24 +27,17 @@ describe Caracal::Core::PageSettings::PageSizeBlockHandler do
   
   describe 'public method tests' do
     
-    # .width
-    describe '.width' do
-      before { subject.width(10000) }
+    # .align
+    describe '.align' do
+      before { subject.align(:left) }
       
-      it { expect(subject.page_width).to eq 10000 }
-    end
-    
-    # .height
-    describe '.height' do
-      before { subject.height(10000) }
-      
-      it { expect(subject.page_height).to eq 10000 }
+      it { expect(subject.number_align).to eq :left }
     end
     
     # .to_options
     describe '.to_options' do
       let(:actual)   { subject.to_options }
-      let(:expected) { { width: 15840, height: 12240 } }
+      let(:expected) { { align: :right } }
       
       it { expect(actual).to eq expected}
     end

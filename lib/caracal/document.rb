@@ -5,14 +5,11 @@ module Caracal
     # Configuration
     #-------------------------------------------------------------
     
-    # accessors
-    attr_reader :page_number_show
-    attr_reader :page_number_align
-    
-
-    # mixins
+    # mixins (order is important)
+    include Caracal::Core::Relationships
     include Caracal::Core::FileName
     include Caracal::Core::PageSettings
+    include Caracal::Core::PageNumbers
     
     
     #-------------------------------------------------------------
@@ -49,31 +46,19 @@ module Caracal
    # This method instantiates a new word document.
     #
     def initialize(name = nil, &block)
-      file_name    name
+      file_name(name)
       page_size 
       page_margins 
-      # page_numbers
+      page_numbers
+      
+      self.class.default_relationships.each do |r|
+        register_relationship(r[:target], r[:type])
+      end
                
       if block_given?
         (block.arity < 1) ? instance_eval(&block) : block[self]
       end
     end
-    
-    # # This method controls whether page numbers are displayed in the footer and, if so,
-    # # which alignment is used. Defaults to nil
-    # #
-    # #
-    # def page_numbers(value)
-    #   show  = !!value
-    #   align = value.to_s.to_sym unless value.nil?
-    #
-    #   if show && ![:left, :center, :right].include?(value)
-    #     raise Caracal::Errors::InvalidPageSetting, "page_numbers method only accepts nil, :left, :center, or :right."
-    #   else
-    #     @page_number_show  = show
-    #     @page_number_align = align
-    #   end
-    # end
     
     
     #============ RENDERING =================================
@@ -83,16 +68,16 @@ module Caracal
     #
     def render
       buffer = ::Zip::OutputStream.write_buffer do |zip|
+        render_content_types(zip)
+        # render_relationships(zip)
         render_app(zip)
         render_core(zip)
-        # render_relationships(zip)
-        # render_settings(zip)
         # render_fonts(zip)
-        # render_styles(zip)
+        render_footer(zip)
         # render_numbering(zip)
-        # render_footer(zip)
+        render_settings(zip)
+        # render_styles(zip)
         render_document(zip)
-        # render_content_types(zip)
       end
     end
     
@@ -112,6 +97,13 @@ module Caracal
       zip.write(content)
     end
     
+    def render_content_types(zip)
+      content = ::Caracal::Renderers::ContentTypesRenderer.render(self)
+      
+      zip.put_next_entry('[Content_Types].xml')
+      zip.write(content)
+    end
+    
     def render_core(zip)
       content = ::Caracal::Renderers::CoreRenderer.render(self)
       
@@ -126,13 +118,27 @@ module Caracal
       zip.write(content)
     end
     
-    def render_relationships; end
-    def render_settings; end
     def render_fonts; end
-    def render_styles; end
+    
+    def render_footer(zip)
+      content = ::Caracal::Renderers::FooterRenderer.render(self)
+      
+      zip.put_next_entry('word/footer1.xml')
+      zip.write(content)
+    end
+    
     def render_numbering; end
-    def render_footer; end
-    def render_content_types; end
+    
+    def render_relationships; end
+    
+    def render_settings(zip)
+      content = ::Caracal::Renderers::SettingsRenderer.render(self)
+      
+      zip.put_next_entry('word/settings.xml')
+      zip.write(content)
+    end
+    
+    def render_styles; end
         
   end
 end
