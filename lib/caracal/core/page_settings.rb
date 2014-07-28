@@ -38,7 +38,7 @@ module Caracal
           #
           def page_margins(options = {}, &block)
             if block_given?
-              block_options = PageMarginsBlockHandler.new(&block).to_options
+              block_options = Caracal::Core::Models::PageMarginModel.new(&block).to_options
               options.merge! block_options
             end
             
@@ -66,7 +66,7 @@ module Caracal
           #
           def page_size(options = {}, &block)
             if block_given?
-              block_options = PageSizeBlockHandler.new(&block).to_options
+              block_options = Caracal::Core::Models::PageSizeModel.new(&block).to_options
               options.merge! block_options
             end
             

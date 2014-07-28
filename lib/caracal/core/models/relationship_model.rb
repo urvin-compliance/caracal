@@ -1,6 +1,6 @@
 module Caracal
   module Core
-    module Relationships
+    module Models
       
       # This class encapsulates the logic needed to store and manipulate
       # relationship data.

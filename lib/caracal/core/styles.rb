@@ -1,10 +1,10 @@
 module Caracal
   module Core
     
-    # This module encapsulates all the functionality related to registering
-    # fonts.
+    # This module encapsulates all the functionality related to defining
+    # styles.
     #
-    module Fonts
+    module Styles
       def self.included(base)
         base.class_eval do
           
@@ -12,11 +12,8 @@ module Caracal
           # Class Methods
           #-------------------------------------------------------------
           
-          def self.default_fonts
-            [
-              { name: 'Arial' },
-              { name: 'Droid Serif' }
-            ]           
+          def self.default_styles
+            []           
           end
           
           
@@ -24,14 +21,11 @@ module Caracal
           # Public Methods
           #-------------------------------------------------------------
           
-          def font(name)
-            unless fonts.map(&:downcase).include? name.to_s.downcase
-              fonts << name.to_s
-            end
+          def style(name, options= {}, &block)
           end
           
-          def fonts
-            @fonts ||= []
+          def styles
+            @styles ||= []
           end
           
         end

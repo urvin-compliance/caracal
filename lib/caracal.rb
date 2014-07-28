@@ -8,14 +8,14 @@ require 'caracal/errors'
 require 'caracal/version'
 
 # core
+require 'caracal/core/models/page_number_model'
+require 'caracal/core/models/page_margin_model'
+require 'caracal/core/models/page_size_model'
+require 'caracal/core/models/relationship_model'
 require 'caracal/core/file_name'
 require 'caracal/core/fonts'
-require 'caracal/core/page_numbers/page_numbers_block_handler'
 require 'caracal/core/page_numbers'
-require 'caracal/core/page_settings/page_margins_block_handler'
-require 'caracal/core/page_settings/page_size_block_handler'
 require 'caracal/core/page_settings'
-require 'caracal/core/relationships/relationship_model'
 require 'caracal/core/relationships'
 
 # renderers

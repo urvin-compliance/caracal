@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Caracal::Core::Relationships::RelationshipModel do
+describe Caracal::Core::Models::RelationshipModel do
   let(:target) { 'footer.xml' }
   let(:type)   { :footer }
   

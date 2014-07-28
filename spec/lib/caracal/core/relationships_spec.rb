@@ -1,16 +1,28 @@
 require 'spec_helper'
 
 describe Caracal::Core::Relationships do
-  let(:r1) { Caracal::Core::Relationships::RelationshipModel.new('footer.xml', :footer) }
-  let(:r2) { Caracal::Core::Relationships::RelationshipModel.new('settings.xml', :setting) }
+  let(:r1) { Caracal::Core::Models::RelationshipModel.new('footer.xml', :footer) }
+  let(:r2) { Caracal::Core::Models::RelationshipModel.new('settings.xml', :setting) }
   
-  subject { Caracal::Document.new }
+  subject  { Caracal::Document.new }
   
   
   #-------------------------------------------------------------
-  # Configuration
+  # Class Methods
   #-------------------------------------------------------------
 
+  describe 'public class tests' do
+  
+    # .default_relationships
+    describe '.default_relationships' do
+      let(:expected) { [:font, :footer, :numbering, :setting, :style] }
+      let(:actual)   { subject.class.default_relationships.map { |r| r[:type] } }
+      
+      it { expect(actual).to eq expected }
+    end
+    
+  end
+  
   
   #-------------------------------------------------------------
   # Public Methods

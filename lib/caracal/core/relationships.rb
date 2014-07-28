@@ -38,7 +38,7 @@ module Caracal
           def register_relationship(target, type)
             r = relationship_for_target(target)
             if r.nil?
-              r  = RelationshipModel.new(target, type)
+              r  = Caracal::Core::Models::RelationshipModel.new(target, type)
               r.register
               @relationships << r
             end

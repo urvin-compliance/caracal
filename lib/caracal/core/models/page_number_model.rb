@@ -1,11 +1,11 @@
 module Caracal
   module Core
-    module PageNumbers
+    module Models
       
       # This class handles block options passed to the page_numbers
       # method.
       #
-      class PageNumbersBlockHandler
+      class PageNumberModel
         
         # accessors
         attr_accessor :number_align
@@ -15,7 +15,7 @@ module Caracal
           if block_given?
             (block.arity < 1) ? instance_eval(&block) : block[self]
           else
-            raise Caracal::Errors::NoBlockGivenError, 'PageNumbersBlockHandler must be passed a block.'
+            raise Caracal::Errors::NoBlockGivenError, 'PageNumberModel must be passed a block.'
           end
         end
         

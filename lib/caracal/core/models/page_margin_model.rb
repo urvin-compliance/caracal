@@ -1,11 +1,11 @@
 module Caracal
   module Core
-    module PageSettings
+    module Models
       
       # This class handles block options passed to the page margins
       # method.
       #
-      class PageMarginsBlockHandler
+      class PageMarginModel
         
         # accessors
         attr_accessor :page_margin_top
@@ -18,7 +18,7 @@ module Caracal
           if block_given?
             (block.arity < 1) ? instance_eval(&block) : block[self]
           else
-            raise Caracal::Errors::NoBlockGivenError, 'PageMarginsBlockHandler must be passed a block.'
+            raise Caracal::Errors::NoBlockGivenError, 'PageMarginModel must be passed a block.'
           end
         end
         

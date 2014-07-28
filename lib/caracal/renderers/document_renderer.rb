@@ -15,6 +15,11 @@ module Caracal
             xml.send 'w:background', { 'w:color' => 'FFFFFF' }
             xml.send 'w:body' do
               xml.send 'w:sectPr' do
+                if document.page_number_show
+                  if rel = document.relationship_for_target('footer1.xml')
+                    xml.send 'w:footerReference', { 'r:id' => rel.formatted_id, 'w:type' => 'default' }
+                  end
+                end
                 xml.send 'w:pgSz', page_size_options
                 xml.send 'w:pgMar', page_margin_options
               end

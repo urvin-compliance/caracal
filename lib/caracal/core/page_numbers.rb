@@ -29,7 +29,7 @@ module Caracal
           #
           def page_numbers(show = false, options = {}, &block)
             if block_given?
-              block_options = PageNumbersBlockHandler.new(&block).to_options
+              block_options = Caracal::Core::Models::PageNumberModel.new(&block).to_options
               options.merge! block_options
             end
             

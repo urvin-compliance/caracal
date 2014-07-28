@@ -1,11 +1,11 @@
 module Caracal
   module Core
-    module PageSettings
+    module Models
       
       # This class handles block options passed to the page size
       # method.
       #
-      class PageSizeBlockHandler
+      class PageSizeModel
         
         # accessors
         attr_accessor :page_width
@@ -16,7 +16,7 @@ module Caracal
           if block_given?
             (block.arity < 1) ? instance_eval(&block) : block[self]
           else
-            raise Caracal::Errors::NoBlockGivenError, 'PageSizeBlockHandler must be passed a block.'
+            raise Caracal::Errors::NoBlockGivenError, 'PageSizeModel must be passed a block.'
           end
         end
         
