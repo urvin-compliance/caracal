@@ -8,6 +8,7 @@ module Caracal
     # mixins (order is important)
     include Caracal::Core::Relationships
     include Caracal::Core::FileName
+    include Caracal::Core::Fonts
     include Caracal::Core::PageSettings
     include Caracal::Core::PageNumbers
     
@@ -54,7 +55,11 @@ module Caracal
       self.class.default_relationships.each do |r|
         register_relationship(r[:target], r[:type])
       end
-               
+      
+      self.class.default_fonts.each do |f|
+        font f[:name]
+      end
+            
       if block_given?
         (block.arity < 1) ? instance_eval(&block) : block[self]
       end
@@ -118,7 +123,12 @@ module Caracal
       zip.write(content)
     end
     
-    def render_fonts(zip); end
+    def render_fonts(zip)
+      content = ::Caracal::Renderers::FontsRenderer.render(self)
+      
+      zip.put_next_entry('word/fontTable.xml')
+      zip.write(content)
+    end
     
     def render_footer(zip)
       content = ::Caracal::Renderers::FooterRenderer.render(self)
