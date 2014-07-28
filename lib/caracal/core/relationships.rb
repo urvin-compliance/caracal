@@ -14,11 +14,11 @@ module Caracal
           
           def self.default_relationships
             [
-              { target: 'fontTable.xml',  type: :font     },
-              { target: 'footer1.xml',    type: :footer   },
-              { target: 'numbering.xml',  type: :list     },
-              { target: 'settings.xml',   type: :setting  },
-              { target: 'styles.xml',     type: :style    }
+              { target: 'fontTable.xml',  type: :font       },
+              { target: 'footer1.xml',    type: :footer     },
+              { target: 'numbering.xml',  type: :numbering  },
+              { target: 'settings.xml',   type: :setting    },
+              { target: 'styles.xml',     type: :style      }
             ]           
           end
           

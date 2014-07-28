@@ -7,6 +7,10 @@ module Caracal
       #
       class RelationshipModel
         
+        #-------------------------------------------------------------
+        # Configuration
+        #-------------------------------------------------------------
+    
         # class vars (not worried about inheritance)
         @@count = 0
         
@@ -37,16 +41,11 @@ module Caracal
           @key     = target.to_s
         end
         
-        #=================== PUBLIC METHODS =============================
         
-        def formatted_id
-          "rId#{ id }"
-        end
-        
-        def formatted_type
-          TYPE_MAP.fetch(type)
-        end
-        
+        #-------------------------------------------------------------
+        # Public Instance Methods
+        #-------------------------------------------------------------
+    
         def matches?(str)
           key == str.to_s
         end
@@ -57,6 +56,20 @@ module Caracal
         
         def unregister
           # add later with images
+        end
+        
+        #=================== XML METHODS =============================
+        
+        def formatted_id
+          "rId#{ id }"
+        end
+        
+        def formatted_type
+          TYPE_MAP.fetch(type)
+        end
+        
+        def target_mode?
+          type == :link
         end
         
       end

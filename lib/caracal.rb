@@ -24,6 +24,7 @@ require 'caracal/renderers/content_types_renderer'
 require 'caracal/renderers/core_renderer'
 require 'caracal/renderers/document_renderer'
 require 'caracal/renderers/footer_renderer'
+require 'caracal/renderers/relationships_renderer'
 require 'caracal/renderers/settings_renderer'
 
 # document

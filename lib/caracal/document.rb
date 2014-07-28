@@ -43,7 +43,7 @@ module Caracal
     # Public Instance Methods
     #-------------------------------------------------------------
     
-   # This method instantiates a new word document.
+    # This method instantiates a new word document.
     #
     def initialize(name = nil, &block)
       file_name(name)
@@ -69,14 +69,14 @@ module Caracal
     def render
       buffer = ::Zip::OutputStream.write_buffer do |zip|
         render_content_types(zip)
-        # render_relationships(zip)
+        render_relationships(zip)
         render_app(zip)
         render_core(zip)
-        # render_fonts(zip)
+        render_fonts(zip)
         render_footer(zip)
-        # render_numbering(zip)
+        render_numbering(zip)
         render_settings(zip)
-        # render_styles(zip)
+        render_styles(zip)
         render_document(zip)
       end
     end
@@ -118,7 +118,7 @@ module Caracal
       zip.write(content)
     end
     
-    def render_fonts; end
+    def render_fonts(zip); end
     
     def render_footer(zip)
       content = ::Caracal::Renderers::FooterRenderer.render(self)
@@ -127,9 +127,14 @@ module Caracal
       zip.write(content)
     end
     
-    def render_numbering; end
+    def render_numbering(zip); end
     
-    def render_relationships; end
+    def render_relationships(zip)
+      content = ::Caracal::Renderers::RelationshipsRenderer.render(self)
+      
+      zip.put_next_entry('word/_rels/document.xml.rels')
+      zip.write(content)
+    end
     
     def render_settings(zip)
       content = ::Caracal::Renderers::SettingsRenderer.render(self)
@@ -138,7 +143,7 @@ module Caracal
       zip.write(content)
     end
     
-    def render_styles; end
+    def render_styles(zip); end
         
   end
 end
