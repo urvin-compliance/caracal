@@ -4,7 +4,7 @@ describe Caracal::Core::Models::RelationshipModel do
   let(:target) { 'footer.xml' }
   let(:type)   { :footer }
   
-  subject { described_class.new(target, type) }
+  subject { described_class.new({ target: target, type: type }) }
   
   
   #-------------------------------------------------------------
@@ -13,12 +13,21 @@ describe Caracal::Core::Models::RelationshipModel do
 
   describe 'configuration tests' do
     
+    # constants
+    describe 'constants' do
+      describe 'TYPE_MAP' do
+        let(:keys) { described_class::TYPE_MAP.keys }
+        
+        it { expect(keys.include?(:font)).to be true }
+      end
+    end
+    
     # accessors
     describe 'accessors' do
-      it { expect(subject.id).to be_a(Integer) }  # number indeterminate due to randomization
-      it { expect(subject.type).to eq :footer }
-      it { expect(subject.target).to eq 'footer.xml' }
-      it { expect(subject.key).to eq 'footer.xml' }
+      it { expect(subject.relationship_id).to be_a(Integer) }  # number indeterminate due to randomization
+      it { expect(subject.relationship_type).to eq :footer }
+      it { expect(subject.relationship_target).to eq 'footer.xml' }
+      it { expect(subject.relationship_key).to eq 'footer.xml' }
     end
     
   end
@@ -30,10 +39,34 @@ describe Caracal::Core::Models::RelationshipModel do
   
   describe 'public method tests' do
     
+    #=================== ATTRIBUTES ==========================
+    
+    # .target
+    describe '.target' do
+      before do
+        subject.target('Dummy.XML')
+      end
+      
+      it { expect(subject.relationship_target).to eq 'Dummy.XML' }
+      it { expect(subject.relationship_key).to eq 'dummy.xml' }
+    end
+    
+    # .type
+    describe '.type' do
+      before do
+        subject.type('link')
+      end
+      
+      it { expect(subject.relationship_type).to eq :link }
+    end
+    
+    
+    #=================== GETTERS =============================
+    
     # .formatted_id
     describe '.formatted_id' do
       before do 
-        allow(subject).to receive(:id).and_return(1)
+        allow(subject).to receive(:relationship_id).and_return(1)
       end 
       
       it { expect(subject.formatted_id).to eq 'rId1' }
@@ -43,6 +76,16 @@ describe Caracal::Core::Models::RelationshipModel do
     describe '.formatted_type' do
       it { expect(subject.formatted_type).to eq 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer' }
     end
+    
+    
+    #=================== REGISTRATION ========================
+    
+    # pending until img command implemented
+    pending '#register to be implemented with img command'
+    pending '#unregister to be implemented with img command'
+    
+    
+    #=================== STATE ===============================
     
     # .matches?
     describe '.matches?' do
@@ -58,9 +101,24 @@ describe Caracal::Core::Models::RelationshipModel do
       end
     end
     
-    # pending until img command implemented
-    pending '#register to be implemented with img command'
-    pending '#unregister to be implemented with img command'
+    # .target_mode?
+    describe '.target_mode?' do
+      describe 'when key is link' do
+        before do 
+          allow(subject).to receive(:relationship_type).and_return(:link)
+        end
+        
+        it { expect(subject.target_mode?).to eq true }
+      end
+      describe 'when search term does not match key' do
+        before do 
+          allow(subject).to receive(:relationship_type).and_return(:footer)
+        end
+        
+        it { expect(subject.target_mode?).to eq false }
+      end
+    end
+    
   end
   
 end

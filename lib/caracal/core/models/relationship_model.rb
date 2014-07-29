@@ -11,7 +11,7 @@ module Caracal
         # Configuration
         #-------------------------------------------------------------
     
-        # class vars (not worried about inheritance)
+        # class vars (counting subclasses okay)
         @@count = 0
         
         # constants
@@ -26,19 +26,23 @@ module Caracal
         }
         
         # accessors
-        attr_accessor :id
-        attr_accessor :type
-        attr_accessor :target
-        attr_accessor :key
+        attr_accessor :relationship_id
+        attr_accessor :relationship_type
+        attr_accessor :relationship_target
+        attr_accessor :relationship_key
         
         # initialization
-        def initialize(target, type)
+        def initialize(options = {}, &block)
           @@count += 1
+          @relationship_id = @@count
           
-          @id      = @@count
-          @type    = type.to_s.to_sym
-          @target  = target.to_s
-          @key     = target.to_s
+          options.each do |(key, value)|
+            send(key, value)
+          end
+          
+          if block_given?
+            (block.arity < 1) ? instance_eval(&block) : block[self]
+          end
         end
         
         
@@ -46,9 +50,30 @@ module Caracal
         # Public Instance Methods
         #-------------------------------------------------------------
     
-        def matches?(str)
-          key == str.to_s
+        #=================== ATTRIBUTES ==========================
+        
+        def target(value)
+          @relationship_target = value.to_s
+          @relationship_key    = value.to_s.downcase
         end
+        
+        def type(value)
+          @relationship_type = value.to_s.downcase.to_sym
+        end
+        
+        
+        #=================== GETTERS =============================
+        
+        def formatted_id
+          "rId#{ relationship_id }"
+        end
+        
+        def formatted_type
+          TYPE_MAP.fetch(relationship_type)
+        end
+        
+        
+        #=================== REGISTRATION ========================
         
         def register
           # add later with images
@@ -58,18 +83,15 @@ module Caracal
           # add later with images
         end
         
-        #=================== XML METHODS =============================
         
-        def formatted_id
-          "rId#{ id }"
-        end
+        #=================== STATE ===============================
         
-        def formatted_type
-          TYPE_MAP.fetch(type)
+        def matches?(str)
+          relationship_key.downcase == str.to_s.downcase
         end
         
         def target_mode?
-          type == :link
+          relationship_type == :link
         end
         
       end

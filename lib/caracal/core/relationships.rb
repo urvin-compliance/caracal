@@ -27,18 +27,22 @@ module Caracal
           # Public Methods
           #-------------------------------------------------------------
           
+          #============== GETTERS =============================
+          
           def relationships
             @relationships ||= []
           end
                     
-          def relationship_for_target(target)
-            relationships.find { |r| r.matches?(target.to_s) }
+          def find_relationship(target)
+            relationships.find { |r| r.matches?(target) }
           end
           
+          
+          #============== REGISTRATION ========================
+          
           def register_relationship(target, type)
-            r = relationship_for_target(target)
-            if r.nil?
-              r  = Caracal::Core::Models::RelationshipModel.new(target, type)
+            unless r = find_relationship(target)
+              r = Caracal::Core::Models::RelationshipModel.new({ target: target, type: type })
               r.register
               @relationships << r
             end
@@ -46,8 +50,7 @@ module Caracal
           end
           
           def unregister_relationship(target)
-            r = relationship_for_target(target)
-            unless r.nil?
+            if r = find_relationship(target)
               r.unregister
               @relationships.delete(r)
             end

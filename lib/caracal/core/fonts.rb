@@ -24,14 +24,38 @@ module Caracal
           # Public Methods
           #-------------------------------------------------------------
           
+          #============== ATTRIBUTES ==========================
+          
           def font(name)
-            unless fonts.map(&:downcase).include? name.to_s.downcase
-              fonts << name.to_s
-            end
+            register_font({ name: name.to_s })
           end
+          
+          
+          #============== GETTERS =============================
           
           def fonts
             @fonts ||= []
+          end
+          
+          def find_font(name)
+            fonts.find { |f| f.matches?(name) }
+          end
+          
+          
+          #============== REGISTRATION ========================
+          
+          def register_font(opts = {})
+            unless f = find_font(opts[:name])
+              f = Caracal::Core::Models::FontModel.new(opts)
+              @fonts << f
+            end
+            f
+          end
+          
+          def unregister_font(name)
+            if f = find_font(name)
+              @fonts.delete(f)
+            end
           end
           
         end

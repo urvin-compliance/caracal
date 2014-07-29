@@ -8,6 +8,7 @@ require 'caracal/errors'
 require 'caracal/version'
 
 # core
+require 'caracal/core/models/font_model'
 require 'caracal/core/models/page_number_model'
 require 'caracal/core/models/page_margin_model'
 require 'caracal/core/models/page_size_model'

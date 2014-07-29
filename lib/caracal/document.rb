@@ -48,6 +48,7 @@ module Caracal
     #
     def initialize(name = nil, &block)
       file_name(name)
+      
       page_size 
       page_margins 
       page_numbers
@@ -57,7 +58,7 @@ module Caracal
       end
       
       self.class.default_fonts.each do |f|
-        font f[:name]
+        register_font(f[:name])
       end
             
       if block_given?
