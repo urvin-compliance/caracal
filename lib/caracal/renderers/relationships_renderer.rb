@@ -27,7 +27,7 @@ module Caracal
       private
       
       def rel_options(rel)
-        opts = { 'Target' => rel.target, 'Type' => rel.formatted_type, 'Id' => rel.formatted_id}
+        opts = { 'Target' => rel.relationship_target, 'Type' => rel.formatted_type, 'Id' => rel.formatted_id}
         opts['TargetMode'] = 'External' if rel.target_mode?
         opts
       end
