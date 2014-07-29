@@ -26,10 +26,10 @@ module Caracal
         }
         
         # accessors
-        attr_accessor :relationship_id
-        attr_accessor :relationship_type
-        attr_accessor :relationship_target
-        attr_accessor :relationship_key
+        attr_reader :relationship_id
+        attr_reader :relationship_type
+        attr_reader :relationship_target
+        attr_reader :relationship_key
         
         # initialization
         def initialize(options = {}, &block)

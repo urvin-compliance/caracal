@@ -16,6 +16,14 @@ describe Caracal::Core::Models::PageMarginModel do
 
   describe 'configuration tests' do
     
+    # constants
+    describe 'constants' do
+      it { expect(described_class::DEFAULT_PAGE_MARGIN_TOP).to eq 1440 }
+      it { expect(described_class::DEFAULT_PAGE_MARGIN_BOTTOM).to eq 1440 }
+      it { expect(described_class::DEFAULT_PAGE_MARGIN_LEFT).to eq 1440 }
+      it { expect(described_class::DEFAULT_PAGE_MARGIN_RIGHT).to eq 1440 }
+    end
+    
     # accessors
     describe 'accessors' do
       it { expect(subject.page_margin_top).to     eq 1441 }
@@ -33,6 +41,8 @@ describe Caracal::Core::Models::PageMarginModel do
   
   describe 'public method tests' do
   
+    #=============== SETTERS ==========================
+    
     # .top
     describe '.top' do
       before { subject.top(1000) }
@@ -61,12 +71,22 @@ describe Caracal::Core::Models::PageMarginModel do
       it { expect(subject.page_margin_right).to eq 1000 }
     end
     
-    # .to_options
-    describe '.to_options' do
-      let(:actual)   { subject.to_options }
-      let(:expected) { { top: 1441, bottom: 1442, left: 1443, right: 1444 } }
-      
-      it { expect(actual).to eq expected}
+    
+    #=============== VALIDATION ===========================
+    
+    describe '.valid?' do
+      describe 'when all margins gt 0' do
+        it { expect(subject.valid?).to eq true }
+      end
+      [:top, :bottom, :left, :right].each do |d|
+        describe "when #{ d } lte 0" do
+          before do
+            allow(subject).to receive("page_margin_#{ d }").and_return(0)
+          end
+        
+          it { expect(subject.valid?).to eq false }
+        end
+      end
     end
   
   end

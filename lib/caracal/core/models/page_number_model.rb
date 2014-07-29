@@ -12,11 +12,12 @@ module Caracal
         #-------------------------------------------------------------
         
         # constants
+        const_set(:DEFAULT_PAGE_NUMBER_SHOW,  false)
         const_set(:DEFAULT_PAGE_NUMBER_ALIGN, :center)
         
         # accessors
-        attr_accessor :page_number_align
-        attr_accessor :page_number_show
+        attr_reader :page_number_align
+        attr_reader :page_number_show
         
         # initialization
         def initialize(options = {}, &block)
@@ -28,13 +29,8 @@ module Caracal
             (block.arity < 1) ? instance_eval(&block) : block[self]
           end
           
-          unless [:left, :center, :right].include?(page_number_align)
-            if page_number_show
-              raise Caracal::Errors::InvalidPageNumberError, 'page_numbers :align parameter must be :left, :center, or :right'
-            else
-              align DEFAULT_PAGE_NUMBER_ALIGN
-            end
-          end
+          @page_number_show  ||= DEFAULT_PAGE_NUMBER_SHOW
+          @page_number_align ||= DEFAULT_PAGE_NUMBER_ALIGN
         end
         
         
@@ -50,6 +46,13 @@ module Caracal
         
         def show(value)
           @page_number_show = !!value
+        end
+        
+        
+        #=============== VALIDATION ===========================
+        
+        def valid?
+          (!page_number_show || [:left, :center, :right].include?(page_number_align))
         end
         
       end

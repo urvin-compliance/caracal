@@ -14,6 +14,12 @@ describe Caracal::Core::Models::PageSizeModel do
 
   describe 'configuration tests' do
     
+    # constants
+    describe 'constants' do
+      it { expect(described_class::DEFAULT_PAGE_WIDTH).to eq 12240 }
+      it { expect(described_class::DEFAULT_PAGE_HEIGHT).to eq 15840 }
+    end
+    
     # accessors
     describe 'accessors' do
       it { expect(subject.page_width).to eq 15840 }
@@ -29,6 +35,8 @@ describe Caracal::Core::Models::PageSizeModel do
   
   describe 'public method tests' do
     
+    #=============== SETTERS ==========================
+    
     # .width
     describe '.width' do
       before { subject.width(10000) }
@@ -43,12 +51,22 @@ describe Caracal::Core::Models::PageSizeModel do
       it { expect(subject.page_height).to eq 10000 }
     end
     
-    # .to_options
-    describe '.to_options' do
-      let(:actual)   { subject.to_options }
-      let(:expected) { { width: 15840, height: 12240 } }
-      
-      it { expect(actual).to eq expected}
+    
+    #=============== VALIDATION ===========================
+    
+    describe '.valid?' do
+      describe 'when all sizes gt 0' do
+        it { expect(subject.valid?).to eq true }
+      end
+      [:width, :height].each do |d|
+        describe "when #{ d } lte 0" do
+          before do
+            allow(subject).to receive("page_#{ d }").and_return(0)
+          end
+        
+          it { expect(subject.valid?).to eq false }
+        end
+      end
     end
   
   end

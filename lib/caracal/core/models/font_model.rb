@@ -12,7 +12,7 @@ module Caracal
         #-------------------------------------------------------------
     
         # accessors
-        attr_accessor :font_name
+        attr_reader :font_name
         
         # initialization
         def initialize(options = {}, &block)

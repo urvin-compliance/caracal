@@ -31,8 +31,12 @@ module Caracal
             options.merge!({ show: !!show })
             model = Caracal::Core::Models::PageNumberModel.new(options, &block)
             
-            @page_number_show  = model.page_number_show  || !!page_number_show
-            @page_number_align = model.page_number_align || page_number_align
+            if model.valid?
+              @page_number_show  = model.page_number_show
+              @page_number_align = model.page_number_align
+            else
+              raise Caracal::Errors::InvalidPageNumberError, 'page_numbers :align parameter must be :left, :center, or :right'
+            end
           end
           
         end

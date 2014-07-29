@@ -241,13 +241,19 @@ Style classes can be added using the `style` method.  The method accepts several
     
     # options via block
     docx.style do
-      type    :paragraph        # :paragraph or :table
-      id      'Heading1'        # sets the internal identifier for the style.
-      name    'heading 1'       # set the friendly name of the style.
-      font    'Droid Serif'     # sets the font family.
-      size    28                # set the font size. units in half points.
-      base    'Normal'          # establishes from which style this style inherits attributes.
-      next    'Normal'          # establishes which style follows the termination of the text run using this style.
+      type      :paragraph        # :paragraph or :table
+      id        'Heading1'        # sets the internal identifier for the style.
+      name      'heading 1'       # set the friendly name of the style.
+      color     '333333'          # sets the text color. values in hex RGB.
+      font      'Droid Serif'     # sets the font family.
+      size      28                # set the font size. units in half points.
+      bold      false             # sets the font weight.
+      italic    false             # sets the font style.
+      underline false             # sets whether or not to underline the text.
+      spacing   360               # sets the spacing below the line. units in twips.
+      justify   :left             # sets the alignment. accepts :left, :center, :right, and :both.
+      base      'Normal'          # establishes from which style this style inherits attributes.
+      next      'Normal'          # establishes which style follows the termination of the text run using this style.
     end
 
 The `style` command above would produce the following XML:

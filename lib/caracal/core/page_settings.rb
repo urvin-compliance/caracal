@@ -65,17 +65,11 @@ module Caracal
           # to US standard A4 portrait size.
           #
           def page_size(options = {}, &block)
-            if block_given?
-              block_options = Caracal::Core::Models::PageSizeModel.new(&block).to_options
-              options.merge! block_options
-            end
+            model = Caracal::Core::Models::PageSizeModel.new(options, &block)
             
-            width  = (options[:width]  || page_width  || self.class::DEFAULT_PAGE_WIDTH).to_i
-            height = (options[:height] || page_height || self.class::DEFAULT_PAGE_HEIGHT).to_i
-            
-            if width > 0 && height > 0
-              @page_width  = width
-              @page_height = height
+            if model.valid?
+              @page_width  = model.page_width
+              @page_height = model.page_height
             else
               raise Caracal::Errors::InvalidPageSetting, 'page_size method requires non-zero :width and :height options.'
             end
