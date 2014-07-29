@@ -12,14 +12,6 @@ module Caracal
           # Configuration
           #-------------------------------------------------------------
     
-          # constants
-          const_set(:DEFAULT_PAGE_WIDTH,         12240)  # 8.5in  in twips
-          const_set(:DEFAULT_PAGE_HEIGHT,        15840)  # 11.0in in twips
-          const_set(:DEFAULT_PAGE_MARGIN_TOP,    1440)   # 1.0in  in twips
-          const_set(:DEFAULT_PAGE_MARGIN_BOTTOM, 1440)   # 1.0in  in twips
-          const_set(:DEFAULT_PAGE_MARGIN_LEFT,   1440)   # 1.0in  in twips
-          const_set(:DEFAULT_PAGE_MARGIN_RIGHT,  1440)   # 1.0in  in twips
-          
           # accessors
           attr_reader :page_width
           attr_reader :page_height
@@ -37,22 +29,14 @@ module Caracal
           # to 1in on each side.
           #
           def page_margins(options = {}, &block)
-            if block_given?
-              block_options = Caracal::Core::Models::PageMarginModel.new(&block).to_options
-              options.merge! block_options
-            end
-            
-            top    = (options[:top]    || page_margin_top    || self.class::DEFAULT_PAGE_MARGIN_TOP).to_i
-            bottom = (options[:bottom] || page_margin_bottom || self.class::DEFAULT_PAGE_MARGIN_BOTTOM).to_i
-            left   = (options[:left]   || page_margin_left   || self.class::DEFAULT_PAGE_MARGIN_LEFT).to_i
-            right  = (options[:right]  || page_margin_right  || self.class::DEFAULT_PAGE_MARGIN_RIGHT).to_i
-            
-            if top > 0 && bottom > 0 && left > 0 && right > 0
+            model = Caracal::Core::Models::PageMarginModel.new(options, &block)
+
+            if model.valid?
               if (top + bottom < page_height) && (left + right < page_width)
-                @page_margin_top    = top
-                @page_margin_bottom = bottom
-                @page_margin_left   = left
-                @page_margin_right  = right
+                @page_margin_top    = model.page_margin_top
+                @page_margin_bottom = model.page_margin_bottom
+                @page_margin_left   = model.page_margin_left
+                @page_margin_right  = model.page_margin_right
               else
                 raise Caracal::Errors::InvalidPageSetting, 'page_margins method requires margins to be smaller than the page size.'
               end
