@@ -32,7 +32,7 @@ module Caracal
             model = Caracal::Core::Models::PageMarginModel.new(options, &block)
 
             if model.valid?
-              if (top + bottom < page_height) && (left + right < page_width)
+              if (model.page_margin_top + model.page_margin_bottom < page_height) && (model.page_margin_left + model.page_margin_right < page_width)
                 @page_margin_top    = model.page_margin_top
                 @page_margin_bottom = model.page_margin_bottom
                 @page_margin_left   = model.page_margin_left

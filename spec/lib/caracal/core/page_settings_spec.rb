@@ -10,18 +10,6 @@ describe Caracal::Core::PageSettings do
 
   describe 'configuration tests' do
     
-    # constants
-    describe 'page size constants' do
-      it { expect(subject.class::DEFAULT_PAGE_WIDTH).to  eq 12240 }
-      it { expect(subject.class::DEFAULT_PAGE_HEIGHT).to eq 15840 }
-    end
-    describe 'page margin constants' do
-      it { expect(subject.class::DEFAULT_PAGE_MARGIN_TOP).to    eq 1440 }
-      it { expect(subject.class::DEFAULT_PAGE_MARGIN_BOTTOM).to eq 1440 }
-      it { expect(subject.class::DEFAULT_PAGE_MARGIN_LEFT).to   eq 1440 }
-      it { expect(subject.class::DEFAULT_PAGE_MARGIN_RIGHT).to  eq 1440 }
-    end
-      
     # readers
     describe 'page size readers' do
       it { expect(subject.page_width).to eq 12240 }
