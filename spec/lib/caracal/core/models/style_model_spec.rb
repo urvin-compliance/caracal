@@ -20,6 +20,7 @@ describe Caracal::Core::Models::StyleModel do
     
     # constants
     describe 'constants' do
+      it { expect(described_class::DEFAULT_STYLE_DEFAULT).to eq false }
       it { expect(described_class::DEFAULT_STYLE_TYPE).to eq :paragraph }
       it { expect(described_class::DEFAULT_STYLE_COLOR).to eq '333333' }
       it { expect(described_class::DEFAULT_STYLE_SIZE).to eq 20 }
@@ -34,6 +35,7 @@ describe Caracal::Core::Models::StyleModel do
     
     # accessors
     describe 'accessors' do
+      it { expect(subject.style_default).to eq false }
       it { expect(subject.style_type).to eq :paragraph }
       it { expect(subject.style_id).to eq 'normal' }
       it { expect(subject.style_name).to eq 'Normal' }
@@ -61,6 +63,11 @@ describe Caracal::Core::Models::StyleModel do
     #=============== SETTERS ==========================
     
     # booleans
+    describe '.default' do
+      before { subject.default(true) }
+      
+      it { expect(subject.style_default).to eq true }
+    end
     describe '.bold' do
       before { subject.bold(true) }
       

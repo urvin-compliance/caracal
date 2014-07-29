@@ -12,6 +12,7 @@ module Caracal
         #-------------------------------------------------------------
         
         # constants
+        const_set(:DEFAULT_STYLE_DEFAULT,   false)
         const_set(:DEFAULT_STYLE_TYPE,      :paragraph)
         const_set(:DEFAULT_STYLE_COLOR,     '333333')
         const_set(:DEFAULT_STYLE_SIZE,      20)
@@ -24,6 +25,7 @@ module Caracal
         const_set(:DEFAULT_STYLE_NEXT,      'Normal')
         
         # accessors
+        attr_reader :style_default
         attr_reader :style_type
         attr_reader :style_id
         attr_reader :style_name
@@ -49,6 +51,7 @@ module Caracal
             (block.arity < 1) ? instance_eval(&block) : block[self]
           end
           
+          @style_default   ||= DEFAULT_STYLE_DEFAULT
           @style_type      ||= DEFAULT_STYLE_TYPE
           @style_color     ||= DEFAULT_STYLE_COLOR
           @style_size      ||= DEFAULT_STYLE_SIZE
@@ -69,7 +72,7 @@ module Caracal
         #=============== SETTERS ==============================
         
         # booleans
-        [:bold, :italic, :underline].each do |m|
+        [:default, :bold, :italic, :underline].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@style_#{ m }", !!value)
           end
