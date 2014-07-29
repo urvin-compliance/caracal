@@ -47,14 +47,14 @@ module Caracal
           def register_font(opts = {})
             unless f = find_font(opts[:name])
               f = Caracal::Core::Models::FontModel.new(opts)
-              @fonts << f
+              fonts << f
             end
             f
           end
           
           def unregister_font(name)
             if f = find_font(name)
-              @fonts.delete(f)
+              fonts.delete(f)
             end
           end
           

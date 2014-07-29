@@ -40,11 +40,11 @@ module Caracal
           
           #============== REGISTRATION ========================
           
-          def register_relationship(target, type)
-            unless r = find_relationship(target)
-              r = Caracal::Core::Models::RelationshipModel.new({ target: target, type: type })
+          def register_relationship(opts = {})
+            unless r = find_relationship(opts[:target])
+              r = Caracal::Core::Models::RelationshipModel.new(opts)
               r.register
-              @relationships << r
+              relationships << r
             end
             r
           end
@@ -52,7 +52,7 @@ module Caracal
           def unregister_relationship(target)
             if r = find_relationship(target)
               r.unregister
-              @relationships.delete(r)
+              relationships.delete(r)
             end
           end
           
