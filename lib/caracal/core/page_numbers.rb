@@ -24,28 +24,15 @@ module Caracal
           # Public Methods
           #-------------------------------------------------------------
     
-          # This method controls the physical margins of the printed page. Defaults 
-          # to 1in on each side.
+          # This method controls whether and how page numbers are displayed
+          # on the document.
           #
-          def page_numbers(show = false, options = {}, &block)
-            if block_given?
-              block_options = Caracal::Core::Models::PageNumberModel.new(&block).to_options
-              options.merge! block_options
-            end
+          def page_numbers(show = nil, options = {}, &block)
+            options.merge!({ show: !!show })
+            model = Caracal::Core::Models::PageNumberModel.new(options, &block)
             
-            show  = !!show   # coerce to boolean
-            align = (options[:align] || page_number_align || self.class::DEFAULT_PAGE_NUMBER_ALIGN).to_s.to_sym
-            
-            unless [:left, :center, :right].include? align
-              if show
-                raise Caracal::Errors::InvalidPageNumberError, 'page_numbers :align parameter must be :left, :center, or :right'
-              else
-                align = :center
-              end
-            end
-            
-            @page_number_show  = show
-            @page_number_align = align
+            @page_number_show  = model.page_number_show  || !!page_number_show
+            @page_number_align = model.page_number_align || page_number_align
           end
           
         end

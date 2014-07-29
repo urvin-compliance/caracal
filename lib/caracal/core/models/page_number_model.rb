@@ -7,29 +7,49 @@ module Caracal
       #
       class PageNumberModel
         
+        #-------------------------------------------------------------
+        # Configuration
+        #-------------------------------------------------------------
+        
+        # constants
+        const_set(:DEFAULT_PAGE_NUMBER_ALIGN, :center)
+        
         # accessors
-        attr_accessor :number_align
+        attr_accessor :page_number_align
+        attr_accessor :page_number_show
         
         # initialization
-        def initialize(&block)
+        def initialize(options = {}, &block)
+          options.each do |(key, value)|
+            send(key, value)
+          end
+          
           if block_given?
             (block.arity < 1) ? instance_eval(&block) : block[self]
-          else
-            raise Caracal::Errors::NoBlockGivenError, 'PageNumberModel must be passed a block.'
+          end
+          
+          unless [:left, :center, :right].include?(page_number_align)
+            if page_number_show
+              raise Caracal::Errors::InvalidPageNumberError, 'page_numbers :align parameter must be :left, :center, or :right'
+            else
+              align DEFAULT_PAGE_NUMBER_ALIGN
+            end
           end
         end
         
-        # align
+        
+        #-------------------------------------------------------------
+        # Public Methods
+        #-------------------------------------------------------------
+    
+        #=============== SETTERS ==============================
+        
         def align(value)
-          @number_align = value.to_s.to_sym
+          @page_number_align = value.to_s.to_sym
         end
         
-        # to_options
-        def to_options
-          opts = { 
-            align:  number_align 
-          }
-          opts.delete_if { |k, v| v.nil? }
+        def show(value)
+          @page_number_show = !!value
         end
         
       end
