@@ -15,7 +15,7 @@ module Caracal
           def self.default_fonts
             [
               { name: 'Arial' },
-              { name: 'Droid Serif' }
+              { name: 'Trebuchet MS' }
             ]           
           end
           

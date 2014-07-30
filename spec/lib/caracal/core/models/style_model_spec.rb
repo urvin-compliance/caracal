@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Caracal::Core::Models::StyleModel do
   subject do 
     described_class.new do
-      id        'normal'
-      name      'Normal'
+      id        'Normal'
+      name      'normal'
       font      'Arial'
       size      20
       spacing   360
@@ -19,30 +19,29 @@ describe Caracal::Core::Models::StyleModel do
     
     # constants
     describe 'constants' do
-      it { expect(described_class::DEFAULT_STYLE_DEFAULT).to eq false }
       it { expect(described_class::DEFAULT_STYLE_COLOR).to eq '333333' }
       it { expect(described_class::DEFAULT_STYLE_SIZE).to eq 20 }
       it { expect(described_class::DEFAULT_STYLE_BOLD).to eq false }
       it { expect(described_class::DEFAULT_STYLE_ITALIC).to eq false }
       it { expect(described_class::DEFAULT_STYLE_UNDERLINE).to eq false }
       it { expect(described_class::DEFAULT_STYLE_SPACING).to eq 360 }
-      it { expect(described_class::DEFAULT_STYLE_JUSTIFY).to eq :left }
+      it { expect(described_class::DEFAULT_STYLE_ALIGN).to eq :left }
       it { expect(described_class::DEFAULT_STYLE_BASE).to eq 'Normal' }
       it { expect(described_class::DEFAULT_STYLE_NEXT).to eq 'Normal' }
     end
     
     # accessors
     describe 'accessors' do
-      it { expect(subject.style_default).to eq false }
-      it { expect(subject.style_id).to eq 'normal' }
-      it { expect(subject.style_name).to eq 'Normal' }
+      it { expect(subject.style_default).to eq true }
+      it { expect(subject.style_id).to eq 'Normal' }
+      it { expect(subject.style_name).to eq 'normal' }
       it { expect(subject.style_color).to eq '333333' }
       it { expect(subject.style_font).to eq 'Arial' }
       it { expect(subject.style_size).to eq 20 }
       it { expect(subject.style_bold).to eq false }
       it { expect(subject.style_italic).to eq false }
       it { expect(subject.style_underline).to eq false }
-      it { expect(subject.style_justify).to eq :left }
+      it { expect(subject.style_align).to eq :left }
       it { expect(subject.style_spacing).to eq 360 }
       it { expect(subject.style_base).to eq 'Normal' }
       it { expect(subject.style_next).to eq 'Normal' }
@@ -60,11 +59,6 @@ describe Caracal::Core::Models::StyleModel do
     #=============== SETTERS ==========================
     
     # booleans
-    describe '.default' do
-      before { subject.default(true) }
-      
-      it { expect(subject.style_default).to eq true }
-    end
     describe '.bold' do
       before { subject.bold(true) }
       
@@ -115,22 +109,12 @@ describe Caracal::Core::Models::StyleModel do
       
       it { expect(subject.style_font).to eq 'Helvetica' }
     end
-    describe '.base' do
-      before { subject.base('Heading 1') }
-      
-      it { expect(subject.style_base).to eq 'Heading 1' }
-    end
-    describe '.next' do
-      before { subject.next('Heading 1') }
-      
-      it { expect(subject.style_next).to eq 'Heading 1' }
-    end
     
     # symbols
-    describe '.justify' do
-      before { subject.justify(:right) }
+    describe '.align' do
+      before { subject.align(:right) }
       
-      it { expect(subject.style_justify).to eq :right }
+      it { expect(subject.style_align).to eq :right }
     end
     
     

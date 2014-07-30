@@ -7,6 +7,7 @@ describe Caracal::Errors do
   it { expect(Caracal::Errors::InvalidPageNumberError).not_to be_nil }
   it { expect(Caracal::Errors::InvalidPageSettingError).not_to be_nil }
   it { expect(Caracal::Errors::InvalidStyleError).not_to be_nil }
+  it { expect(Caracal::Errors::NoDefaultStyleError).not_to be_nil }
   it { expect(Caracal::Errors::NoDocumentError).not_to be_nil }
 
 end

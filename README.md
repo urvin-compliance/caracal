@@ -253,7 +253,7 @@ Style classes can be added using the `style` method.  The method accepts several
       italic    false             # sets the font style.
       underline false             # sets whether or not to underline the text.
       spacing   360               # sets the spacing below the line. units in twips.
-      justify   :left             # sets the alignment. accepts :left, :center, :right, and :both.
+      align     :left             # sets the alignment. accepts :left, :center, :right, and :both.
       base      'Normal'          # establishes from which style this style inherits attributes.
       next      'Normal'          # establishes which style follows the termination of the text run using this style.
     end

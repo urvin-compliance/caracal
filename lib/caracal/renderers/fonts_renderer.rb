@@ -42,7 +42,7 @@ module Caracal
           'xmlns:pic' => 'http://schemas.openxmlformats.org/drawingml/2006/picture',
           'xmlns:c'   => 'http://schemas.openxmlformats.org/drawingml/2006/chart',
           'xmlns:lc'  => 'http://schemas.openxmlformats.org/drawingml/2006/lockedCanvas',
-          'xmlns:dgm' => 'http://schemas.openxmlformats.org/drawingml/2006/diagra'
+          'xmlns:dgm' => 'http://schemas.openxmlformats.org/drawingml/2006/diagram'
         }
       end
    

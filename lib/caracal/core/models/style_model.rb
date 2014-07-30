@@ -12,14 +12,13 @@ module Caracal
         #-------------------------------------------------------------
         
         # constants
-        const_set(:DEFAULT_STYLE_DEFAULT,   false)
         const_set(:DEFAULT_STYLE_COLOR,     '333333')
         const_set(:DEFAULT_STYLE_SIZE,      20)
         const_set(:DEFAULT_STYLE_BOLD,      false)
         const_set(:DEFAULT_STYLE_ITALIC,    false)
         const_set(:DEFAULT_STYLE_UNDERLINE, false)
         const_set(:DEFAULT_STYLE_SPACING,   360)        # 0.25in in twips
-        const_set(:DEFAULT_STYLE_JUSTIFY,   :left)
+        const_set(:DEFAULT_STYLE_ALIGN,     :left)
         const_set(:DEFAULT_STYLE_BASE,      'Normal')
         const_set(:DEFAULT_STYLE_NEXT,      'Normal')
         
@@ -34,7 +33,7 @@ module Caracal
         attr_reader :style_bold
         attr_reader :style_italic
         attr_reader :style_underline
-        attr_reader :style_justify
+        attr_reader :style_align
         attr_reader :style_spacing
         attr_reader :style_base
         attr_reader :style_next
@@ -50,16 +49,20 @@ module Caracal
             (block.arity < 1) ? instance_eval(&block) : block[self]
           end
           
-          @style_default   ||= DEFAULT_STYLE_DEFAULT
-          @style_color     ||= DEFAULT_STYLE_COLOR
-          @style_size      ||= DEFAULT_STYLE_SIZE
-          @style_bold      ||= DEFAULT_STYLE_BOLD
-          @style_italic    ||= DEFAULT_STYLE_ITALIC
-          @style_underline ||= DEFAULT_STYLE_UNDERLINE
-          @style_spacing   ||= DEFAULT_STYLE_SPACING
-          @style_justify   ||= DEFAULT_STYLE_JUSTIFY
-          @style_base      ||= DEFAULT_STYLE_BASE
-          @style_next      ||= DEFAULT_STYLE_NEXT
+          @style_default = false
+          @style_base    = DEFAULT_STYLE_BASE
+          @style_next    = DEFAULT_STYLE_NEXT
+          
+          if (style_id == DEFAULT_STYLE_BASE)
+            @style_default     = true
+            @style_color     ||= DEFAULT_STYLE_COLOR
+            @style_size      ||= DEFAULT_STYLE_SIZE
+            @style_bold      ||= DEFAULT_STYLE_BOLD
+            @style_italic    ||= DEFAULT_STYLE_ITALIC
+            @style_underline ||= DEFAULT_STYLE_UNDERLINE
+            @style_spacing   ||= DEFAULT_STYLE_SPACING
+            @style_align     ||= DEFAULT_STYLE_ALIGN
+          end
         end
         
         
@@ -70,7 +73,7 @@ module Caracal
         #=============== SETTERS ==============================
         
         # booleans
-        [:default, :bold, :italic, :underline].each do |m|
+        [:bold, :italic, :underline].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@style_#{ m }", !!value)
           end
@@ -84,14 +87,14 @@ module Caracal
         end
         
         # strings
-        [:id, :name, :color, :font, :base, :next].each do |m|
+        [:id, :name, :color, :font].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@style_#{ m }", value.to_s)
           end
         end
         
         # symbols
-        [:justify].each do |m|
+        [:align].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@style_#{ m }", value.to_s.to_sym)
           end

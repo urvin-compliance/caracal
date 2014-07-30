@@ -54,11 +54,11 @@ module Caracal
       page_margins 
       page_numbers
       
-      self.class.default_relationships.each do |r|
-        relationship r
-      end
-      self.class.default_fonts.each do |f|
-        font f
+      [:relationship, :font, :style].each do |method|
+        collection = self.class.send("default_#{ method }s")
+        collection.each do |item|
+          send(method, item)
+        end
       end
             
       if block_given?
@@ -154,7 +154,12 @@ module Caracal
       zip.write(content)
     end
     
-    def render_styles(zip); end
+    def render_styles(zip)
+      content = ::Caracal::Renderers::StylesRenderer.render(self)
+      
+      zip.put_next_entry('word/styles.xml')
+      zip.write(content)
+    end
         
   end
 end

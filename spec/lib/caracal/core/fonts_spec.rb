@@ -15,7 +15,7 @@ describe Caracal::Core::Fonts do
   
     # .default_fonts
     describe '.default_fonts' do
-      let(:expected) { ['Arial', 'Droid Serif'] }
+      let(:expected) { ['Arial', 'Trebuchet MS'] }
       let(:actual)   { subject.class.default_fonts.map { |r| r[:name] } }
       
       it { expect(actual).to eq expected }

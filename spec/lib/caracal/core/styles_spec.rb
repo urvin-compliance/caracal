@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Caracal::Core::Styles do
-  let(:s1) { Caracal::Core::Models::StyleModel.new({ id: 'normal', name: 'Normal' }) }
-  let(:s2) { Caracal::Core::Models::StyleModel.new({ id: 'heading1', name: 'Heading 1' }) }
+  let(:s1) { Caracal::Core::Models::StyleModel.new({ id: 'Dummy', name: 'dummy' }) }
+  let(:s2) { Caracal::Core::Models::StyleModel.new({ id: 'Fake',  name: 'fake' }) }
   
   subject  { Caracal::Document.new }
   
@@ -15,10 +15,10 @@ describe Caracal::Core::Styles do
   
     # .default_styles
     describe '.default_styles' do
-      # let(:expected) { [:font, :footer, :numbering, :setting, :style] }
-      # let(:actual)   { subject.class.default_styles.map { |r| r[:type] } }
-      #
-      # it { expect(actual).to eq expected }
+      let(:expected) { ['Normal', 'Heading1', 'Heading2', 'Heading3', 'Heading4', 'Heading5', 'Heading6', 'Title', 'Subtitle'].sort }
+      let(:actual)   { subject.class.default_styles.map { |s| s[:id] }.sort }
+
+      it {expect(actual).to eq expected }
     end
     
   end

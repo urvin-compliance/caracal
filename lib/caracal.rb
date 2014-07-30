@@ -31,6 +31,7 @@ require 'caracal/renderers/fonts_renderer'
 require 'caracal/renderers/footer_renderer'
 require 'caracal/renderers/relationships_renderer'
 require 'caracal/renderers/settings_renderer'
+require 'caracal/renderers/styles_renderer'
 
 # document
 require 'caracal/document'
