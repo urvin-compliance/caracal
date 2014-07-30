@@ -3,7 +3,7 @@ module Caracal
     module Models
       
       # This class encapsulates the logic needed to store and manipulate
-      # style data.
+      # paragraph style data.
       #
       class StyleModel
         
@@ -13,7 +13,6 @@ module Caracal
         
         # constants
         const_set(:DEFAULT_STYLE_DEFAULT,   false)
-        const_set(:DEFAULT_STYLE_TYPE,      :paragraph)
         const_set(:DEFAULT_STYLE_COLOR,     '333333')
         const_set(:DEFAULT_STYLE_SIZE,      20)
         const_set(:DEFAULT_STYLE_BOLD,      false)
@@ -52,7 +51,6 @@ module Caracal
           end
           
           @style_default   ||= DEFAULT_STYLE_DEFAULT
-          @style_type      ||= DEFAULT_STYLE_TYPE
           @style_color     ||= DEFAULT_STYLE_COLOR
           @style_size      ||= DEFAULT_STYLE_SIZE
           @style_bold      ||= DEFAULT_STYLE_BOLD
@@ -93,7 +91,7 @@ module Caracal
         end
         
         # symbols
-        [:type, :justify].each do |m|
+        [:justify].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@style_#{ m }", value.to_s.to_sym)
           end
@@ -110,7 +108,7 @@ module Caracal
         #=============== VALIDATION ===========================
         
         def valid?
-          (!style_id.nil? && !style_type.nil?)
+          (!style_id.nil? && !style_name.nil?)
         end
         
       end

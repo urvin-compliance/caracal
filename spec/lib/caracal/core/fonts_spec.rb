@@ -36,14 +36,14 @@ describe Caracal::Core::Fonts do
     describe '.font' do
       it 'delegates font to registration method' do
         expect(subject).to receive(:register_font)
-        subject.font('Helvetica')
+        subject.font({ name: 'Helvetica' })
       end
     end
     
     
     #============== GETTERS ========================
     
-    # .relationships
+    # .fonts
     describe '.fonts' do
       it { expect(subject.fonts).to be_a(Array) }
     end
@@ -74,19 +74,18 @@ describe Caracal::Core::Fonts do
     # .register_font
     describe '.register_font' do
       let(:default_length) { subject.class.default_fonts.size }
-      let(:options)        { { name: f1.font_name } }
       
       describe 'when not already registered' do
         before do 
-          subject.register_font(options)
+          subject.register_font(f1)
         end
         
         it { expect(subject.fonts.size).to eq default_length + 1 }
       end
       describe 'when already registered' do
         before do 
-          subject.register_font(options) 
-          subject.register_font(options)
+          subject.register_font(f1) 
+          subject.register_font(f1)
         end
         
         it { expect(subject.fonts.size).to eq default_length + 1 }
@@ -96,19 +95,18 @@ describe Caracal::Core::Fonts do
     # .unregister_font
     describe '.unregister_font' do
       let(:default_length) { subject.class.default_fonts.size }
-      let(:options)        { { name: f1.font_name } }
       
       describe 'when registered' do
         before do 
-          subject.register_font(options)
-          subject.unregister_font(options[:name])
+          subject.register_font(f1)
+          subject.unregister_font(f1.font_name)
         end
         
         it { expect(subject.fonts.size).to eq default_length }
       end
       describe 'when not registered' do
         before do 
-          subject.register_font(options)
+          subject.register_font(f1)
           subject.unregister_font(f2.font_name)
         end
         

@@ -94,6 +94,13 @@ module Caracal
           relationship_type == :link
         end
         
+        
+        #=============== VALIDATION ===========================
+        
+        def valid?
+          (!relationship_target.nil? && !relationship_type.nil?)
+        end
+        
       end
       
     end

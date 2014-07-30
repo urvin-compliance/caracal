@@ -54,6 +54,24 @@ describe Caracal::Core::Models::FontModel do
       end
     end
     
+    
+    #=============== VALIDATION ===========================
+    
+    describe '.valid?' do
+      describe 'when name provided' do
+        it { expect(subject.valid?).to eq true }
+      end
+      [:name].each do |prop|
+        describe "when #{ prop } nil" do
+          before do
+            allow(subject).to receive("font_#{ prop }").and_return(nil)
+          end
+        
+          it { expect(subject.valid?).to eq false }
+        end
+      end
+    end
+    
   end
   
 end

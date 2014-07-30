@@ -30,6 +30,17 @@ describe Caracal::Core::Relationships do
 
   describe 'public method tests' do
     
+    #============== ATTRIBUTES =====================
+    
+    # .relationship
+    describe '.relationship' do
+      it 'delegates to registration method' do
+        expect(subject).to receive(:register_relationship)
+        subject.relationship({ target: 'new.gif', type: :image })
+      end
+    end
+    
+    
     #============== GETTERS ========================
     
     # .relationships
@@ -63,19 +74,18 @@ describe Caracal::Core::Relationships do
     # .register_relationship
     describe '.register_relationship' do
       let(:default_length) { subject.class.default_relationships.size }
-      let(:options)        { { target: r1.relationship_target, type: r1.relationship_type } }
       
       describe 'when not already registered' do
         before do 
-          subject.register_relationship(options)
+          subject.register_relationship(r1)
         end
         
         it { expect(subject.relationships.size).to eq default_length + 1 }
       end
       describe 'when already registered' do
         before do 
-          subject.register_relationship(options) 
-          subject.register_relationship(options)
+          subject.register_relationship(r1) 
+          subject.register_relationship(r1)
         end
         
         it { expect(subject.relationships.size).to eq default_length + 1 }
@@ -85,20 +95,19 @@ describe Caracal::Core::Relationships do
     # .unregister_relationship
     describe '.unregister_relationship' do
       let(:default_length) { subject.class.default_relationships.size }
-      let(:options)        { { target: r1.relationship_target, type: r1.relationship_type } }
       
       describe 'when registered' do
         before do 
-          subject.register_relationship(options)
-          subject.unregister_relationship(options[:target])
+          subject.register_relationship(r1)
+          subject.unregister_relationship(r1.relationship_target)
         end
         
         it { expect(subject.relationships.size).to eq default_length }
       end
       describe 'when not registered' do
         before do 
-          subject.register_relationship(options)
-          subject.unregister_relationship(r2.relationship_key)
+          subject.register_relationship(r1)
+          subject.unregister_relationship(r2.relationship_target)
         end
         
         it { expect(subject.relationships.size).to eq default_length + 1 }

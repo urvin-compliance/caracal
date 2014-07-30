@@ -119,6 +119,24 @@ describe Caracal::Core::Models::RelationshipModel do
       end
     end
     
+    
+    #=============== VALIDATION ===========================
+    
+    describe '.valid?' do
+      describe 'when target and type provided' do
+        it { expect(subject.valid?).to eq true }
+      end
+      [:target, :type].each do |prop|
+        describe "when #{ prop } nil" do
+          before do
+            allow(subject).to receive("relationship_#{ prop }").and_return(nil)
+          end
+        
+          it { expect(subject.valid?).to eq false }
+        end
+      end
+    end
+    
   end
   
 end

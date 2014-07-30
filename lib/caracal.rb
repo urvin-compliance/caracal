@@ -19,6 +19,7 @@ require 'caracal/core/fonts'
 require 'caracal/core/page_numbers'
 require 'caracal/core/page_settings'
 require 'caracal/core/relationships'
+require 'caracal/core/styles'
 
 # renderers
 require 'caracal/renderers/xml_renderer'

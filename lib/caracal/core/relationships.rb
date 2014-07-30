@@ -27,6 +27,19 @@ module Caracal
           # Public Methods
           #-------------------------------------------------------------
           
+          #============== ATTRIBUTES ==========================
+          
+          def relationship(opts, &block)
+            model = Caracal::Core::Models::RelationshipModel.new(opts, &block)
+            
+            if model.valid?
+              register_relationship(model)
+            else
+              raise Caracal::Errors::InvalidFontError, 'relationship must specify the :target and :type attribute.'
+            end
+          end
+          
+          
           #============== GETTERS =============================
           
           def relationships
@@ -40,13 +53,11 @@ module Caracal
           
           #============== REGISTRATION ========================
           
-          def register_relationship(opts = {})
-            unless r = find_relationship(opts[:target])
-              r = Caracal::Core::Models::RelationshipModel.new(opts)
-              r.register
-              relationships << r
+          def register_relationship(model)
+            unless r = find_relationship(model.relationship_target)
+              model.register
+              relationships << model
             end
-            r
           end
           
           def unregister_relationship(target)

@@ -3,7 +3,6 @@ require 'spec_helper'
 describe Caracal::Core::Models::StyleModel do
   subject do 
     described_class.new do
-      type      :paragraph
       id        'normal'
       name      'Normal'
       font      'Arial'
@@ -21,7 +20,6 @@ describe Caracal::Core::Models::StyleModel do
     # constants
     describe 'constants' do
       it { expect(described_class::DEFAULT_STYLE_DEFAULT).to eq false }
-      it { expect(described_class::DEFAULT_STYLE_TYPE).to eq :paragraph }
       it { expect(described_class::DEFAULT_STYLE_COLOR).to eq '333333' }
       it { expect(described_class::DEFAULT_STYLE_SIZE).to eq 20 }
       it { expect(described_class::DEFAULT_STYLE_BOLD).to eq false }
@@ -36,7 +34,6 @@ describe Caracal::Core::Models::StyleModel do
     # accessors
     describe 'accessors' do
       it { expect(subject.style_default).to eq false }
-      it { expect(subject.style_type).to eq :paragraph }
       it { expect(subject.style_id).to eq 'normal' }
       it { expect(subject.style_name).to eq 'Normal' }
       it { expect(subject.style_color).to eq '333333' }
@@ -130,11 +127,6 @@ describe Caracal::Core::Models::StyleModel do
     end
     
     # symbols
-    describe '.type' do
-      before { subject.type(:table) }
-      
-      it { expect(subject.style_type).to eq :table }
-    end
     describe '.justify' do
       before { subject.justify(:right) }
       
@@ -165,7 +157,7 @@ describe Caracal::Core::Models::StyleModel do
       describe 'when type and id provided' do
         it { expect(subject.valid?).to eq true }
       end
-      [:type, :id].each do |prop|
+      [:id, :name].each do |prop|
         describe "when #{ prop } nil" do
           before do
             allow(subject).to receive("style_#{ prop }").and_return(nil)

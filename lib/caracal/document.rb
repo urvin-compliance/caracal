@@ -11,6 +11,7 @@ module Caracal
     include Caracal::Core::Fonts
     include Caracal::Core::PageSettings
     include Caracal::Core::PageNumbers
+    include Caracal::Core::Styles
     
     
     #-------------------------------------------------------------
@@ -54,11 +55,10 @@ module Caracal
       page_numbers
       
       self.class.default_relationships.each do |r|
-        register_relationship(r)
+        relationship r
       end
-      
       self.class.default_fonts.each do |f|
-        register_font(f)
+        font f
       end
             
       if block_given?

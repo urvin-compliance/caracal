@@ -43,6 +43,13 @@ module Caracal
           font_name.downcase == str.to_s.downcase
         end
         
+        
+        #=============== VALIDATION ===========================
+        
+        def valid?
+          !font_name.nil?
+        end
+        
       end
       
     end

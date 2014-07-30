@@ -26,8 +26,14 @@ module Caracal
           
           #============== ATTRIBUTES ==========================
           
-          def font(name)
-            register_font({ name: name.to_s })
+          def font(opts, &block)
+            model = Caracal::Core::Models::FontModel.new(opts, &block)
+            
+            if model.valid?
+              register_font(model)
+            else
+              raise Caracal::Errors::InvalidFontError, 'font must specify the :name attribute.'
+            end
           end
           
           
@@ -44,12 +50,10 @@ module Caracal
           
           #============== REGISTRATION ========================
           
-          def register_font(opts = {})
-            unless f = find_font(opts[:name])
-              f = Caracal::Core::Models::FontModel.new(opts)
-              fonts << f
+          def register_font(model)
+            unless f = find_font(model.font_name)
+              fonts << model
             end
-            f
           end
           
           def unregister_font(name)

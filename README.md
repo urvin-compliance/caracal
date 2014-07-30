@@ -224,8 +224,10 @@ The default command will produce the following `footer.xml` file contents.
 
 Fonts are added to the font table file by calling the `font` method and passing the name of the font.  At present, Caracal only supports declaring the primary font name.
 
-    docx.font 'Arial'
-    docx.font 'Droid Serif'
+    docx.font name: 'Arial'
+    docx.font do
+      name 'Droid Serif'
+    end
     
 These commands will produce the following `fontTable.xml` file contents:
 
