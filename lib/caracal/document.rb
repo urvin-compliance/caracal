@@ -55,7 +55,7 @@ module Caracal
       page_margins 
       page_numbers
       
-      [:relationship, :font, :style].each do |method|
+      [:relationship, :font, :style, :list_style].each do |method|
         collection = self.class.send("default_#{ method }s")
         collection.each do |item|
           send(method, item)
@@ -139,7 +139,12 @@ module Caracal
       zip.write(content)
     end
     
-    def render_numbering(zip); end
+    def render_numbering(zip)
+      content = ::Caracal::Renderers::NumberingRenderer.render(self)
+      
+      zip.put_next_entry('word/numbering.xml')
+      zip.write(content)
+    end
     
     def render_relationships(zip)
       content = ::Caracal::Renderers::RelationshipsRenderer.render(self)

@@ -12,6 +12,7 @@ module Caracal
         #-------------------------------------------------------------
         
         # constants
+        const_set(:TYPE_MAP,              { ordered: 1, unordered: 2 })
         const_set(:DEFAULT_STYLE_LEFT,    720)      # units in twips 
         const_set(:DEFAULT_STYLE_LINE,    360)      # units in twips 
         const_set(:DEFAULT_STYLE_ALIGN,   :left)
@@ -42,6 +43,15 @@ module Caracal
           @style_left  ||= DEFAULT_STYLE_LEFT
           @style_line  ||= DEFAULT_STYLE_LINE
           @style_start ||= DEFAULT_STYLE_START
+        end
+        
+        
+        #-------------------------------------------------------------
+        # Public Class Methods
+        #-------------------------------------------------------------
+        
+        def self.formatted_type(type)
+          TYPE_MAP.fetch(type)
         end
         
         

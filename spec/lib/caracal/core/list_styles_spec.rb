@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Caracal::Core::ListStyles do
-  let(:s1) { Caracal::Core::Models::ListStyleModel.new({ type: :ordered, level: 0, format: 'decimal', value: '%1.' }) }
-  let(:s2) { Caracal::Core::Models::ListStyleModel.new({ type: :ordered, level: 1, format: 'lowerLetter', value: '%2.' }) }
+  let(:s1) { Caracal::Core::Models::ListStyleModel.new({ type: :ordered, level: 10, format: 'decimal',     value: '%1.' }) }
+  let(:s2) { Caracal::Core::Models::ListStyleModel.new({ type: :ordered, level: 11, format: 'lowerLetter', value: '%2.' }) }
   
   subject  { Caracal::Document.new }
   
@@ -15,10 +15,10 @@ describe Caracal::Core::ListStyles do
   
     # .default_list_styles
     describe '.default_list_styles' do
-      # let(:expected) { ['Normal', 'Heading1', 'Heading2', 'Heading3', 'Heading4', 'Heading5', 'Heading6', 'Title', 'Subtitle'].sort }
-      # let(:actual)   { subject.class.default_list_styles.map { |s| s[:id] }.sort }
-      #
-      # it {expect(actual).to eq expected }
+      let(:expected) { 18 }
+      let(:actual)   { subject.class.default_list_styles.size }
+
+      it {expect(actual).to eq expected }
     end
     
   end

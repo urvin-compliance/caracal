@@ -44,6 +44,23 @@ describe Caracal::Core::Models::ListStyleModel do
   
   
   #-------------------------------------------------------------
+  # Class Methods
+  #-------------------------------------------------------------
+  
+  describe 'class method tests' do
+    subject { described_class }
+    
+    # .formatted_type
+    describe '.formatted_type' do
+      it { expect(subject.formatted_type(:ordered)).to eq 1 }
+      it { expect(subject.formatted_type(:unordered)).to eq 2 }
+    end
+    
+  end
+  
+  
+  
+  #-------------------------------------------------------------
   # Public Methods
   #-------------------------------------------------------------
   
