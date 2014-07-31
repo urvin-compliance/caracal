@@ -111,7 +111,8 @@ module Caracal
         #=============== VALIDATION ===========================
         
         def valid?
-          (!style_id.nil? && !style_name.nil?)
+          a = [:id, :name]
+          a.map { |m| send("style_#{ m }") }.compact.size == a.size
         end
         
       end

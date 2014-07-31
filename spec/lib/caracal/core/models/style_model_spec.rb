@@ -88,7 +88,6 @@ describe Caracal::Core::Models::StyleModel do
     end
     
     # strings
-    [:id, :name, :color, :font, :base, :next]
     describe '.id' do
       before { subject.id('heading1') }
       
