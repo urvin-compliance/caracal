@@ -2,7 +2,7 @@ module Caracal
   module Core
     
     # This module encapsulates all the functionality related to defining
-    # styles.
+    # paragraph styles.
     #
     module Styles
       def self.included(base)

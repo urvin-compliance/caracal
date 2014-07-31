@@ -12,6 +12,7 @@ module Caracal
     include Caracal::Core::PageSettings
     include Caracal::Core::PageNumbers
     include Caracal::Core::Styles
+    include Caracal::Core::ListStyles
     
     
     #-------------------------------------------------------------
