@@ -68,7 +68,7 @@ module Caracal
                   xml.send 'w:keepNext',     { 'w:val' => '1' }
                   xml.send 'w:keepLines',    { 'w:val' => '1' }
                   xml.send 'w:jc',           { 'w:val' => s.style_align.to_s }                    unless s.style_align.nil?
-                  xml.send 'w:spacing',      line_options(s)                                      unless s.style_spacing.nil?
+                  xml.send 'w:spacing',      spacing_options(s)                                   unless spacing_options(s).nil?
                 end
               end
             end
@@ -89,9 +89,20 @@ module Caracal
         { 'w:cs' => name, 'w:hAnsi' => name, 'w:eastAsia' => name, 'w:ascii' => name }
       end
       
-      def line_options(style)
-        spacing = s.style_spacing
-        { 'w:lineRule' => 'auto', 'w:line' => spacing, 'w:before' => '0', 'w:after' => '0' }
+      def spacing_options(style)
+        top     = style.style_top
+        bottom  = style.style_bottom
+        spacing = style.style_spacing
+        
+        options = nil
+        if [top, bottom, spacing].compact.size
+          options               = {}
+          options['w:lineRule'] = 'auto'
+          options['w:before']   = top      unless top.nil?
+          options['w:after']    = bottom   unless bottom.nil?
+          options['w:line']     = spacing  unless spacing.nil?
+        end
+        options
       end
       
       def root_options

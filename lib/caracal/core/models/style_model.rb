@@ -12,15 +12,17 @@ module Caracal
         #-------------------------------------------------------------
         
         # constants
-        const_set(:DEFAULT_STYLE_COLOR,     '333333')
-        const_set(:DEFAULT_STYLE_SIZE,      20)
-        const_set(:DEFAULT_STYLE_BOLD,      false)
-        const_set(:DEFAULT_STYLE_ITALIC,    false)
-        const_set(:DEFAULT_STYLE_UNDERLINE, false)
-        const_set(:DEFAULT_STYLE_SPACING,   360)        # 0.25in in twips
-        const_set(:DEFAULT_STYLE_ALIGN,     :left)
-        const_set(:DEFAULT_STYLE_BASE,      'Normal')
-        const_set(:DEFAULT_STYLE_NEXT,      'Normal')
+        const_set(:DEFAULT_STYLE_COLOR,      '333333')
+        const_set(:DEFAULT_STYLE_SIZE,       20)
+        const_set(:DEFAULT_STYLE_BOLD,       false)
+        const_set(:DEFAULT_STYLE_ITALIC,     false)
+        const_set(:DEFAULT_STYLE_UNDERLINE,  false)
+        const_set(:DEFAULT_STYLE_ALIGN,      :left)
+        const_set(:DEFAULT_STYLE_SPACING,    360)        # 0.25in in twips
+        const_set(:DEFAULT_STYLE_TOP,        0)          # 0.0in  in twips
+        const_set(:DEFAULT_STYLE_BOTTOM,     0)          # 0.0in  in twips
+        const_set(:DEFAULT_STYLE_BASE,       'Normal')
+        const_set(:DEFAULT_STYLE_NEXT,       'Normal')
         
         # accessors
         attr_reader :style_default
@@ -34,6 +36,8 @@ module Caracal
         attr_reader :style_italic
         attr_reader :style_underline
         attr_reader :style_align
+        attr_reader :style_top
+        attr_reader :style_bottom
         attr_reader :style_spacing
         attr_reader :style_base
         attr_reader :style_next
@@ -54,14 +58,16 @@ module Caracal
           @style_next    = DEFAULT_STYLE_NEXT
           
           if (style_id == DEFAULT_STYLE_BASE)
-            @style_default     = true
-            @style_color     ||= DEFAULT_STYLE_COLOR
-            @style_size      ||= DEFAULT_STYLE_SIZE
-            @style_bold      ||= DEFAULT_STYLE_BOLD
-            @style_italic    ||= DEFAULT_STYLE_ITALIC
-            @style_underline ||= DEFAULT_STYLE_UNDERLINE
-            @style_spacing   ||= DEFAULT_STYLE_SPACING
-            @style_align     ||= DEFAULT_STYLE_ALIGN
+            @style_default      = true
+            @style_color      ||= DEFAULT_STYLE_COLOR
+            @style_size       ||= DEFAULT_STYLE_SIZE
+            @style_bold       ||= DEFAULT_STYLE_BOLD
+            @style_italic     ||= DEFAULT_STYLE_ITALIC
+            @style_underline  ||= DEFAULT_STYLE_UNDERLINE
+            @style_align      ||= DEFAULT_STYLE_ALIGN
+            @style_top        ||= DEFAULT_STYLE_TOP
+            @style_bottom     ||= DEFAULT_STYLE_BOTTOM
+            @style_spacing    ||= DEFAULT_STYLE_SPACING
           end
         end
         
@@ -80,7 +86,7 @@ module Caracal
         end
         
         # integers
-        [:size, :spacing].each do |m|
+        [:bottom, :size, :spacing, :top].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@style_#{ m }", value.to_i)
           end

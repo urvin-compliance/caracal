@@ -19,6 +19,15 @@ module Caracal
     # Public Class Methods
     #-------------------------------------------------------------
     
+    #============ GETTERS ===================================
+    
+    def root
+      @root ||= ::Nokogiri::XML::Builder.new
+    end
+    
+    
+    #============ OUTPUT ====================================
+    
     # This method renders a new Word document and returns it as a
     # a string.
     #

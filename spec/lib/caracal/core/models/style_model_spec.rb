@@ -24,8 +24,10 @@ describe Caracal::Core::Models::StyleModel do
       it { expect(described_class::DEFAULT_STYLE_BOLD).to eq false }
       it { expect(described_class::DEFAULT_STYLE_ITALIC).to eq false }
       it { expect(described_class::DEFAULT_STYLE_UNDERLINE).to eq false }
-      it { expect(described_class::DEFAULT_STYLE_SPACING).to eq 360 }
       it { expect(described_class::DEFAULT_STYLE_ALIGN).to eq :left }
+      it { expect(described_class::DEFAULT_STYLE_TOP).to eq 0 }
+      it { expect(described_class::DEFAULT_STYLE_BOTTOM).to eq 0 }
+      it { expect(described_class::DEFAULT_STYLE_SPACING).to eq 360 }
       it { expect(described_class::DEFAULT_STYLE_BASE).to eq 'Normal' }
       it { expect(described_class::DEFAULT_STYLE_NEXT).to eq 'Normal' }
     end
@@ -42,6 +44,8 @@ describe Caracal::Core::Models::StyleModel do
       it { expect(subject.style_italic).to eq false }
       it { expect(subject.style_underline).to eq false }
       it { expect(subject.style_align).to eq :left }
+      it { expect(subject.style_top).to eq 0 }
+      it { expect(subject.style_bottom).to eq 0 }
       it { expect(subject.style_spacing).to eq 360 }
       it { expect(subject.style_base).to eq 'Normal' }
       it { expect(subject.style_next).to eq 'Normal' }
@@ -76,6 +80,11 @@ describe Caracal::Core::Models::StyleModel do
     end
     
     # integers
+    describe '.bottom' do
+      before { subject.bottom(100) }
+      
+      it { expect(subject.style_bottom).to eq 100 }
+    end
     describe '.size' do
       before { subject.size(24) }
       
@@ -85,6 +94,11 @@ describe Caracal::Core::Models::StyleModel do
       before { subject.spacing(480) }
       
       it { expect(subject.style_spacing).to eq 480 }
+    end
+    describe '.top' do
+      before { subject.top(100) }
+      
+      it { expect(subject.style_top).to eq 100 }
     end
     
     # strings
