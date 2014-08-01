@@ -57,7 +57,9 @@ module Caracal
             unless r = find_relationship(model.relationship_target)
               model.register
               relationships << model
+              r = model
             end
+            r
           end
           
           def unregister_relationship(target)

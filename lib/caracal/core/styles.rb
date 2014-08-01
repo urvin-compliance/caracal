@@ -60,7 +60,9 @@ module Caracal
           def register_style(model)
             unless s = find_style(model.style_id)
               styles << model
+              s = model
             end
+            s
           end
           
           def unregister_style(id)

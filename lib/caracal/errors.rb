@@ -5,6 +5,11 @@ module Caracal
     #
     InvalidFontError = Class.new(StandardError)
     
+    # This error is raised whenever a link method is called with 
+    # invalid argument values.
+    #
+    InvalidLinkError = Class.new(StandardError)
+    
     # This error is raised whenever a page number method is called with 
     # an invalid argument value.
     #
@@ -15,10 +20,20 @@ module Caracal
     #
     InvalidPageSettingError = Class.new(StandardError)
     
+    # This error is raised whenever a p method is called with 
+    # invalid argument values.
+    #
+    InvalidParagraphError = Class.new(StandardError)
+    
     # This error is raised whenever a style method is called with 
     # invalid argument values.
     #
     InvalidStyleError = Class.new(StandardError)
+    
+    # This error is raised whenever a text method is called with 
+    # invalid argument values.
+    #
+    InvalidTextError = Class.new(StandardError)
     
     # This error is raised if the document does not have a default 
     # style declared.

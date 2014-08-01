@@ -276,19 +276,22 @@ The `style` command above would produce the following XML:
       </w:rPr>
     </w:style>
     
-### Text
+### Paragraphs
 
-Text can be added using the `p` method.  Text within a `p` block can be further defined using the `text` method.  The `text` method takes a text string and the optional parameters `class`, `bold`, `italic`, and `underline`.  The `p` either takes a block of `text`-like commands or formats exactly a `text` command itself.
+Text can be added using the `p` method.  The `p` either takes a string and a `class` option or a block of `text`-like commands.  
 
+Text within a `p` block can be further defined using the `text` and `link` methods.  The `text` method takes a text string and the optional parameters `style`, `color`, `size`, `bold`, `italic`, and `underline`.  See below for details on the `link` method.
+
+    docx.p 'some text', style: 'my_style'
+    
     docx.p do
-      text 'Here is a sentence with a '
+      text 'Here is a sentence with a ', style: 'my_style'
       link 'link', 'https://www.example.com'
-      text ' to something awesome', bold: true
+      text ' to something awesome', color: '555555', size: 16, bold: true, italic: true, underline: true
     end
     
-    docx.p 'some text', class: 'my_style'
     
-The first `p` block above will yield the following XML:
+A `p` block might yield the following XML:
 
     <w:p w:rsidP="00000000" w:rsidRPr="00000000" w:rsidR="00000000" w:rsidDel="00000000" w:rsidRDefault="00000000">
       <w:pPr>
@@ -344,7 +347,9 @@ The `h3` block above will yield the following XML:
     
 ### Links
 
-Links can be added inside paragraphs by using the `link` method.  The method accepts several optional parameters for controlling the style and behavior of the rule.
+Links can be added inside paragraphs by using the `link` method.  The method accepts several optional parameters for controlling the style and behavior of the rule.  
+
+*At present, all links are assumed to be external.*
 
     # no options
     docx.p do
@@ -354,15 +359,18 @@ Links can be added inside paragraphs by using the `link` method.  The method acc
     # options via block
     p do
       link 'Example Text', 'https://wwww.example.com' do
-        color   '0000ff'        # controls the color of the text. defaults to 1155cc.
-        line    :none           # controls the style of the underline. defaults to :single.
-        target  :external       # controls the context of the link. defaults to :external.
+        style       'my_style'      # sets the style class. defaults to nil.
+        color       '0000ff'        # sets the color of the text. defaults to 1155cc.
+        size        24              # sets the font size. units in half-points. defaults to nil.
+        bold        false           # sets whether or not the text will be bold. defaults to false.
+        italic      false           # sets whether or not the text will be italic. defaults to false.
+        underline   true            # sets whether or not the text will be underlined. defaults to true.
       end
     end
     
     # options via hash
     p do
-      link 'Example Text', 'https://wwww.example.com', color: '0000ff', line: :none, target: :external
+      link 'Example Text', 'https://wwww.example.com', color: '0000ff', underline: false
     end
 
 The `link` command with default properties will produce the following XML output:

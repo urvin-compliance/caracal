@@ -70,7 +70,9 @@ module Caracal
           def register_list_style(model)
             unless s = find_list_style(model.style_type, model.style_level)
               list_styles << model
+              s= model
             end
+            s
           end
           
           def unregister_list_style(type, level)
