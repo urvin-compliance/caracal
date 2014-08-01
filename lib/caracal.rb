@@ -22,6 +22,7 @@ require 'caracal/core/page_numbers'
 require 'caracal/core/page_settings'
 require 'caracal/core/relationships'
 require 'caracal/core/styles'
+require 'caracal/core/text'
 
 # renderers
 require 'caracal/renderers/xml_renderer'

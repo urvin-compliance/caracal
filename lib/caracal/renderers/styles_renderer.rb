@@ -95,7 +95,7 @@ module Caracal
         spacing = style.style_spacing
         
         options = nil
-        if [top, bottom, spacing].compact.size
+        if [top, bottom, spacing].compact.size > 0
           options               = {}
           options['w:lineRule'] = 'auto'
           options['w:before']   = top      unless top.nil?

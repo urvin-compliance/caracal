@@ -13,6 +13,7 @@ module Caracal
     include Caracal::Core::PageNumbers
     include Caracal::Core::Styles
     include Caracal::Core::ListStyles
+    include Caracal::Core::Text
     
     
     #-------------------------------------------------------------
@@ -21,8 +22,11 @@ module Caracal
     
     #============ GETTERS ===================================
     
-    def root
-      @root ||= ::Nokogiri::XML::Builder.new
+    # This method returns an array of models which constitute the 
+    # set of instructions for producing the document content.
+    #
+    def contents
+      @contents ||= []
     end
     
     
