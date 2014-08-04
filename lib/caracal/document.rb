@@ -98,7 +98,7 @@ module Caracal
         render_settings(zip)
         render_styles(zip)
         render_document(zip)
-        render_relationships(zip)   # do this last: document renderer registers relationships
+        render_relationships(zip)   # do this last: DocumentRenderer registers relationships
       end
     end
     
