@@ -15,10 +15,10 @@ module Caracal
           #============== PARAGRAPHS ==========================
           
           def p(*text, **options, &block)
+            text.flatten!            
             options.merge!( { content: text[0] })  unless text[0].nil?
             
             model = Caracal::Core::Models::ParagraphModel.new(options, &block)
-            
             if model.valid?
               contents << model
             else
@@ -30,11 +30,11 @@ module Caracal
           #============== HEADINGS ============================
           
           # All heading methods simply delegate to the paragraph
-          # method with an explicitly set style class.
+          # model with an explicitly set style class.
           #
           [:h1, :h2, :h3, :h4, :h5, :h6].each do |cmd|
             define_method "#{ cmd }" do |*text, **options, &block|
-              options.merge!({ class: style_id_for_header(cmd) })
+              options.merge!({ style: style_id_for_header(cmd) })
               p(text, options, &block)
             end
           end

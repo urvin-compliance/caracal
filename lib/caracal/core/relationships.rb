@@ -33,10 +33,11 @@ module Caracal
             model = Caracal::Core::Models::RelationshipModel.new(opts, &block)
             
             if model.valid?
-              register_relationship(model)
+              rel = register_relationship(model)
             else
               raise Caracal::Errors::InvalidFontError, 'relationship must specify the :target and :type attribute.'
             end
+            rel
           end
           
           
