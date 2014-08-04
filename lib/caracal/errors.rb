@@ -10,6 +10,11 @@ module Caracal
     #
     InvalidLinkError = Class.new(StandardError)
     
+    # This error is raised whenever a model is created with 
+    # invalid options.
+    #
+    InvalidModelError = Class.new(StandardError)
+    
     # This error is raised whenever a page number method is called with 
     # an invalid argument value.
     #

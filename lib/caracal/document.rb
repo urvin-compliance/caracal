@@ -6,13 +6,17 @@ module Caracal
     #-------------------------------------------------------------
     
     # mixins (order is important)
-    include Caracal::Core::Relationships
     include Caracal::Core::FileName
+    
+    include Caracal::Core::Relationships
     include Caracal::Core::Fonts
     include Caracal::Core::PageSettings
     include Caracal::Core::PageNumbers
     include Caracal::Core::Styles
     include Caracal::Core::ListStyles
+    
+    include Caracal::Core::Breaks
+    include Caracal::Core::Rules
     include Caracal::Core::Text
     
     

@@ -81,6 +81,17 @@ module Caracal
       
       #============= MODEL RENDERERS ===========================
       
+      def render_linebreak(xml, model)
+        xml.send 'w:p', paragraph_options do
+          xml.send 'w:pPr' do
+            xml.send 'w:contextualSpacing', { 'w:val' => '0' }
+          end
+          xml.send 'w:r', run_options do
+            xml.send 'w:rtl', { 'w:val' => '0' }
+          end
+        end
+      end
+      
       def render_link(xml, model)
         rel = document.relationship target: model.link_href, type: :link
         
@@ -88,6 +99,14 @@ module Caracal
           xml.send 'w:r', run_options do
             render_run_attributes(xml, model)
             xml.send 'w:t', { 'xml:space' => 'preserve' }, model.link_content
+          end
+        end
+      end
+      
+      def render_pagebreak(xml, model)
+        xml.send 'w:p', paragraph_options do
+          xml.send 'w:r', run_options do
+            xml.send 'w:br', { 'w:type' => 'page' }
           end
         end
       end
@@ -106,6 +125,18 @@ module Caracal
             send(method, xml, run)
           end
         end 
+      end
+      
+      def render_rule(xml, model)
+        options = { 'w:color' => model.rule_color, 'w:sz' => model.rule_size, 'w:val' => model.rule_line, 'w:space' => model.rule_spacing } 
+          
+        xml.send 'w:p', paragraph_options do
+          xml.send 'w:pPr' do
+            xml.send 'w:pBdr' do
+              xml.send 'w:top', options
+            end
+          end
+        end
       end
       
       def render_text(xml, model)

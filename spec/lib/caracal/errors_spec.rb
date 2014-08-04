@@ -5,6 +5,7 @@ describe Caracal::Errors do
   # existence checks
   it { expect(Caracal::Errors::InvalidFontError).not_to be_nil }
   it { expect(Caracal::Errors::InvalidLinkError).not_to be_nil }
+  it { expect(Caracal::Errors::InvalidModelError).not_to be_nil }
   it { expect(Caracal::Errors::InvalidPageNumberError).not_to be_nil }
   it { expect(Caracal::Errors::InvalidPageSettingError).not_to be_nil }
   it { expect(Caracal::Errors::InvalidParagraphError).not_to be_nil }
