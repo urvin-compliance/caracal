@@ -37,6 +37,21 @@ describe Caracal::Core::Models::ParagraphModel do
   
   describe 'public method tests' do
     
+    #=============== GETTERS ==========================
+    
+    # .runs
+    describe '.runs' do
+      it { expect(subject.runs).to be_a(Array) }
+    end
+    
+    # .run_attributes
+    describe '.run_attributes' do
+      let(:expected) { { color: '666666', size: 20, bold: false, italic: false, underline: true } }
+      
+      it { expect(subject.run_attributes).to eq expected }
+    end
+    
+    
     #=============== SETTERS ==========================
     
     # booleans

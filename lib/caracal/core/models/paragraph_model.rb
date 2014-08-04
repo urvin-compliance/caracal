@@ -46,6 +46,17 @@ module Caracal
           @runs ||= []
         end
         
+        # .run_attributes
+        def run_attributes
+          {
+            color:      paragraph_color,
+            size:       paragraph_size,
+            bold:       paragraph_bold,
+            italic:     paragraph_italic,
+            underline:  paragraph_underline,
+          }
+        end
+        
         
         #=============== SETTERS ==============================
         

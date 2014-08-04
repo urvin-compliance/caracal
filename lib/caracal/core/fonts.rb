@@ -51,11 +51,9 @@ module Caracal
           #============== REGISTRATION ========================
           
           def register_font(model)
-            unless f = find_font(model.font_name)
-              fonts << model
-              f = model
-            end
-            f
+            unregister_font(model.font_name)
+            fonts << model
+            model
           end
           
           def unregister_font(name)

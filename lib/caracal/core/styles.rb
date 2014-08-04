@@ -58,11 +58,9 @@ module Caracal
           #============== REGISTRATION ========================
           
           def register_style(model)
-            unless s = find_style(model.style_id)
-              styles << model
-              s = model
-            end
-            s
+            unregister_style(model.style_id)
+            styles << model
+            model
           end
           
           def unregister_style(id)

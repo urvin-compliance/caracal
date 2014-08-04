@@ -162,6 +162,7 @@ module Caracal
     def render_relationships(zip)
       content = ::Caracal::Renderers::RelationshipsRenderer.render(self)
       
+      zip.put_next_entry('_rels/')
       zip.put_next_entry('word/_rels/document.xml.rels')
       zip.write(content)
     end

@@ -13,9 +13,8 @@ module Caracal
         builder = ::Nokogiri::XML::Builder.with(declaration_xml) do |xml|
           xml.send 'w:styles', root_options do
             
-            #============ PARAGRAPH STYLES ================================
+            #============ DEFAULT STYLES ================================
             
-            # default style
             unless s = document.styles.find { |s| s.style_default }
               raise Caracal::Errors::NoDefaultStyleError 'Document must declare a default paragraph style.'
             end
@@ -47,14 +46,26 @@ module Caracal
             xml.send 'w:style', { 'w:styleId' => s.style_id, 'w:type' => 'paragraph', 'w:default' => '1' } do
               xml.send 'w:name', { 'w:val' => s.style_name }
             end
+            xml.send 'w:style', { 'w:styleId' => 'TableNormal', 'w:type' => 'table', 'w:default' => '1' } do
+              xml.send  'w:name', { 'w:val' => 'Table Normal'}
+            end
             default_id = s.style_id
             
-            # other styles
+            
+            #============ PARAGRAPH STYLES ================================
+            
             document.styles.reject { |s| s.style_id == default_id }.each do |s|
               xml.send 'w:style', { 'w:styleId' => s.style_id, 'w:type' => 'paragraph' } do
                 xml.send 'w:name',    { 'w:val' => s.style_name }
                 xml.send 'w:basedOn', { 'w:val' => s.style_base }
                 xml.send 'w:next',    { 'w:val' => s.style_next }
+                xml.send 'w:pPr' do
+                  xml.send 'w:keepNext',          { 'w:val' => '1' }
+                  xml.send 'w:keepLines',         { 'w:val' => '1' }
+                  xml.send 'w:spacing',           spacing_options(s)                              unless spacing_options(s).nil?
+                  xml.send 'w:contextualSpacing', { 'w:val' => '1' }
+                  xml.send 'w:jc',                { 'w:val' => s.style_align.to_s }               unless s.style_align.nil?
+                end
                 xml.send 'w:rPr' do
                   xml.send 'w:rFonts',    font_options(s)                                         unless s.style_font.nil?
                   xml.send 'w:b',         { 'w:val' => (s.style_bold ? '1' : '0') }               unless s.style_bold.nil?
@@ -63,15 +74,12 @@ module Caracal
                   xml.send 'w:sz',        { 'w:val' => s.style_size }                             unless s.style_size.nil?
                   xml.send 'w:u',         { 'w:val' => (s.style_underline ? 'single' : 'none') }  unless s.style_underline.nil?
                 end
-                xml.send 'w:pPr' do
-                  xml.send 'w:contextualSpacing', { 'w:val' => '1' }
-                  xml.send 'w:keepNext',     { 'w:val' => '1' }
-                  xml.send 'w:keepLines',    { 'w:val' => '1' }
-                  xml.send 'w:jc',           { 'w:val' => s.style_align.to_s }                    unless s.style_align.nil?
-                  xml.send 'w:spacing',      spacing_options(s)                                   unless spacing_options(s).nil?
-                end
               end
             end
+            
+            #============ TABLE STYLES ================================
+            
+          
           end
         end
         builder.to_xml(save_options)

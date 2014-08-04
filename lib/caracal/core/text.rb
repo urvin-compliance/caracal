@@ -35,7 +35,7 @@ module Caracal
           [:h1, :h2, :h3, :h4, :h5, :h6].each do |cmd|
             define_method "#{ cmd }" do |*text, **options, &block|
               options.merge!({ class: style_id_for_header(cmd) })
-              p(*text, **options, &block)
+              p(text, options, &block)
             end
           end
           

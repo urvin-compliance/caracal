@@ -39,6 +39,16 @@ describe Caracal::Core::Models::TextModel do
   
   describe 'public method tests' do
     
+    #=============== GETTERS ==========================
+    
+    # .run_attributes
+    describe '.run_attributes' do
+      let(:expected) { { style: 'Fancy', color: '666666', size: 20, bold: false, italic: false, underline: true } }
+      
+      it { expect(subject.run_attributes).to eq expected }
+    end
+    
+    
     #=============== SETTERS ==========================
     
     # booleans

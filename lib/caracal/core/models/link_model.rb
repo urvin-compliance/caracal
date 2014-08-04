@@ -38,6 +38,21 @@ module Caracal
         # Public Instance Methods
         #-------------------------------------------------------------
     
+        #=============== GETTERS ==============================
+        
+        # .run_attributes
+        def run_attributes
+          {
+            style:      link_style,
+            color:      link_color,
+            size:       link_size,
+            bold:       link_bold,
+            italic:     link_italic,
+            underline:  link_underline,
+          }
+        end
+        
+        
         #=============== SETTERS ==============================
         
         # booleans
