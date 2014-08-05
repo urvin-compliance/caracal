@@ -7,9 +7,10 @@ require 'zip'
 require 'caracal/errors'
 require 'caracal/version'
 
-# core
+# models
 require 'caracal/core/models/null_model'
 require 'caracal/core/models/font_model'
+require 'caracal/core/models/image_model'
 require 'caracal/core/models/line_break_model'
 require 'caracal/core/models/link_model'
 require 'caracal/core/models/list_style_model'
@@ -22,6 +23,8 @@ require 'caracal/core/models/rule_model'
 require 'caracal/core/models/relationship_model'
 require 'caracal/core/models/style_model'
 require 'caracal/core/models/text_model'
+
+# interfaces
 require 'caracal/core/breaks'
 require 'caracal/core/file_name'
 require 'caracal/core/fonts'

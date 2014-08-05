@@ -44,8 +44,8 @@ For each Caracal request, the following document structure will be created and z
 
 The following provides a brief description for each component of the final document:
 
-**_rels/**  
-Not populated. Required to comply with OpenXML schema.
+**_rels/.rels**  
+Defines an internal identifier and type for global content items. *This file is generated automatically by the library based on other user directives.*
 
 **docProps/app.xml**  
 Specifies the name of the application that generated the document. *This file is generated automatically by the library based on other user directives.*
@@ -394,14 +394,15 @@ The `link` command with default properties will produce the following XML output
 
 Images can be added by using the `img` method.  The method accepts several optional parameters for controlling the style and placement of the asset.
   
-    # no options
-    docx.img image_url('example.png)
-    
     # options via block
     docx.img image_url('example.png') do
       width   396         # sets the image width. units specified in pixels.
       height  216         # sets the image height. units specified in pixels.
-      align   right       # controls the justification of the image. default is :left.
+      align   :right      # controls the justification of the image. default is :left.
+      top     10          # sets the top margin. units specified in pixels.
+      bottom  10          # sets the bottom margin. units specified in pixels.
+      left    10          # sets the left margin. units specified in pixels.
+      right   10          # sets the right margin. units specified in pixels.
     end
     
     # options via hash
