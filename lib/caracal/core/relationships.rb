@@ -9,6 +9,13 @@ module Caracal
         base.class_eval do
           
           #-------------------------------------------------------------
+          # Configuration
+          #-------------------------------------------------------------
+          
+          attr_accessor :relationship_counter
+          
+          
+          #-------------------------------------------------------------
           # Class Methods
           #-------------------------------------------------------------
           
@@ -29,13 +36,15 @@ module Caracal
           
           #============== ATTRIBUTES ==========================
           
-          def relationship(opts, &block)
-            model = Caracal::Core::Models::RelationshipModel.new(opts, &block)
-            
+          def relationship(**options, &block)
+            options.merge!({ id: relationship_counter.to_i })
+
+            model = Caracal::Core::Models::RelationshipModel.new(options, &block)
             if model.valid?
+              relationship_counter = relationship_counter.to_i + 1
               rel = register_relationship(model)
             else
-              raise Caracal::Errors::InvalidFontError, 'relationship must specify the :target and :type attribute.'
+              raise Caracal::Errors::InvalidFontError, 'relationship must specify the :id, :target, and :type attributes.'
             end
             rel
           end

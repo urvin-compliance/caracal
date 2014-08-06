@@ -1,10 +1,13 @@
 require 'spec_helper'
 
 describe Caracal::Core::Models::RelationshipModel do
-  let(:target) { 'footer.xml' }
-  let(:type)   { :footer }
-  
-  subject { described_class.new({ target: target, type: type }) }
+  subject do
+    described_class.new do
+      id      3
+      target  'footer.xml'
+      type    :footer
+    end
+  end
   
   
   #-------------------------------------------------------------
@@ -24,7 +27,7 @@ describe Caracal::Core::Models::RelationshipModel do
     
     # accessors
     describe 'accessors' do
-      it { expect(subject.relationship_id).to be_a(Integer) }  # number indeterminate due to randomization
+      it { expect(subject.relationship_id).to eq 3 }
       it { expect(subject.relationship_type).to eq :footer }
       it { expect(subject.relationship_target).to eq 'footer.xml' }
       it { expect(subject.relationship_key).to eq 'footer.xml' }
@@ -40,6 +43,13 @@ describe Caracal::Core::Models::RelationshipModel do
   describe 'public method tests' do
     
     #=================== ATTRIBUTES ==========================
+    
+    # .id
+    describe '.id' do
+      before { subject.id(3) }
+      
+      it { expect(subject.relationship_id).to eq 3 }
+    end
     
     # .target
     describe '.target' do
@@ -126,7 +136,7 @@ describe Caracal::Core::Models::RelationshipModel do
       describe 'when target and type provided' do
         it { expect(subject.valid?).to eq true }
       end
-      [:target, :type].each do |prop|
+      [:id, :target, :type].each do |prop|
         describe "when #{ prop } nil" do
           before do
             allow(subject).to receive("relationship_#{ prop }").and_return(nil)

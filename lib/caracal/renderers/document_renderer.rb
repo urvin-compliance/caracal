@@ -93,7 +93,7 @@ module Caracal
       end
       
       def render_link(xml, model)
-        rel = document.relationship target: model.link_href, type: :link
+        rel = document.relationship({ target: model.link_href, type: :link })
         
         xml.send 'w:hyperlink', { 'r:id' => rel.formatted_id } do
           xml.send 'w:r', run_options do

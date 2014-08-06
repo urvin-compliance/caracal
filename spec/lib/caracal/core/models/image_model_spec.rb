@@ -52,6 +52,20 @@ describe Caracal::Core::Models::ImageModel do
   
   describe 'public method tests' do
   
+    #=============== GETTERS ==========================
+    
+    # emu conversions
+    [:width, :height, :top, :bottom, :left, :right].each do |m|
+      describe ".formatted_#{ m }" do
+        let(:actual) { subject.send("formatted_#{ m }") }
+        
+        before { allow(subject).to receive("image_#{ m }").and_return(9) }
+        
+        it { expect(actual).to eq 114300 }
+      end
+    end
+    
+    
     #=============== SETTERS ==========================
     
     # .url
@@ -128,6 +142,41 @@ describe Caracal::Core::Models::ImageModel do
       end
     end
   
+  end
+  
+  
+  #-------------------------------------------------------------
+  # Private Methods
+  #-------------------------------------------------------------
+  
+  describe 'private method tests' do
+  
+    # .pixels_to_emus
+    describe '.pixels_to_emus' do
+      let(:actual) { subject.send(:pixels_to_emus, value) }
+      
+      describe 'when argument is nil' do
+        let(:value) { nil }
+        
+        it { expect(actual).to eq 0 }
+      end
+      describe 'when argument is NaN' do
+        let(:value) { 'a' }
+        
+        it { expect(actual).to eq 0 }
+      end
+      describe 'when argument is rational' do
+        let(:value) { 396.1 }
+        
+        it { expect(actual).to eq 5029200 }
+      end
+      describe 'when argument is integer' do
+        let(:value) { 396 }
+        
+        it { expect(actual).to eq 5029200 }
+      end
+    end
+    
   end
   
 end

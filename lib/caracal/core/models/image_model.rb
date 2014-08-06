@@ -54,6 +54,16 @@ module Caracal
         # Public Methods
         #-------------------------------------------------------------
         
+        #=============== GETTERS ==============================
+        
+        [:width, :height, :top, :bottom, :left, :right].each do |m|
+          define_method "formatted_#{ m }" do
+            value = send("image_#{ m }")
+            pixels_to_emus(value)
+          end
+        end
+        
+        
         #=============== SETTERS ==============================
         
         # integers
@@ -83,6 +93,21 @@ module Caracal
         def valid?
           dims = [:width, :height, :top, :bottom, :left, :right].map { |m| send("image_#{ m }") }
           dims.all? { |d| d > 0 }
+        end
+        
+        
+        
+        #-------------------------------------------------------------
+        # Private Methods
+        #-------------------------------------------------------------
+        private
+      
+        def pixels_to_emus(value)
+          pixels        = value.to_i
+          inches        = pixels / 72.0
+          emus_per_inch = 914400
+        
+          emus = (inches * emus_per_inch).to_i 
         end
         
       end

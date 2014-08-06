@@ -95,7 +95,10 @@ All font sizes are measure in half points.  A font size of 24 is equivalent to 1
 Borders are measured in 1/8 points.  A border size of 4 is equivalent to 0.5pt.
 
 **Twips**  
-A twip is 1/20 of a point.  Word documents are printed at 72dpi.  1in == 72pt == 1440 twips.  In Word documents, pixels are equivalent to twips.
+A twip is 1/20 of a point.  Word documents are printed at 72dpi.  1in == 72pt == 1440 twips.
+
+**Pixels**  
+In Word documents, pixels are equivalent to points.
 
 **EMUs (English Metric Unit)**  
 EMUs are a virtual unit designed to facilitate the smooth conversion between inches, milliimeters, and pixels for images and vector graphics.  1in == 914400 EMUs == 72dpi x 100 x 254.

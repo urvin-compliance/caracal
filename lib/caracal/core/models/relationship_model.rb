@@ -11,9 +11,6 @@ module Caracal
         # Configuration
         #-------------------------------------------------------------
     
-        # class vars (counting subclasses okay)
-        @@count = 0
-        
         # constants
         TYPE_MAP = {
           font:       'http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable', 
@@ -33,9 +30,6 @@ module Caracal
         
         # initialization
         def initialize(options = {}, &block)
-          @@count += 1
-          @relationship_id = @@count
-          
           options.each do |(key, value)|
             send(key, value)
           end
@@ -50,18 +44,6 @@ module Caracal
         # Public Instance Methods
         #-------------------------------------------------------------
     
-        #=================== ATTRIBUTES ==========================
-        
-        def target(value)
-          @relationship_target = value.to_s
-          @relationship_key    = value.to_s.downcase
-        end
-        
-        def type(value)
-          @relationship_type = value.to_s.downcase.to_sym
-        end
-        
-        
         #=================== GETTERS =============================
         
         def formatted_id
@@ -70,6 +52,22 @@ module Caracal
         
         def formatted_type
           TYPE_MAP.fetch(relationship_type)
+        end
+        
+        
+        #=================== SETTERS =============================
+        
+        def id(value)
+          @relationship_id = value.to_i
+        end
+        
+        def target(value)
+          @relationship_target = value.to_s
+          @relationship_key    = value.to_s.downcase
+        end
+        
+        def type(value)
+          @relationship_type = value.to_s.downcase.to_sym
         end
         
         
@@ -98,7 +96,8 @@ module Caracal
         #=============== VALIDATION ===========================
         
         def valid?
-          (!relationship_target.nil? && !relationship_type.nil?)
+          required = [:id, :target, :type]
+          required.all? { |m| !send("relationship_#{ m }").nil? }
         end
         
       end
