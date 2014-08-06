@@ -82,6 +82,27 @@ describe Caracal::Core::Models::RelationshipModel do
       it { expect(subject.formatted_id).to eq 'rId1' }
     end
     
+    # .formatted_target
+    describe '.formatted_target' do
+      describe 'when image' do
+        before do
+          allow(subject).to receive(:relationship_id).and_return(2)
+          allow(subject).to receive(:relationship_type).and_return(:image)
+          allow(subject).to receive(:relationship_target).and_return('https://app.plia.com/images/plia-login.png')
+        end
+        
+        it { expect(subject.formatted_target).to eq 'media/image2.png' }
+      end
+      describe 'when not image' do
+        before do
+          allow(subject).to receive(:relationship_type).and_return(:footer)
+          allow(subject).to receive(:relationship_target).and_return('footer.xml')
+        end
+        
+        it { expect(subject.formatted_target).to eq 'footer.xml' }
+      end
+    end
+    
     # .formatted_type
     describe '.formatted_type' do
       it { expect(subject.formatted_type).to eq 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer' }

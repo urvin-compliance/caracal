@@ -89,7 +89,7 @@ module Caracal
     #============ RENDERING =================================
     
     # This method renders the word document instance into 
-    # a string buffer.
+    # a string buffer. Order is important!
     #
     def render
       buffer = ::Zip::OutputStream.write_buffer do |zip|
@@ -103,7 +103,8 @@ module Caracal
         render_settings(zip)
         render_styles(zip)
         render_document(zip)
-        render_relationships(zip)   # do this last: DocumentRenderer registers relationships
+        render_relationships(zip)   # Must go here: Depends on document renderer
+        render_media(zip)           # Must go here: Depends on document renderer
       end
     end
     
@@ -156,6 +157,16 @@ module Caracal
       
       zip.put_next_entry('word/footer1.xml')
       zip.write(content)
+    end
+    
+    def render_media(zip)
+      images = relationships.select { |r| r.relationship_type == :image }
+      images.each do |rel|
+        content = open(rel.relationship_target).read
+        
+        zip.put_next_entry("word/#{ rel.formatted_target }")
+        zip.write(content)
+      end
     end
     
     def render_numbering(zip)

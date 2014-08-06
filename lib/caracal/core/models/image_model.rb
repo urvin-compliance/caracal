@@ -85,7 +85,7 @@ module Caracal
           define_method "#{ m }" do |value|
             instance_variable_set("@image_#{ m }", value.to_s.to_sym)
           end
-        end
+        end        
         
         
         #=============== VALIDATION ==============================

@@ -1,5 +1,6 @@
 # external dependencies
 require 'nokogiri'
+require 'open-uri'
 require 'tilt'
 require 'zip'
 

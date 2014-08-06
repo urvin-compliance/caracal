@@ -12,7 +12,7 @@ module Caracal
           # Configuration
           #-------------------------------------------------------------
           
-          attr_accessor :relationship_counter
+          attr_reader :relationship_counter
           
           
           #-------------------------------------------------------------
@@ -21,11 +21,11 @@ module Caracal
           
           def self.default_relationships
             [
-              { target: 'fontTable.xml',  type: :font       },
-              { target: 'footer1.xml',    type: :footer     },
-              { target: 'numbering.xml',  type: :numbering  },
-              { target: 'settings.xml',   type: :setting    },
-              { target: 'styles.xml',     type: :style      }
+              { target: 'fontTable.xml',  type: :font      },
+              { target: 'footer1.xml',    type: :footer    },
+              { target: 'numbering.xml',  type: :numbering },
+              { target: 'settings.xml',   type: :setting   },
+              { target: 'styles.xml',     type: :style     }
             ]           
           end
           
@@ -37,11 +37,12 @@ module Caracal
           #============== ATTRIBUTES ==========================
           
           def relationship(**options, &block)
-            options.merge!({ id: relationship_counter.to_i })
+            id = relationship_counter.to_i + 1
+            options.merge!({ id: id })
 
             model = Caracal::Core::Models::RelationshipModel.new(options, &block)
             if model.valid?
-              relationship_counter = relationship_counter.to_i + 1
+              @relationship_counter = id
               rel = register_relationship(model)
             else
               raise Caracal::Errors::InvalidFontError, 'relationship must specify the :id, :target, and :type attributes.'
