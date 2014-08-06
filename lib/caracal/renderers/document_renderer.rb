@@ -81,6 +81,63 @@ module Caracal
       
       #============= MODEL RENDERERS ===========================
       
+      def render_image(xml, model)
+        unless ds = document.default_style
+          raise Caracal::Errors::NoDefaultStyleError 'Document must declare a default paragraph style.'
+        end
+        
+        rel      = document.relationship({ target: model.image_url, type: :image })
+        rel_id   = rel.relationship_id
+        rel_name = rel.formatted_target.split('/').last
+        
+        xml.send 'w:p', paragraph_options do
+          xml.send 'w:pPr' do
+            xml.send 'w:spacing', { 'w:lineRule' => 'auto', 'w:line' => ds.style_spacing }
+            xml.send 'w:contextualSpacing', { 'w:val' => '0' }
+            xml.send 'w:jc', { 'w:val' => model.image_align.to_s }
+            xml.send 'w:rPr'
+          end
+          xml.send 'w:r', run_options do
+            xml.send 'w:drawing' do
+              xml.send 'wp:inline', { distR: model.formatted_right, distT: model.formatted_top, distB: model.formatted_bottom, distL: model.formatted_left } do
+                xml.send 'wp:extent', { cx: model.formatted_width, cy: model.formatted_height }
+                xml.send 'wp:effectExtent', { t: 0, b: 0, r: 0, l: 0 }
+                xml.send 'wp:docPr', { id: rel_id, name: rel_name }
+                xml.send 'a:graphic' do
+                  xml.send 'a:graphicData', { uri: 'http://schemas.openxmlformats.org/drawingml/2006/picture' } do
+                    xml.send 'pic:pic' do
+                      xml.send 'pic:nvPicPr' do
+                        xml.send 'pic:cNvPr', { id: rel_id, name: rel_name }
+                        xml.send 'pic:cNvPicPr', { preferRelativeSize: 0 }
+                      end
+                      xml.send 'pic:blipFill' do
+                        xml.send 'a:blip', { 'r:embed' => rel.formatted_id }
+                        xml.send 'a:srcRect', { t: 0, b: 0, r: 0, l: 0 }
+                        xml.send 'a:stretch' do
+                          xml.send 'a:fillRect'
+                        end
+                      end
+                      xml.send 'pic:spPr' do
+                        xml.send 'a:xfrm' do
+                          xml.send 'a:ext', { cx: model.formatted_width, cy: model.formatted_height }
+                        end
+                        xml.send 'a:prstGeom', { prst: 'rect' }
+                        xml.send 'a:ln'
+                      end
+                    end
+                  end
+                end
+              end
+            end
+          end
+          xml.send 'w:r', run_options do
+            xml.send 'w:rPr' do
+              xml.send 'w:rtl', { 'w:val' => '0' }
+            end
+          end
+        end
+      end
+      
       def render_linebreak(xml, model)
         xml.send 'w:p', paragraph_options do
           xml.send 'w:pPr' do

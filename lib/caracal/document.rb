@@ -16,6 +16,7 @@ module Caracal
     include Caracal::Core::ListStyles
     
     include Caracal::Core::Breaks
+    include Caracal::Core::Images
     include Caracal::Core::Rules
     include Caracal::Core::Text
     

@@ -29,7 +29,7 @@ module Caracal
         attr_reader :relationship_key
         
         # initialization
-        def initialize(options = {}, &block)
+        def initialize(**options, &block)
           options.each do |(key, value)|
             send(key, value)
           end
@@ -48,6 +48,15 @@ module Caracal
         
         def formatted_id
           "rId#{ relationship_id }"
+        end
+        
+        def formatted_target
+          if relationship_type == :image
+            ext = relationship_target.to_s.split('.').last
+            "media/image#{ relationship_id }.#{ ext }"
+          else
+            relationship_target
+          end
         end
         
         def formatted_type

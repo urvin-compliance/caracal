@@ -27,7 +27,7 @@ module Caracal
           # This method controls whether and how page numbers are displayed
           # on the document.
           #
-          def page_numbers(show = nil, options = {}, &block)
+          def page_numbers(show = nil, **options, &block)
             options.merge!({ show: !!show })
             model = Caracal::Core::Models::PageNumberModel.new(options, &block)
             

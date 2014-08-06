@@ -33,7 +33,7 @@ module Caracal
           
           #============== ATTRIBUTES ==========================
           
-          def style(options = {}, &block)
+          def style(**options, &block)
             model = Caracal::Core::Models::StyleModel.new(options, &block)
             
             if model.valid?
@@ -48,6 +48,10 @@ module Caracal
           
           def styles
             @styles ||= []
+          end
+          
+          def default_style
+            styles.find { |s| s.style_default }
           end
           
           def find_style(id)

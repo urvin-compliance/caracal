@@ -25,7 +25,7 @@ module Caracal
         
         
         # initialization
-        def initialize(options = {}, &block)
+        def initialize(**options, &block)
           options.each do |(key, value)|
             send(key, value)
           end

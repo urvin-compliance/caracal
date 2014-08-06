@@ -48,6 +48,16 @@ describe Caracal::Core::Styles do
       it { expect(subject.styles).to be_a(Array) }
     end
     
+    # .default_style
+    describe '.default_style' do
+      before do
+        allow(s1).to receive(:style_default).and_return(true)
+        allow(subject).to receive(:styles).and_return([s1,s2])
+      end
+      
+      it { expect(subject.default_style).to eq s1 }
+    end
+    
     # .find_style
     describe '.find_style' do
       let(:actual)  { subject.find_style(key) }

@@ -20,7 +20,7 @@ module Caracal
         attr_reader :page_number_show
         
         # initialization
-        def initialize(options = {}, &block)
+        def initialize(**options, &block)
           options.each do |(key, value)|
             send(key, value)
           end

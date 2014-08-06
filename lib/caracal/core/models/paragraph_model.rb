@@ -20,7 +20,7 @@ module Caracal
         attr_reader :paragraph_underline
         
         # initialization
-        def initialize(options = {}, &block)
+        def initialize(**options, &block)
           if content = options.delete(:content)
             text content
           end

@@ -15,7 +15,7 @@ module Caracal
             
             #============ DEFAULT STYLES ================================
             
-            unless s = document.styles.find { |s| s.style_default }
+            unless s = document.default_style
               raise Caracal::Errors::NoDefaultStyleError 'Document must declare a default paragraph style.'
             end
             xml.send 'w:docDefaults' do
