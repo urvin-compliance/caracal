@@ -78,7 +78,7 @@ module Caracal
         end
       end
       
-      
+    
       #============= MODEL RENDERERS ===========================
       
       def render_image(xml, model)
@@ -88,7 +88,7 @@ module Caracal
         
         rel      = document.relationship({ target: model.image_url, type: :image })
         rel_id   = rel.relationship_id
-        rel_name = rel.formatted_target.to_s.split('/').last
+        rel_name = rel.formatted_target
         
         xml.send 'w:p', paragraph_options do
           xml.send 'w:pPr' do
@@ -108,7 +108,7 @@ module Caracal
                     xml.send 'pic:pic' do
                       xml.send 'pic:nvPicPr' do
                         xml.send 'pic:cNvPr', { id: rel_id, name: rel_name }
-                        xml.send 'pic:cNvPicPr', { preferRelativeResize: 0 }
+                        xml.send 'pic:cNvPicPr', { preferRelativeSize: 0 }
                       end
                       xml.send 'pic:blipFill' do
                         xml.send 'a:blip', { 'r:embed' => rel.formatted_id }
