@@ -109,13 +109,6 @@ describe Caracal::Core::Models::RelationshipModel do
     end
     
     
-    #=================== REGISTRATION ========================
-    
-    # pending until img command implemented
-    pending '#register to be implemented with img command'
-    pending '#unregister to be implemented with img command'
-    
-    
     #=================== STATE ===============================
     
     # .matches?

@@ -49,7 +49,7 @@ module Caracal
             if model.valid?
               register_list_style(model)
             else
-              raise Caracal::Errors::InvalidStyleError, 'list style must define a :type, :level, :format, and :value.'
+              raise Caracal::Errors::InvalidModelError, 'list style must define a :type, :level, :format, and :value.'
             end
           end
           

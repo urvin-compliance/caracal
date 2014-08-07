@@ -81,27 +81,30 @@ module Caracal
           end
         end
         
+        #=============== SUB-METHODS ===========================
+        
         # .link
-        def link(content, href, options={}, &block)
-          options.merge!({ content: content, href: href })
+        def link(*args, **options, &block)
+          options.merge!({ content: args[0] }) unless args[0].nil?
+          options.merge!({ href:    args[1] }) unless args[1].nil?
           
           model = Caracal::Core::Models::LinkModel.new(options, &block)
           if model.valid?
             runs << model
           else
-            raise Caracal::Errors::InvalidLinkError, ':link method must receive strings for the display text and the external href.'
+            raise Caracal::Errors::InvalidModelError, ':link method must receive strings for the display text and the external href.'
           end
         end
         
         # .text
-        def text(content, options={}, &block)
-          options.merge!({ content: content })
+        def text(*args, **options, &block)
+          options.merge!({ content: args[0] }) unless args[0].nil?
           
           model = Caracal::Core::Models::TextModel.new(options, &block)
           if model.valid?
             runs << model
           else
-            raise Caracal::Errors::InvalidTextError, ':text method must receive a string for the display text.'
+            raise Caracal::Errors::InvalidModelError, ':text method must receive a string for the display text.'
           end
         end
         

@@ -45,7 +45,7 @@ module Caracal
               @relationship_counter = id
               rel = register_relationship(model)
             else
-              raise Caracal::Errors::InvalidFontError, 'relationship must specify the :id, :target, and :type attributes.'
+              raise Caracal::Errors::InvalidModelError, 'relationship must specify the :id, :target, and :type attributes.'
             end
             rel
           end
@@ -66,7 +66,6 @@ module Caracal
           
           def register_relationship(model)
             unless r = find_relationship(model.relationship_target)
-              model.register
               relationships << model
               r = model
             end
@@ -75,7 +74,6 @@ module Caracal
           
           def unregister_relationship(target)
             if r = find_relationship(target)
-              r.unregister
               relationships.delete(r)
             end
           end

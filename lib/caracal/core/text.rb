@@ -22,7 +22,7 @@ module Caracal
             if model.valid?
               contents << model
             else
-              raise Caracal::Errors::InvalidParagraphError, 'Paragraphs and headings, which delegate to the :p command, require at least one text string.'
+              raise Caracal::Errors::InvalidModelError, 'Paragraphs and headings, which delegate to the :p command, require at least one text string.'
             end
           end
           

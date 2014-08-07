@@ -80,17 +80,6 @@ module Caracal
         end
         
         
-        #=================== REGISTRATION ========================
-        
-        def register
-          # add later with images
-        end
-        
-        def unregister
-          # add later with images
-        end
-        
-        
         #=================== STATE ===============================
         
         def matches?(str)

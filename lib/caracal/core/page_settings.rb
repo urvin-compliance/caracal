@@ -38,10 +38,10 @@ module Caracal
                 @page_margin_left   = model.page_margin_left
                 @page_margin_right  = model.page_margin_right
               else
-                raise Caracal::Errors::InvalidPageSetting, 'page_margins method requires margins to be smaller than the page size.'
+                raise Caracal::Errors::InvalidModelError, 'page_margins method requires margins to be smaller than the page size.'
               end
             else
-              raise Caracal::Errors::InvalidPageSetting, 'page_margins method requires non-zero :top, :bottom, :left, and :right options.'
+              raise Caracal::Errors::InvalidModelError, 'page_margins method requires non-zero :top, :bottom, :left, and :right options.'
             end
           end
           
@@ -55,7 +55,7 @@ module Caracal
               @page_width  = model.page_width
               @page_height = model.page_height
             else
-              raise Caracal::Errors::InvalidPageSetting, 'page_size method requires non-zero :width and :height options.'
+              raise Caracal::Errors::InvalidModelError, 'page_size method requires non-zero :width and :height options.'
             end
           end
           

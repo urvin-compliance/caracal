@@ -90,6 +90,9 @@ describe Caracal::Core::Models::ParagraphModel do
       it { expect(subject.paragraph_style).to eq 'Dummy' }
     end
     
+        
+    #=============== SUB-METHODS ==========================
+    
     # .link
     describe '.link' do
       let!(:length) { subject.runs.length }

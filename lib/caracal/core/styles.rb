@@ -39,7 +39,7 @@ module Caracal
             if model.valid?
               register_style(model)
             else
-              raise Caracal::Errors::InvalidStyleError, 'style must define an :id and :name.'
+              raise Caracal::Errors::InvalidModelError, 'style must define an :id and :name.'
             end
           end
           

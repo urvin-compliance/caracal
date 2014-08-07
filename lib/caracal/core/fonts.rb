@@ -32,7 +32,7 @@ module Caracal
             if model.valid?
               register_font(model)
             else
-              raise Caracal::Errors::InvalidFontError, 'font must specify the :name attribute.'
+              raise Caracal::Errors::InvalidModelError, 'font must specify the :name attribute.'
             end
           end
           
