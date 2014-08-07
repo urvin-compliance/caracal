@@ -1,3 +1,6 @@
+require 'nokogiri'
+
+
 module Caracal
   module Renderers
     class XmlRenderer

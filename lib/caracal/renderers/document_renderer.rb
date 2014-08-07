@@ -1,3 +1,9 @@
+require 'nokogiri'
+
+require 'caracal/renderers/xml_renderer'
+require 'caracal/errors'
+
+
 module Caracal
   module Renderers
     class DocumentRenderer < XmlRenderer

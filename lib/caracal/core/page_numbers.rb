@@ -1,3 +1,7 @@
+require 'caracal/core/models/page_number_model'
+require 'caracal/errors'
+
+
 module Caracal
   module Core
     

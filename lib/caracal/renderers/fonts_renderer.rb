@@ -1,3 +1,8 @@
+require 'nokogiri'
+
+require 'caracal/renderers/xml_renderer'
+
+
 module Caracal
   module Renderers
     class FontsRenderer < XmlRenderer

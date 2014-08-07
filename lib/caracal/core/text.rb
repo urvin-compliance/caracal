@@ -1,3 +1,7 @@
+require 'caracal/core/models/paragraph_model'
+require 'caracal/errors'
+
+
 module Caracal
   module Core
     

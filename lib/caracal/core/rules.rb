@@ -1,3 +1,7 @@
+require 'caracal/core/models/rule_model'
+require 'caracal/errors'
+
+
 module Caracal
   module Core
     

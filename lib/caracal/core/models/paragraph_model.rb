@@ -1,3 +1,8 @@
+require 'caracal/core/models/link_model'
+require 'caracal/core/models/text_model'
+require 'caracal/errors'
+
+
 module Caracal
   module Core
     module Models

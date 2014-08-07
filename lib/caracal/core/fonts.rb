@@ -1,3 +1,7 @@
+require 'caracal/core/models/font_model'
+require 'caracal/errors'
+
+
 module Caracal
   module Core
     

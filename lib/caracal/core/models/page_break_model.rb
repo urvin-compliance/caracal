@@ -1,3 +1,6 @@
+require 'caracal/core/models/null_model'
+
+
 module Caracal
   module Core
     module Models

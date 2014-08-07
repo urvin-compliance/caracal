@@ -1,3 +1,7 @@
+require 'caracal/core/models/image_model'
+require 'caracal/errors'
+
+
 module Caracal
   module Core
     

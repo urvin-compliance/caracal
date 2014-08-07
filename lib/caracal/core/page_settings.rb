@@ -1,3 +1,8 @@
+require 'caracal/core/models/page_margin_model'
+require 'caracal/core/models/page_size_model'
+require 'caracal/errors'
+
+
 module Caracal
   module Core
     

@@ -1,3 +1,9 @@
+require 'nokogiri'
+
+require 'caracal/core/models/list_style_model'
+require 'caracal/renderers/xml_renderer'
+
+
 module Caracal
   module Renderers
     class NumberingRenderer < XmlRenderer

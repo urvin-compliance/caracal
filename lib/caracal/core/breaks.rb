@@ -1,3 +1,7 @@
+require 'caracal/core/models/line_break_model'
+require 'caracal/core/models/page_break_model'
+
+
 module Caracal
   module Core
     
