@@ -51,7 +51,7 @@ module Caracal
         #-------------------------------------------------------------
         
         def self.formatted_type(type)
-          TYPE_MAP.fetch(type)
+          TYPE_MAP.fetch(type.to_s.to_sym)
         end
         
         
@@ -59,6 +59,13 @@ module Caracal
         # Public Instance Methods
         #-------------------------------------------------------------
     
+        #=============== GETTERS ==============================
+        
+        def formatted_type
+          self.class.formatted_type(style_type)
+        end
+        
+        
         #=============== SETTERS ==============================
         
         # integers

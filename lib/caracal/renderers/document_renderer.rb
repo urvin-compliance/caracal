@@ -166,6 +166,35 @@ module Caracal
         end
       end
       
+      def render_list(xml, model)
+        model.recursive_items.each do |item|
+          render_listitem(xml, item)
+        end
+      end
+      
+      def render_listitem(xml, model)
+        ls      = document.find_list_style(model.list_item_type, model.list_item_level)
+        hanging = ls.style_left.to_i - ls.style_line.to_i - 1
+        
+        xml.send 'w:p', paragraph_options do
+          xml.send 'w:pPr' do
+            xml.send 'w:numPr' do
+              xml.send 'w:ilvl', { 'w:val' => model.list_item_level }
+              xml.send 'w:numId', { 'w:val' => ls.formatted_type }
+            end
+            xml.send 'w:ind', { 'w:left' => ls.style_left, 'w:hanging' => hanging }
+            xml.send 'w:contextualSpacing', { 'w:val' => '1' }
+            xml.send 'w:rPr' do
+              xml.send 'w:u', { 'w:val' => 'none' }
+            end
+          end
+          model.runs.each do |run|
+            method = render_method_for_model(run)
+            send(method, xml, run)
+          end
+        end
+      end
+      
       def render_pagebreak(xml, model)
         xml.send 'w:p', paragraph_options do
           xml.send 'w:r', run_options do

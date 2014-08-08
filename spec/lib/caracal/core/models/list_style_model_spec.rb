@@ -66,6 +66,23 @@ describe Caracal::Core::Models::ListStyleModel do
   
   describe 'public method tests' do
     
+    #=============== GETTERS ==========================
+    
+    # .formatted_type
+    describe '.formatted_type' do
+      describe 'when ordered list' do
+        before { allow(subject).to receive(:style_type).and_return(:ordered) }
+        
+        it { expect(subject.formatted_type).to eq 1 }
+      end
+      describe 'when unordered list' do
+        before { allow(subject).to receive(:style_type).and_return(:unordered) }
+        
+        it { expect(subject.formatted_type).to eq 2 }
+      end
+    end
+    
+    
     #=============== SETTERS ==========================
     
     # integers
