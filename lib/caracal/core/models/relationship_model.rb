@@ -1,3 +1,6 @@
+require 'caracal/core/models/base_model'
+
+
 module Caracal
   module Core
     module Models
@@ -5,7 +8,7 @@ module Caracal
       # This class encapsulates the logic needed to store and manipulate
       # relationship data.
       #
-      class RelationshipModel
+      class RelationshipModel < BaseModel
         
         #-------------------------------------------------------------
         # Configuration
@@ -28,16 +31,6 @@ module Caracal
         attr_reader :relationship_target
         attr_reader :relationship_key
         
-        # initialization
-        def initialize(**options, &block)
-          options.each do |(key, value)|
-            send(key, value)
-          end
-          
-          if block_given?
-            (block.arity < 1) ? instance_eval(&block) : block[self]
-          end
-        end
         
         
         #-------------------------------------------------------------

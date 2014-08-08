@@ -1,3 +1,4 @@
+require 'caracal/core/models/base_model'
 require 'caracal/core/models/link_model'
 require 'caracal/core/models/text_model'
 require 'caracal/errors'
@@ -10,7 +11,7 @@ module Caracal
       # This class encapsulates the logic needed to store and manipulate
       # paragraph data.
       #
-      class ParagraphModel
+      class ParagraphModel < BaseModel
         
         #-------------------------------------------------------------
         # Configuration

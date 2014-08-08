@@ -18,7 +18,7 @@ module Caracal
       def to_xml
         builder = ::Nokogiri::XML::Builder.with(declaration_xml) do |xml|
           xml.send 'w:numbering', root_options do
-            [:ordered, :unordered].each do |type|
+            [:unordered, :ordered].each do |type|
               type_id = Caracal::Core::Models::ListStyleModel.formatted_type(type) 
               styles  = document.list_styles.select { |s| s.style_type == type }.sort_by(&:style_level)
 
@@ -39,7 +39,13 @@ module Caracal
                 end
               end
             end
+            (1..2).each do |i|
+              xml.send 'w:num', { 'w:numId' => i } do
+                xml.send 'w:abstractNumId', { 'w:val' => i }
+              end
+            end
           end
+          
         end
         builder.to_xml(save_options)
       end

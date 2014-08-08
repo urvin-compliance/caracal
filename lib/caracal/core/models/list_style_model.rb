@@ -5,7 +5,7 @@ module Caracal
       # This class encapsulates the logic needed to store and manipulate
       # list style data.
       #
-      class ListStyleModel
+      class ListStyleModel < BaseModel
         
         #-------------------------------------------------------------
         # Configuration
@@ -31,13 +31,7 @@ module Caracal
         
         # initialization
         def initialize(**options, &block)
-          options.each do |(key, value)|
-            send(key, value)
-          end
-          
-          if block_given?
-            (block.arity < 1) ? instance_eval(&block) : block[self]
-          end
+          super options, &block
           
           @style_align ||= DEFAULT_STYLE_ALIGN
           @style_left  ||= DEFAULT_STYLE_LEFT

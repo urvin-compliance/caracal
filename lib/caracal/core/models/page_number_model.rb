@@ -1,3 +1,6 @@
+require 'caracal/core/models/base_model'
+
+
 module Caracal
   module Core
     module Models
@@ -5,7 +8,7 @@ module Caracal
       # This class handles block options passed to the page_numbers
       # method.
       #
-      class PageNumberModel
+      class PageNumberModel < BaseModel
         
         #-------------------------------------------------------------
         # Configuration
@@ -21,13 +24,7 @@ module Caracal
         
         # initialization
         def initialize(**options, &block)
-          options.each do |(key, value)|
-            send(key, value)
-          end
-          
-          if block_given?
-            (block.arity < 1) ? instance_eval(&block) : block[self]
-          end
+          super options, &block
           
           @page_number_show  ||= DEFAULT_PAGE_NUMBER_SHOW
           @page_number_align ||= DEFAULT_PAGE_NUMBER_ALIGN

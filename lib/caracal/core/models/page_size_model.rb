@@ -1,3 +1,6 @@
+require 'caracal/core/models/base_model'
+
+
 module Caracal
   module Core
     module Models
@@ -5,7 +8,7 @@ module Caracal
       # This class handles block options passed to the page size
       # method.
       #
-      class PageSizeModel
+      class PageSizeModel < BaseModel
         
         #-------------------------------------------------------------
         # Configuration
@@ -21,13 +24,7 @@ module Caracal
         
         # initialization
         def initialize(**options, &block)
-          options.each do |(key, value)|
-            send(key, value)
-          end
-          
-          if block_given?
-            (block.arity < 1) ? instance_eval(&block) : block[self]
-          end
+          super options, &block
           
           @page_width  ||= DEFAULT_PAGE_WIDTH
           @page_height ||= DEFAULT_PAGE_HEIGHT
