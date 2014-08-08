@@ -36,21 +36,6 @@ module Caracal
         # Public Instance Methods
         #-------------------------------------------------------------
         
-        #=============== GETTERS ==============================
-        
-        # .run_attributes
-        def run_attributes
-          {
-            style:      text_style,
-            color:      text_color,
-            size:       text_size,
-            bold:       text_bold,
-            italic:     text_italic,
-            underline:  text_underline,
-          }
-        end
-        
-        
         #=============== SETTERS ==============================
         
         # integers
@@ -101,6 +86,16 @@ module Caracal
           a = [:type, :level]
           required = a.map { |m| send("list_item_#{ m }") }.compact.size == a.size
           required && !runs.empty?
+        end
+        
+        
+        #-------------------------------------------------------------
+        # Private Instance Methods
+        #-------------------------------------------------------------
+        private
+        
+        def option_keys
+          [:type, :level, :content, :style, :color, :size, :bold, :italic, :underline]
         end
         
       end

@@ -13,7 +13,7 @@ describe Caracal::Core::Models::LineBreakModel do
   describe 'configuration tests' do
     
     describe 'inheritance' do
-      it { expect(subject).to be_a(Caracal::Core::Models::NullModel) }
+      it { expect(subject).to be_a(Caracal::Core::Models::BaseModel) }
     end
     
   end

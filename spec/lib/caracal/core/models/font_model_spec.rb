@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 describe Caracal::Core::Models::FontModel do
-  let(:name) { 'Arial' }
-  
-  subject { described_class.new({ name: name }) }
+  subject { described_class.new({ name: 'Arial' }) }
   
   
   #-------------------------------------------------------------
@@ -26,7 +24,7 @@ describe Caracal::Core::Models::FontModel do
   
   describe 'public method tests' do
     
-    #=================== ATTRIBUTES ==========================
+    #=================== SETTERS =============================
     
     # .name
     describe '.name' do
@@ -43,7 +41,7 @@ describe Caracal::Core::Models::FontModel do
     # .matches?
     describe '.matches?' do
       describe 'when search term matches' do
-        let(:actual) { subject.matches?(name) }
+        let(:actual) { subject.matches?('Arial') }
         
         it { expect(actual).to eq true }
       end
@@ -70,6 +68,23 @@ describe Caracal::Core::Models::FontModel do
           it { expect(subject.valid?).to eq false }
         end
       end
+    end
+    
+  end
+  
+  
+  #-------------------------------------------------------------
+  # Private Methods
+  #-------------------------------------------------------------
+  
+  describe 'private method tests' do
+    
+    # .option_keys
+    describe '.option_keys' do
+      let(:actual)   { subject.send(:option_keys).sort }
+      let(:expected) { [:name].sort }
+      
+      it { expect(actual).to eq expected }
     end
     
   end

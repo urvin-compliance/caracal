@@ -1,3 +1,6 @@
+require 'caracal/core/models/base_model'
+
+
 module Caracal
   module Core
     module Models
@@ -5,7 +8,7 @@ module Caracal
       # This class handles block options passed to the page margins
       # method.
       #
-      class RuleModel
+      class RuleModel < BaseModel
         
         #-------------------------------------------------------------
         # Configuration
@@ -26,13 +29,7 @@ module Caracal
         
         # initialization
         def initialize(**options, &block)
-          options.each do |(key, value)|
-            send(key, value)
-          end
-          
-          if block_given?
-            (block.arity < 1) ? instance_eval(&block) : block[self]
-          end
+          super options, &block
           
           @rule_color   ||= DEFAULT_RULE_COLOR
           @rule_size    ||= DEFAULT_RULE_SIZE
@@ -74,6 +71,16 @@ module Caracal
         def valid?
           dims = [rule_size, rule_spacing]
           dims.all? { |d| d > 0 }
+        end
+        
+        
+        #-------------------------------------------------------------
+        # Private Instance Methods
+        #-------------------------------------------------------------
+        private
+        
+        def option_keys
+          [:color, :size, :spacing, :line]
         end
         
       end

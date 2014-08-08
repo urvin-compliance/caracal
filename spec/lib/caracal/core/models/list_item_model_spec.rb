@@ -50,13 +50,6 @@ describe Caracal::Core::Models::ListItemModel do
       it { expect(subject.runs).to be_a(Array) }
     end
     
-    # .run_attributes
-    describe '.run_attributes' do
-      let(:expected) { { color: '666666', size: 20, bold: false, italic: false, underline: true } }
-      
-      it { expect(subject.run_attributes).to eq expected }
-    end
-    
     
     #=============== SETTERS ==========================
     
@@ -175,6 +168,23 @@ describe Caracal::Core::Models::ListItemModel do
       end
     end
   
+  end
+  
+  
+  #-------------------------------------------------------------
+  # Private Methods
+  #-------------------------------------------------------------
+  
+  describe 'private method tests' do
+    
+    # .option_keys
+    describe '.option_keys' do
+      let(:actual)   { subject.send(:option_keys).sort }
+      let(:expected) { [:type, :level, :content, :style, :color, :size, :bold, :italic, :underline].sort }
+      
+      it { expect(actual).to eq expected }
+    end
+    
   end
   
 end

@@ -2,25 +2,18 @@ module Caracal
   module Core
     module Models
       
-      # This class handles block options passed to the page size
-      # method.
+      # This class encapsulates the logic needed for functions that 
+      # do not store or manipulate data.
       #
-      class PageSizeModel
+      class BaseModel
         
         #-------------------------------------------------------------
         # Configuration
         #-------------------------------------------------------------
-        
-        # constants
-        const_set(:DEFAULT_PAGE_WIDTH,  12240)  # 8.5in  in twips
-        const_set(:DEFAULT_PAGE_HEIGHT, 15840)  # 11.0in in twips
-        
-        # accessors
-        attr_reader :page_width
-        attr_reader :page_height
-        
+    
         # initialization
         def initialize(**options, &block)
+          options.keep_if { |k,v| option_keys.include? k }
           options.each do |(key, value)|
             send(key, value)
           end
@@ -28,32 +21,17 @@ module Caracal
           if block_given?
             (block.arity < 1) ? instance_eval(&block) : block[self]
           end
-          
-          @page_width  ||= DEFAULT_PAGE_WIDTH
-          @page_height ||= DEFAULT_PAGE_HEIGHT
         end
         
         
         #-------------------------------------------------------------
-        # Public Methods
+        # Public Instance Methods
         #-------------------------------------------------------------
     
-        #=============== SETTERS ==============================
-        
-        def height(value)
-          @page_height = value.to_i
-        end
-        
-        def width(value)
-          @page_width = value.to_i
-        end
-        
-        
-        #=============== VALIDATION ==============================
+        #=============== VALIDATION ===========================
         
         def valid?
-          dims = [page_width, page_height]
-          dims.all? { |d| d > 0 }
+          true
         end
         
         
@@ -63,7 +41,7 @@ module Caracal
         private
         
         def option_keys
-          [:width, :height]
+          []
         end
         
       end

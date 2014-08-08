@@ -1,4 +1,4 @@
-require 'caracal/core/models/null_model'
+require 'caracal/core/models/base_model'
 
 
 module Caracal
@@ -8,7 +8,7 @@ module Caracal
       # This class encapsulates the logic needed to store and manipulate
       # line break data.
       #
-      class LineBreakModel < NullModel; end
+      class LineBreakModel < BaseModel; end
       
     end
   end

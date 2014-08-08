@@ -152,7 +152,15 @@ describe Caracal::Core::Models::ImageModel do
   #-------------------------------------------------------------
   
   describe 'private method tests' do
-  
+    
+    # .option_keys
+    describe '.option_keys' do
+      let(:actual)   { subject.send(:option_keys).sort }
+      let(:expected) { [:url, :width, :height, :align, :top, :bottom, :left, :right].sort }
+      
+      it { expect(actual).to eq expected }
+    end
+    
     # .pixels_to_emus
     describe '.pixels_to_emus' do
       let(:actual) { subject.send(:pixels_to_emus, value) }

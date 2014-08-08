@@ -158,4 +158,21 @@ describe Caracal::Core::Models::ListModel do
   
   end
   
+  
+  #-------------------------------------------------------------
+  # Private Methods
+  #-------------------------------------------------------------
+  
+  describe 'private method tests' do
+    
+    # .option_keys
+    describe '.option_keys' do
+      let(:actual)   { subject.send(:option_keys).sort }
+      let(:expected) { [:type, :level].sort }
+      
+      it { expect(actual).to eq expected }
+    end
+    
+  end
+  
 end

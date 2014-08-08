@@ -1,3 +1,6 @@
+require 'caracal/core/models/base_model'
+
+
 module Caracal
   module Core
     module Models
@@ -5,7 +8,7 @@ module Caracal
       # This class encapsulates the logic needed to store and manipulate
       # text data.
       #
-      class TextModel
+      class TextModel < BaseModel
         
         #-------------------------------------------------------------
         # Configuration
@@ -19,18 +22,7 @@ module Caracal
         attr_reader :text_bold
         attr_reader :text_italic
         attr_reader :text_underline
-    
         
-        # initialization
-        def initialize(**options, &block)
-          options.each do |(key, value)|
-            send(key, value)
-          end
-          
-          if block_given?
-            (block.arity < 1) ? instance_eval(&block) : block[self]
-          end
-        end
         
         
         #-------------------------------------------------------------
@@ -81,6 +73,16 @@ module Caracal
         def valid?
           a = [:content]
           a.map { |m| send("text_#{ m }") }.compact.size == a.size
+        end
+        
+        
+        #-------------------------------------------------------------
+        # Private Instance Methods
+        #-------------------------------------------------------------
+        private
+        
+        def option_keys
+          [:content, :style, :color, :size, :bold, :italic, :underline]
         end
         
       end

@@ -1,3 +1,6 @@
+require 'caracal/core/models/base_model'
+
+
 module Caracal
   module Core
     module Models
@@ -5,7 +8,7 @@ module Caracal
       # This class encapsulates the logic needed to store and manipulate
       # paragraph style data.
       #
-      class StyleModel
+      class StyleModel < BaseModel
         
         #-------------------------------------------------------------
         # Configuration
@@ -26,7 +29,6 @@ module Caracal
         
         # accessors
         attr_reader :style_default
-        attr_reader :style_type
         attr_reader :style_id
         attr_reader :style_name
         attr_reader :style_color
@@ -45,13 +47,7 @@ module Caracal
         
         # initialization
         def initialize(**options, &block)
-          options.each do |(key, value)|
-            send(key, value)
-          end
-          
-          if block_given?
-            (block.arity < 1) ? instance_eval(&block) : block[self]
-          end
+          super options, &block
           
           @style_default = false
           @style_base    = DEFAULT_STYLE_BASE
@@ -119,6 +115,16 @@ module Caracal
         def valid?
           a = [:id, :name]
           a.map { |m| send("style_#{ m }") }.compact.size == a.size
+        end
+        
+        
+        #-------------------------------------------------------------
+        # Private Instance Methods
+        #-------------------------------------------------------------
+        private
+        
+        def option_keys
+          [:bold, :italic, :underline, :top, :bottom, :size, :spacing, :id, :name, :color, :font, :align]
         end
         
       end

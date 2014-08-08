@@ -1,3 +1,6 @@
+require 'caracal/core/models/base_model'
+
+
 module Caracal
   module Core
     module Models
@@ -5,25 +8,15 @@ module Caracal
       # This class encapsulates the logic needed to store and manipulate
       # font data.
       #
-      class FontModel
+      class FontModel < BaseModel
         
         #-------------------------------------------------------------
         # Configuration
         #-------------------------------------------------------------
-    
+        
         # accessors
         attr_reader :font_name
         
-        # initialization
-        def initialize(**options, &block)
-          options.each do |(key, value)|
-            send(key, value)
-          end
-          
-          if block_given?
-            (block.arity < 1) ? instance_eval(&block) : block[self]
-          end
-        end
         
         
         #-------------------------------------------------------------
@@ -32,22 +25,36 @@ module Caracal
     
         #=============== SETTERS ==============================
         
-        def name(value)
-          @font_name = value.to_s
+        # strings
+        [:name].each do |m|
+          define_method "#{ m }" do |value|
+            instance_variable_set("@font_#{ m }", value.to_s)
+          end
         end
         
         
         #=============== STATE ================================
         
         def matches?(str)
-          font_name.downcase == str.to_s.downcase
+          font_name.to_s.downcase == str.to_s.downcase
         end
         
         
         #=============== VALIDATION ===========================
         
         def valid?
-          !font_name.nil?
+          a = [:name]
+          a.map { |m| send("font_#{ m }") }.compact.size == a.size
+        end
+        
+        
+        #-------------------------------------------------------------
+        # Private Instance Methods
+        #-------------------------------------------------------------
+        private
+        
+        def option_keys
+          [:name]
         end
         
       end

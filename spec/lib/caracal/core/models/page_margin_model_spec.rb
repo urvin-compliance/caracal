@@ -91,4 +91,21 @@ describe Caracal::Core::Models::PageMarginModel do
   
   end
   
+  
+  #-------------------------------------------------------------
+  # Private Methods
+  #-------------------------------------------------------------
+  
+  describe 'private method tests' do
+    
+    # .option_keys
+    describe '.option_keys' do
+      let(:actual)   { subject.send(:option_keys).sort }
+      let(:expected) { [:top, :bottom, :left, :right].sort }
+      
+      it { expect(actual).to eq expected }
+    end
+    
+  end
+  
 end

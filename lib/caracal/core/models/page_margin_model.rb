@@ -1,3 +1,6 @@
+require 'caracal/core/models/base_model'
+
+
 module Caracal
   module Core
     module Models
@@ -5,7 +8,7 @@ module Caracal
       # This class handles block options passed to the page margins
       # method.
       #
-      class PageMarginModel
+      class PageMarginModel < BaseModel
         
         #-------------------------------------------------------------
         # Configuration
@@ -26,13 +29,7 @@ module Caracal
         
         # initialization
         def initialize(**options, &block)
-          options.each do |(key, value)|
-            send(key, value)
-          end
-          
-          if block_given?
-            (block.arity < 1) ? instance_eval(&block) : block[self]
-          end
+          super options, &block
           
           @page_margin_top    ||= DEFAULT_PAGE_MARGIN_TOP
           @page_margin_bottom ||= DEFAULT_PAGE_MARGIN_BOTTOM
@@ -69,6 +66,16 @@ module Caracal
         def valid?
           dims = [page_margin_top, page_margin_bottom, page_margin_left, page_margin_right]
           dims.all? { |d| d > 0 }
+        end
+        
+        
+        #-------------------------------------------------------------
+        # Private Instance Methods
+        #-------------------------------------------------------------
+        private
+        
+        def option_keys
+          [:top, :bottom, :left, :right]
         end
         
       end

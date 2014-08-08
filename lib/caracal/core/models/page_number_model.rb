@@ -55,6 +55,16 @@ module Caracal
           (!page_number_show || [:left, :center, :right].include?(page_number_align))
         end
         
+        
+        #-------------------------------------------------------------
+        # Private Instance Methods
+        #-------------------------------------------------------------
+        private
+        
+        def option_keys
+          [:align, :show]
+        end
+        
       end
       
     end

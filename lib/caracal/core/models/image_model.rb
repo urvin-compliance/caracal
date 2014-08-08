@@ -1,10 +1,13 @@
+require 'caracal/core/models/base_model'
+
+
 module Caracal
   module Core
     module Models
       
       # This class handles block options passed to the img method.
       #
-      class ImageModel
+      class ImageModel < BaseModel
         
         #-------------------------------------------------------------
         # Configuration
@@ -32,13 +35,7 @@ module Caracal
         
         # initialization
         def initialize(**options, &block)
-          options.each do |(key, value)|
-            send(key, value)
-          end
-          
-          if block_given?
-            (block.arity < 1) ? instance_eval(&block) : block[self]
-          end
+          super options, &block
           
           @image_width  ||= DEFAULT_IMAGE_WIDTH
           @image_height ||= DEFAULT_IMAGE_HEIGHT
@@ -101,7 +98,11 @@ module Caracal
         # Private Methods
         #-------------------------------------------------------------
         private
-      
+        
+        def option_keys
+          [:url, :width, :height, :align, :top, :bottom, :left, :right]
+        end
+        
         def pixels_to_emus(value)
           pixels        = value.to_i
           inches        = pixels / 72.0

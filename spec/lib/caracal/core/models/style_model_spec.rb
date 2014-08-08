@@ -167,4 +167,21 @@ describe Caracal::Core::Models::StyleModel do
   
   end
   
+  
+  #-------------------------------------------------------------
+  # Private Methods
+  #-------------------------------------------------------------
+  
+  describe 'private method tests' do
+    
+    # .option_keys
+    describe '.option_keys' do
+      let(:actual)   { subject.send(:option_keys).sort }
+      let(:expected) { [:bold, :italic, :underline, :top, :bottom, :size, :spacing, :id, :name, :color, :font, :align].sort }
+      
+      it { expect(actual).to eq expected }
+    end
+    
+  end
+  
 end

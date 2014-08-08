@@ -1,4 +1,4 @@
-require 'caracal/core/models/null_model'
+require 'caracal/core/models/base_model'
 
 
 module Caracal
@@ -8,7 +8,7 @@ module Caracal
       # This class encapsulates the logic needed to store and manipulate
       # page break data.
       #
-      class PageBreakModel < NullModel; end
+      class PageBreakModel < BaseModel; end
       
     end
   end

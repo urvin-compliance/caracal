@@ -104,6 +104,16 @@ module Caracal
           a.map { |m| send("style_#{ m }") }.compact.size == a.size
         end
         
+        
+        #-------------------------------------------------------------
+        # Private Instance Methods
+        #-------------------------------------------------------------
+        private
+        
+        def option_keys
+          [:type, :level, :format, :value, :align, :left, :line, :start]
+        end
+        
       end
       
     end

@@ -120,6 +120,16 @@ module Caracal
           runs.size > 0
         end
         
+        
+        #-------------------------------------------------------------
+        # Private Instance Methods
+        #-------------------------------------------------------------
+        private
+        
+        def option_keys
+          [:content, :style, :color, :size, :bold, :italic, :underline]
+        end
+        
       end
       
     end

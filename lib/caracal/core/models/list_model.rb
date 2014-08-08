@@ -1,3 +1,4 @@
+require 'caracal/core/models/base_model'
 require 'caracal/core/models/list_item_model'
 require 'caracal/errors'
 
@@ -9,7 +10,7 @@ module Caracal
       # This class encapsulates the logic needed to store and manipulate
       # list data.
       #
-      class ListModel
+      class ListModel < BaseModel
         
         #-------------------------------------------------------------
         # Configuration
@@ -26,13 +27,7 @@ module Caracal
         
         # initialization
         def initialize(**options, &block)
-          options.each do |(key, value)|
-            send(key, value)
-          end
-          
-          if block_given?
-            (block.arity < 1) ? instance_eval(&block) : block[self]
-          end
+          super options, &block
           
           @list_type  ||= :DEFAULT_LIST_TYPE
           @list_level ||= :DEFAULT_LIST_LEVEL
@@ -106,6 +101,16 @@ module Caracal
           a = [:type, :level]
           required = a.map { |m| send("list_#{ m }") }.compact.size == a.size
           required && !items.empty?
+        end
+        
+        
+        #-------------------------------------------------------------
+        # Private Instance Methods
+        #-------------------------------------------------------------
+        private
+        
+        def option_keys
+          [:type, :level]
         end
         
       end

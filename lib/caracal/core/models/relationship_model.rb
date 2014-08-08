@@ -98,6 +98,16 @@ module Caracal
           required.all? { |m| !send("relationship_#{ m }").nil? }
         end
         
+        
+        #-------------------------------------------------------------
+        # Private Instance Methods
+        #-------------------------------------------------------------
+        private
+        
+        def option_keys
+          [:id, :type, :target]
+        end
+        
       end
       
     end
