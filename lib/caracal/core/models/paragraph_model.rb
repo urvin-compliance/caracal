@@ -19,6 +19,7 @@ module Caracal
         
         # readers
         attr_reader :paragraph_style
+        attr_reader :paragraph_align
         attr_reader :paragraph_color
         attr_reader :paragraph_size
         attr_reader :paragraph_bold
@@ -31,13 +32,7 @@ module Caracal
             text content, options.dup
           end
           
-          options.each do |(key, value)|
-            send(key, value)
-          end
-          
-          if block_given?
-            (block.arity < 1) ? instance_eval(&block) : block[self]
-          end
+          super options, &block
         end
         
         
@@ -87,6 +82,14 @@ module Caracal
           end
         end
         
+        # symbols
+        [:align].each do |m|
+          define_method "#{ m }" do |value|
+            instance_variable_set("@paragraph_#{ m }", value.to_s.to_sym)
+          end
+        end
+        
+        
         #=============== SUB-METHODS ===========================
         
         # .link
@@ -128,7 +131,7 @@ module Caracal
         private
         
         def option_keys
-          [:content, :style, :color, :size, :bold, :italic, :underline]
+          [:content, :style, :align, :color, :size, :bold, :italic, :underline]
         end
         
       end

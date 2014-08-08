@@ -208,8 +208,9 @@ module Caracal
         
         xml.send 'w:p', paragraph_options do
           xml.send 'w:pPr' do
-            xml.send 'w:contextualSpacing', { 'w:val' => '0' }
             xml.send 'w:pStyle', { 'w:val' => model.paragraph_style } unless model.paragraph_style.nil?
+            xml.send 'w:contextualSpacing', { 'w:val' => '0' }
+            xml.send 'w:jc', { 'w:val' => model.paragraph_align }
             render_run_attributes(xml, model)
           end
           model.runs.each do |run|

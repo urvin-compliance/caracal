@@ -4,6 +4,7 @@ describe Caracal::Core::Models::ParagraphModel do
   subject do 
     described_class.new content: 'Lorem ipsum dolor....' do 
       style       'Fancy'
+      align       :right
       color       '666666'
       size        20
       bold        false
@@ -21,6 +22,7 @@ describe Caracal::Core::Models::ParagraphModel do
     # accessors
     describe 'accessors' do
       it { expect(subject.paragraph_style).to eq 'Fancy' }
+      it { expect(subject.paragraph_align).to eq :right }
       it { expect(subject.paragraph_color).to eq '666666' }
       it { expect(subject.paragraph_size).to eq 20 }
       it { expect(subject.paragraph_bold).to eq false }
@@ -90,6 +92,13 @@ describe Caracal::Core::Models::ParagraphModel do
       it { expect(subject.paragraph_style).to eq 'Dummy' }
     end
     
+    # symbols
+    describe '.align' do
+      before { subject.align(:center) }
+      
+      it { expect(subject.paragraph_align).to eq :center }
+    end
+    
         
     #=============== SUB-METHODS ==========================
     
@@ -143,7 +152,7 @@ describe Caracal::Core::Models::ParagraphModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:content, :style, :color, :size, :bold, :italic, :underline].sort }
+      let(:expected) { [:content, :style, :align, :color, :size, :bold, :italic, :underline].sort }
       
       it { expect(actual).to eq expected }
     end
