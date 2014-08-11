@@ -89,9 +89,9 @@ describe Caracal::Core::Models::LinkModel do
       it { expect(subject.link_content).to eq 'Something Else' }
     end
     describe '.href' do
-      before { subject.href('http://www.plia.com') }
+      before { subject.href('http://www.google.com') }
       
-      it { expect(subject.link_href).to eq 'http://www.plia.com' }
+      it { expect(subject.link_href).to eq 'http://www.google.com' }
     end
     describe '.style' do
       before { subject.style('Dummy') }

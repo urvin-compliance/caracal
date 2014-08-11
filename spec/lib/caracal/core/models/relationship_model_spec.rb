@@ -88,7 +88,7 @@ describe Caracal::Core::Models::RelationshipModel do
         before do
           allow(subject).to receive(:relationship_id).and_return(2)
           allow(subject).to receive(:relationship_type).and_return(:image)
-          allow(subject).to receive(:relationship_target).and_return('https://app.plia.com/images/plia-login.png')
+          allow(subject).to receive(:relationship_target).and_return('https://www.google.com/images/srpr/logo11w.png')
         end
         
         it { expect(subject.formatted_target).to eq 'media/image2.png' }

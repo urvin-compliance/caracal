@@ -108,7 +108,7 @@ describe Caracal::Core::Models::ListItemModel do
     describe '.link' do
       let!(:length) { subject.runs.length }
       
-      before { subject.link 'Text', 'http://www.plia.com' }
+      before { subject.link 'Text', 'http://www.google.com' }
       
       it { expect(subject.runs.size).to eq length + 1 }
     end

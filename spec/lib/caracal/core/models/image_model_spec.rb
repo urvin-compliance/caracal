@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Caracal::Core::Models::ImageModel do
   subject do 
     described_class.new do
-      url    'https://app.plia.com/images/plia-login.png'
+      url    'https://www.google.com/images/srpr/logo11w.png'
       width   250
       height  200
       align   :right
@@ -35,7 +35,7 @@ describe Caracal::Core::Models::ImageModel do
     
     # accessors
     describe 'accessors' do
-      it { expect(subject.image_url).to    eq 'https://app.plia.com/images/plia-login.png' }
+      it { expect(subject.image_url).to    eq 'https://www.google.com/images/srpr/logo11w.png' }
       it { expect(subject.image_width).to  eq 250 }
       it { expect(subject.image_height).to eq 200 }
       it { expect(subject.image_align).to  eq :right }
@@ -72,9 +72,9 @@ describe Caracal::Core::Models::ImageModel do
     
     # .url
     describe '.color' do
-      before { subject.url('https://app.plia.com/images/dummy.png') }
+      before { subject.url('https://www.google.com/images/dummy.png') }
       
-      it { expect(subject.image_url).to eq 'https://app.plia.com/images/dummy.png' }
+      it { expect(subject.image_url).to eq 'https://www.google.com/images/dummy.png' }
     end
     
     # .width
