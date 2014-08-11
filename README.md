@@ -907,7 +907,7 @@ The `br` command will produce the folowing XML:
 
 ## Template Rendering
 
-Caracal includes [Tilt](https://github.com/rtomayko/tilt) integration to facilitate its inclusion in other frameworks.  Rails integration can be added via the [Caracal-Rails](https://github.com/ibpinc/caracal-rails) gem.
+Caracal includes [Tilt](https://github.com/rtomayko/tilt) integration to facilitate its inclusion in other frameworks.  Rails integration can be added via the [Caracal-Rails](https://github.com/trade-informatics/caracal-rails) gem.
 
 
 ## Defaults
@@ -917,7 +917,7 @@ Caracal includes [Tilt](https://github.com/rtomayko/tilt) integration to facilit
 
 ## Contributing
 
-1. Fork it ( https://github.com/ibpinc/caracal/fork )
+1. Fork it ( https://github.com/trade-informatics/caracal/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
@@ -936,6 +936,6 @@ A tip of the hat to the wonderful PDF generation library [Prawn](https://github.
 
 ## License
 
-Copyright (c) 2014 Plia Systems, Inc
+Copyright (c) 2014 Trade Informatics, Inc
 
-[MIT License](https://github.com/ibpinc/caracal/blob/master/LICENSE.txt)
+[MIT License](https://github.com/trade-informatics/caracal/blob/master/LICENSE.txt)

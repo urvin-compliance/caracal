@@ -1,4 +1,4 @@
-Copyright (c) 2014 Plia Systems, Inc.
+Copyright (c) 2014 Trade Informatics, Inc.
 
 MIT License
 
