@@ -85,6 +85,22 @@ module Caracal
             
             #============ TABLE STYLES ================================
             
+            xml.send 'w:style', { 'w:styleId' => 'DefaultTable', 'w:type' => 'table' } do
+              xml.send 'w:basedOn', { 'w:val' => 'TableNormal' }
+              xml.send 'w:tblPr' do
+                xml.send 'w:tblStyleRowBandSize', { 'w:val' => '1' }
+                xml.send 'w:tblStyleColBandSize', { 'w:val' => '1' }
+              end
+              %w(band1Horz band1Vert band2Horz band2Vert).each do |type|
+                xml.send 'w:tblStylePr', { 'w:type' => type }
+              end
+              %w(firstCol firstRow lastCol lastRow).each do |type|
+                xml.send 'w:tblStylePr', { 'w:type' => type }
+              end
+              %w(neCell nwCell seCell swCell).each do |type|
+                xml.send 'w:tblStylePr', { 'w:type' => type }
+              end
+            end
           
           end
         end
