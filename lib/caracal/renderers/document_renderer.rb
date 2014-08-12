@@ -70,8 +70,8 @@ module Caracal
         if model.respond_to? :run_attributes
           attrs = model.run_attributes.delete_if { |k, v| v.nil? } 
         
-          unless attrs.empty?
-            xml.send 'w:rPr' do
+          xml.send 'w:rPr' do
+            unless attrs.empty?
               xml.send 'w:rStyle', { 'w:val' => attrs[:style] }                            unless attrs[:style].nil?
               xml.send 'w:color',  { 'w:val' => attrs[:color] }                            unless attrs[:color].nil?
               xml.send 'w:sz',     { 'w:val' => attrs[:size]  }                            unless attrs[:size].nil?
@@ -208,9 +208,9 @@ module Caracal
         
         xml.send 'w:p', paragraph_options do
           xml.send 'w:pPr' do
-            xml.send 'w:pStyle', { 'w:val' => model.paragraph_style } unless model.paragraph_style.nil?
+            xml.send 'w:pStyle',            { 'w:val' => model.paragraph_style }  unless model.paragraph_style.nil?
             xml.send 'w:contextualSpacing', { 'w:val' => '0' }
-            xml.send 'w:jc', { 'w:val' => model.paragraph_align }
+            xml.send 'w:jc',                { 'w:val' => model.paragraph_align }  unless model.paragraph_align.nil?
             render_run_attributes(xml, model)
           end
           model.runs.each do |run|
