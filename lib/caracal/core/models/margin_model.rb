@@ -56,7 +56,7 @@ module Caracal
         
         def valid?
           dims = [:bottom, :left, :right, :top]
-          dims.map { |d| send("margin_#{ d }" }.all? { |d| d > 0 }
+          dims.map { |d| send("margin_#{ d }") }.all? { |d| d > 0 }
         end
         
         

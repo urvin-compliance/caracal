@@ -3,11 +3,13 @@ require 'spec_helper'
 describe Caracal::Core::Models::TableModel do
   subject do 
     described_class.new do
-      data          [ ['top left', 'top right'], ['bottom left', 'bottom right'] ]
-      align         :right
-      border_color  '666666'
-      border_size   8
-      width         8000
+      data            [ ['top left', 'top right'], ['bottom left', 'bottom right'] ]
+      align           :right
+      border_color    '666666'
+      border_line     :double
+      border_size     8
+      border_spacing  4
+      width           8000
     end
   end
   
@@ -19,16 +21,20 @@ describe Caracal::Core::Models::TableModel do
     
     # constants
     describe 'constants' do
-      it { expect(described_class::DEFAULT_TABLE_ALIGN).to        eq :left }
-      it { expect(described_class::DEFAULT_TABLE_BORDER_COLOR).to eq '333333' }
-      it { expect(described_class::DEFAULT_TABLE_BORDER_SIZE).to  eq 4 }
+      it { expect(described_class::DEFAULT_TABLE_ALIGN).to          eq :left }
+      it { expect(described_class::DEFAULT_TABLE_BORDER_COLOR).to   eq 'auto' }
+      it { expect(described_class::DEFAULT_TABLE_BORDER_LINE).to    eq :single }
+      it { expect(described_class::DEFAULT_TABLE_BORDER_SIZE).to    eq 0 }
+      it { expect(described_class::DEFAULT_TABLE_BORDER_SPACING).to eq 0 }
     end
     
     # accessors
     describe 'accessors' do
       it { expect(subject.table_align).to          eq :right }
       it { expect(subject.table_border_color).to   eq '666666' }
+      it { expect(subject.table_border_line).to    eq :double }
       it { expect(subject.table_border_size).to    eq 8 }
+      it { expect(subject.table_border_spacing).to eq 4 }
       it { expect(subject.table_width).to          eq 8000 }
     end
     
@@ -43,8 +49,8 @@ describe Caracal::Core::Models::TableModel do
   
     #=============== GETTERS ==========================
     
-    describe '.table_data' do
-      let(:data) { subject.table_data }
+    describe '.cells' do
+      let(:data) { subject.cells }
       
       it { expect(data[0]).to    be_a(Array) }
       it { expect(data[0][0]).to be_a(String) }   # TODO: Switch when data nodes modeled properly
@@ -92,7 +98,7 @@ describe Caracal::Core::Models::TableModel do
       end
       describe 'when no data provided' do
         before do
-          allow(subject).to receive(:table_data).and_return([[]])
+          allow(subject).to receive(:cells).and_return([[]])
         end
         
         it { expect(subject.valid?).to eq false }
@@ -110,8 +116,11 @@ describe Caracal::Core::Models::TableModel do
     
     # .option_keys
     describe '.option_keys' do
-      let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:align, :border_color, :border_size, :data, :width].sort }
+      let(:actual)     { subject.send(:option_keys).sort }
+      let(:expected1)  { [:data, :align, :width] }
+      let(:expected2)  { [:border_color, :border_line, :border_size, :border_spacing] }
+      let(:expected3)  { [:border_top, :border_bottom, :border_left, :border_right, :border_horizontal, :border_vertical] }
+      let(:expected)   { (expected1 + expected2 + expected3).sort }
       
       it { expect(actual).to eq expected }
     end

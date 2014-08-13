@@ -18,10 +18,10 @@ describe Caracal::Core::Models::MarginModel do
     
     # constants
     describe 'constants' do
-      it { expect(described_class::DEFAULT_MARGIN_TOP).to eq 1440 }
-      it { expect(described_class::DEFAULT_MARGIN_BOTTOM).to eq 1440 }
-      it { expect(described_class::DEFAULT_MARGIN_LEFT).to eq 1440 }
-      it { expect(described_class::DEFAULT_MARGIN_RIGHT).to eq 1440 }
+      it { expect(described_class::DEFAULT_MARGIN_TOP).to     eq 0 }
+      it { expect(described_class::DEFAULT_MARGIN_BOTTOM).to  eq 0 }
+      it { expect(described_class::DEFAULT_MARGIN_LEFT).to    eq 0 }
+      it { expect(described_class::DEFAULT_MARGIN_RIGHT).to   eq 0 }
     end
     
     # accessors

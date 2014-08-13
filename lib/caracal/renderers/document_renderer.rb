@@ -251,7 +251,7 @@ module Caracal
             xml.send 'w:tblStyle',   { 'w:val' => 'DefaultTable' }
             xml.send 'w:bidiVisual', { 'w:val' => '0' }
             xml.send 'w:tblW',       { 'w:w'   => model.table_width.to_f, 'w:type' => 'dxa' }
-            xml.send 'w:tblInd',     { 'w:w'   => '0', 'w:type' => 'dxa' }
+            xml.send 'w:tblInd',     { 'w:w'   => '0.0', 'w:type' => 'dxa' }
             xml.send 'w:jc',         { 'w:val' => model.table_align }
             xml.send 'w:tblBorders' do
               %w(top left bottom right insideH insideV).each do |m|

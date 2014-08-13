@@ -102,7 +102,7 @@ module Caracal
       file_name(name)
       
       page_size 
-      page_margins 
+      page_margins top: 1440, bottom: 1440, left: 1440, right: 1440
       page_numbers
       
       [:relationship, :font, :style, :list_style].each do |method|
