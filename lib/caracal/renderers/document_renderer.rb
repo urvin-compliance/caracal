@@ -78,8 +78,8 @@ module Caracal
               xml.send 'w:b',      { 'w:val' => (attrs[:bold] ? '1' : '0') }               unless attrs[:bold].nil?
               xml.send 'w:i',      { 'w:val' => (attrs[:italic] ? '1' : '0') }             unless attrs[:italic].nil?
               xml.send 'w:u',      { 'w:val' => (attrs[:underline] ? 'single' : 'none') }  unless attrs[:underline].nil?
-              xml.send 'w:rtl',    { 'w:val' => '0' }
             end
+            xml.send 'w:rtl',    { 'w:val' => '0' }
           end
         end
       end
@@ -238,6 +238,72 @@ module Caracal
           xml.send 'w:t', { 'xml:space' => 'preserve' }, model.text_content
         end
       end
+      
+      def render_table(xml, model)
+        unless model.table_width
+          model.width (document.page_width - document.page_margin_left - document.page_margin_right)
+        end
+        col_size  = model.table_data[0].size
+        col_width = model.table_width / col_size
+        
+        xml.send 'w:tbl' do
+          xml.send 'w:tblPr' do
+            xml.send 'w:tblStyle',   { 'w:val' => 'DefaultTable' }
+            xml.send 'w:bidiVisual', { 'w:val' => '0' }
+            xml.send 'w:tblW',       { 'w:w'   => model.table_width.to_f, 'w:type' => 'dxa' }
+            xml.send 'w:jc',         { 'w:val' => model.table_align }
+            xml.send 'w:tblBorders' do
+              %w(top left bottom right insideH insideV).each do |m|
+                xml.send "w:#{ m }", { 'w:color' => model.table_border_color, 'w:space' => '0', 'w:val' => 'single', 'w:size' => model.table_border_size }
+              end
+            end
+            xml.send 'w:tblLayout', { 'w:type' => 'fixed' }
+            xml.send 'w:tblLook',   { 'w:val'  => '0600'  }
+          end
+          xml.send 'w:tblGrid' do
+            col_size.times do
+              xml.send 'w:gridCol', { 'w:w' => col_width }
+            end
+            xml.send 'w:tblGridChange', { 'w:id' => '0' } do
+              xml.send 'w:tblGrid' do
+                col_size.times do
+                  xml.send 'w:gridCol', { 'w:w' => col_width }
+                end
+              end
+            end
+          end
+          model.table_data.each do |row|
+            xml.send 'w:tr' do
+              row.each do |cell|
+                xml.send 'w:tc' do
+                  xml.send 'tcPr' do
+                    xml.send 'w:shd', { 'w:fill' => 'ffffff' }
+                    xml.send 'w:tcMar' do
+                      %w(top left bottom right).each do |d|
+                        xml.send "w:#{ d }", { 'w:w' => '100.0', 'w:type' => 'dxa' }
+                      end
+                    end
+                  end
+                  xml.send 'w:p', paragraph_options do
+                    xml.send 'w:pPr' do
+                      xml.send 'w:spacing', { 'w:lineRule' => 'auto', 'w:after' => '0', 'w:line' => '240', 'w:before' => '0' }
+                      xml.send 'w:ind',     { 'w:left' => '0', 'w:firstLine' => '0' }
+                      xml.send 'w:contextualSpacing', { 'w:val' => '0' }
+                    end
+                    xml.send 'w:r', run_options do
+                      xml.send 'w:rPr' do
+                        xml.send 'w:rtl', { 'w:val' => '0' }
+                      end
+                      xml.send 'w:t', { 'xml:space' => 'preserve' }, cell
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+      end      
+      
       
       
       #============= OPTIONS ===================================
