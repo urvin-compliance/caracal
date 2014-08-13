@@ -23,7 +23,7 @@ module Caracal
             if model.valid?
               contents << model
             else
-              raise Caracal::Errors::InvalidModelError, 'Tables must be provided at least one cell.'
+              raise Caracal::Errors::InvalidModelError, 'Table must be provided data for at least one cell.'
             end
           end
           

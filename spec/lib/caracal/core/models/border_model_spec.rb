@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe Caracal::Core::Models::PageMarginModel do
+describe Caracal::Core::Models::BorderModel do
   subject do 
     described_class.new do
-      top     1441
-      bottom  1442
-      left    1443
-      right   1444
+      color   '666666'
+      size    8
+      spacing 2
+      line    :double
     end
   end
   
@@ -18,18 +18,18 @@ describe Caracal::Core::Models::PageMarginModel do
     
     # constants
     describe 'constants' do
-      it { expect(described_class::DEFAULT_PAGE_MARGIN_TOP).to eq 1440 }
-      it { expect(described_class::DEFAULT_PAGE_MARGIN_BOTTOM).to eq 1440 }
-      it { expect(described_class::DEFAULT_PAGE_MARGIN_LEFT).to eq 1440 }
-      it { expect(described_class::DEFAULT_PAGE_MARGIN_RIGHT).to eq 1440 }
+      it { expect(described_class::DEFAULT_BORDER_COLOR).to eq 'auto' }
+      it { expect(described_class::DEFAULT_BORDER_SIZE).to eq 4 }
+      it { expect(described_class::DEFAULT_BORDER_SPACING).to eq 1 }
+      it { expect(described_class::DEFAULT_BORDER_LINE).to eq :single }
     end
     
     # accessors
     describe 'accessors' do
-      it { expect(subject.page_margin_top).to     eq 1441 }
-      it { expect(subject.page_margin_bottom).to  eq 1442 }
-      it { expect(subject.page_margin_left).to    eq 1443 }
-      it { expect(subject.page_margin_right).to   eq 1444 }
+      it { expect(subject.border_color).to   eq '666666' }
+      it { expect(subject.border_size).to    eq 8 }
+      it { expect(subject.border_spacing).to eq 2 }
+      it { expect(subject.border_line).to    eq :double }
     end
     
   end
@@ -43,45 +43,45 @@ describe Caracal::Core::Models::PageMarginModel do
   
     #=============== SETTERS ==========================
     
-    # .top
-    describe '.top' do
-      before { subject.top(1000) }
+    # .color
+    describe '.color' do
+      before { subject.color('999999') }
       
-      it { expect(subject.page_margin_top).to eq 1000 }
+      it { expect(subject.border_color).to eq '999999' }
     end
     
-    # .bottom
-    describe '.bottom' do
-      before { subject.bottom(1000) }
+    # .size
+    describe '.size' do
+      before { subject.size(24) }
       
-      it { expect(subject.page_margin_bottom).to eq 1000 }
+      it { expect(subject.border_size).to eq 24 }
     end
     
-    # .left
-    describe '.left' do
-      before { subject.left(1000) }
+    # .spacing
+    describe '.spacing' do
+      before { subject.spacing(8) }
       
-      it { expect(subject.page_margin_left).to eq 1000 }
+      it { expect(subject.border_spacing).to eq 8 }
     end
     
-    # .right
-    describe '.right' do
-      before { subject.right(1000) }
+    # .line
+    describe '.line' do
+      before { subject.line(:single) }
       
-      it { expect(subject.page_margin_right).to eq 1000 }
+      it { expect(subject.border_line).to eq :single }
     end
     
     
     #=============== VALIDATION ===========================
     
     describe '.valid?' do
-      describe 'when all margins gt 0' do
+      describe 'when all integers gt 0' do
         it { expect(subject.valid?).to eq true }
       end
-      [:top, :bottom, :left, :right].each do |d|
+      [:size, :spacing].each do |d|
         describe "when #{ d } lte 0" do
           before do
-            allow(subject).to receive("page_margin_#{ d }").and_return(0)
+            allow(subject).to receive("border_#{ d }").and_return(0)
           end
         
           it { expect(subject.valid?).to eq false }
@@ -101,7 +101,7 @@ describe Caracal::Core::Models::PageMarginModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:top, :bottom, :left, :right].sort }
+      let(:expected) { [:color, :size, :spacing, :line].sort }
       
       it { expect(actual).to eq expected }
     end

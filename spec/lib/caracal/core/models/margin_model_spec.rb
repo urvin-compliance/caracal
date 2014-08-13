@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe Caracal::Core::Models::RuleModel do
+describe Caracal::Core::Models::MarginModel do
   subject do 
     described_class.new do
-      color   '666666'
-      size    8
-      spacing 2
-      line    :double
+      top     1441
+      bottom  1442
+      left    1443
+      right   1444
     end
   end
   
@@ -17,16 +17,19 @@ describe Caracal::Core::Models::RuleModel do
   describe 'configuration tests' do
     
     # constants
-    describe 'inheritance' do
-      it { expect(subject).to be_a(Caracal::Core::Models::BorderModel) }
+    describe 'constants' do
+      it { expect(described_class::DEFAULT_MARGIN_TOP).to eq 1440 }
+      it { expect(described_class::DEFAULT_MARGIN_BOTTOM).to eq 1440 }
+      it { expect(described_class::DEFAULT_MARGIN_LEFT).to eq 1440 }
+      it { expect(described_class::DEFAULT_MARGIN_RIGHT).to eq 1440 }
     end
     
     # accessors
     describe 'accessors' do
-      it { expect(subject.rule_color).to   eq '666666' }
-      it { expect(subject.rule_size).to    eq 8 }
-      it { expect(subject.rule_spacing).to eq 2 }
-      it { expect(subject.rule_line).to    eq :double }
+      it { expect(subject.margin_top).to     eq 1441 }
+      it { expect(subject.margin_bottom).to  eq 1442 }
+      it { expect(subject.margin_left).to    eq 1443 }
+      it { expect(subject.margin_right).to   eq 1444 }
     end
     
   end
@@ -40,45 +43,45 @@ describe Caracal::Core::Models::RuleModel do
   
     #=============== SETTERS ==========================
     
-    # .color
-    describe '.color' do
-      before { subject.color('999999') }
+    # .top
+    describe '.top' do
+      before { subject.top(1000) }
       
-      it { expect(subject.rule_color).to eq '999999' }
+      it { expect(subject.margin_top).to eq 1000 }
     end
     
-    # .size
-    describe '.size' do
-      before { subject.size(24) }
+    # .bottom
+    describe '.bottom' do
+      before { subject.bottom(1000) }
       
-      it { expect(subject.rule_size).to eq 24 }
+      it { expect(subject.margin_bottom).to eq 1000 }
     end
     
-    # .spacing
-    describe '.spacing' do
-      before { subject.spacing(8) }
+    # .left
+    describe '.left' do
+      before { subject.left(1000) }
       
-      it { expect(subject.rule_spacing).to eq 8 }
+      it { expect(subject.margin_left).to eq 1000 }
     end
     
-    # .line
-    describe '.line' do
-      before { subject.line(:single) }
+    # .right
+    describe '.right' do
+      before { subject.right(1000) }
       
-      it { expect(subject.rule_line).to eq :single }
+      it { expect(subject.margin_right).to eq 1000 }
     end
     
     
     #=============== VALIDATION ===========================
     
     describe '.valid?' do
-      describe 'when all integers gt 0' do
+      describe 'when all margins gt 0' do
         it { expect(subject.valid?).to eq true }
       end
-      [:size, :spacing].each do |d|
+      [:top, :bottom, :left, :right].each do |d|
         describe "when #{ d } lte 0" do
           before do
-            allow(subject).to receive("border_#{ d }").and_return(0)
+            allow(subject).to receive("margin_#{ d }").and_return(0)
           end
         
           it { expect(subject.valid?).to eq false }
@@ -98,7 +101,7 @@ describe Caracal::Core::Models::RuleModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:color, :size, :spacing, :line].sort }
+      let(:expected) { [:top, :bottom, :left, :right].sort }
       
       it { expect(actual).to eq expected }
     end

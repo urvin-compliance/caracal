@@ -8,33 +8,33 @@ module Caracal
       # This class handles block options passed to the page margins
       # method.
       #
-      class PageMarginModel < BaseModel
+      class BorderModel < BaseModel
         
         #-------------------------------------------------------------
         # Configuration
         #-------------------------------------------------------------
         
         # constants
-        const_set(:DEFAULT_PAGE_MARGIN_TOP,    1440)  # 1.0in in twips
-        const_set(:DEFAULT_PAGE_MARGIN_BOTTOM, 1440)  # 1.0in in twips
-        const_set(:DEFAULT_PAGE_MARGIN_LEFT,   1440)  # 1.0in in twips
-        const_set(:DEFAULT_PAGE_MARGIN_RIGHT,  1440)  # 1.0in in twips
+        const_set(:DEFAULT_BORDER_COLOR,    'auto')
+        const_set(:DEFAULT_BORDER_SIZE,     4)        # 0.5pt in 1/8 points
+        const_set(:DEFAULT_BORDER_SPACING,  1)        # 0.125pt in 1/8 points
+        const_set(:DEFAULT_BORDER_LINE,     :single) 
         
         # accessors
-        attr_reader :page_margin_top
-        attr_reader :page_margin_bottom
-        attr_reader :page_margin_left
-        attr_reader :page_margin_right
+        attr_reader :border_color
+        attr_reader :border_size
+        attr_reader :border_spacing
+        attr_reader :border_line
         
         
         # initialization
         def initialize(**options, &block)
           super options, &block
           
-          @page_margin_top    ||= DEFAULT_PAGE_MARGIN_TOP
-          @page_margin_bottom ||= DEFAULT_PAGE_MARGIN_BOTTOM
-          @page_margin_left   ||= DEFAULT_PAGE_MARGIN_LEFT
-          @page_margin_right  ||= DEFAULT_PAGE_MARGIN_RIGHT
+          @border_color   ||= DEFAULT_BORDER_COLOR
+          @border_size    ||= DEFAULT_BORDER_SIZE
+          @border_spacing ||= DEFAULT_BORDER_SPACING
+          @border_line    ||= DEFAULT_BORDER_LINE
         end
         
         
@@ -44,27 +44,32 @@ module Caracal
         
         #=============== SETTERS ==============================
         
-        def bottom(value)
-          @page_margin_bottom = value.to_i
+        # integers
+        [:size, :spacing].each do |m|
+          define_method "#{ m }" do |value|
+            instance_variable_set("@border_#{ m }", value.to_i)
+          end
         end
         
-        def left(value)
-          @page_margin_left = value.to_i
+        # strings
+        [:color].each do |m|
+          define_method "#{ m }" do |value|
+            instance_variable_set("@border_#{ m }", value.to_s)
+          end
         end
         
-        def right(value)
-          @page_margin_right = value.to_i
-        end
-        
-        def top(value)
-          @page_margin_top = value.to_i
+        # symbols
+        [:line].each do |m|
+          define_method "#{ m }" do |value|
+            instance_variable_set("@border_#{ m }", value.to_s.to_sym)
+          end
         end
         
         
         #=============== VALIDATION ==============================
         
         def valid?
-          dims = [page_margin_top, page_margin_bottom, page_margin_left, page_margin_right]
+          dims = [border_size, border_spacing]
           dims.all? { |d| d > 0 }
         end
         
@@ -75,7 +80,7 @@ module Caracal
         private
         
         def option_keys
-          [:top, :bottom, :left, :right]
+          [:color, :size, :spacing, :line]
         end
         
       end
