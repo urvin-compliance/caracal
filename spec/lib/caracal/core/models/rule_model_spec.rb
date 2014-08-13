@@ -47,6 +47,13 @@ describe Caracal::Core::Models::RuleModel do
       it { expect(subject.rule_color).to eq '999999' }
     end
     
+    # .line
+    describe '.line' do
+      before { subject.line(:single) }
+      
+      it { expect(subject.rule_line).to eq :single }
+    end
+    
     # .size
     describe '.size' do
       before { subject.size(24) }
@@ -59,13 +66,6 @@ describe Caracal::Core::Models::RuleModel do
       before { subject.spacing(8) }
       
       it { expect(subject.rule_spacing).to eq 8 }
-    end
-    
-    # .line
-    describe '.line' do
-      before { subject.line(:single) }
-      
-      it { expect(subject.rule_line).to eq :single }
     end
     
     
@@ -98,7 +98,7 @@ describe Caracal::Core::Models::RuleModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:color, :size, :spacing, :line].sort }
+      let(:expected) { [:color, :size, :spacing, :line, :type].sort }
       
       it { expect(actual).to eq expected }
     end

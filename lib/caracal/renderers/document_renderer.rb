@@ -240,10 +240,7 @@ module Caracal
       end
       
       def render_table(xml, model)
-        unless model.table_width
-          model.width (document.page_width - document.page_margin_left - document.page_margin_right)
-        end
-        col_size  = model.table_data[0].size
+        col_size  = model.cols.size
         col_width = model.table_width / col_size
         
         xml.send 'w:tbl' do
@@ -254,8 +251,16 @@ module Caracal
             xml.send 'w:tblInd',     { 'w:w'   => '0.0', 'w:type' => 'dxa' }
             xml.send 'w:jc',         { 'w:val' => model.table_align }
             xml.send 'w:tblBorders' do
-              %w(top left bottom right insideH insideV).each do |m|
-                xml.send "w:#{ m }", { 'w:color' => model.table_border_color, 'w:space' => '0', 'w:val' => 'single', 'w:size' => model.table_border_size }
+              %w(top left bottom right horizontal vertical).each do |m|
+                if size = model.send("table_border_#{ m }_size")
+                  options = {
+                    'w:color' => model.send("table_border_#{ m }_color"),
+                    'w:val'   => model.send("table_border_#{ m }_line"),
+                    'w:sz'    => size,
+                    'w:space' => model.send("table_border_#{ m }_spacing")
+                  }
+                  xml.send "w:#{ Caracal::Core::Models::BorderModel.formatted_type(m) }", options
+                end
               end
             end
             xml.send 'w:tblLayout', { 'w:type' => 'fixed' }
@@ -273,7 +278,7 @@ module Caracal
               end
             end
           end
-          model.table_data.each do |row|
+          model.rows.each do |row|
             xml.send 'w:tr' do
               row.each do |cell|
                 xml.send 'w:tc' do

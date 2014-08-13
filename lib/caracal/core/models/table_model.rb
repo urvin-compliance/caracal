@@ -15,7 +15,7 @@ module Caracal
         #-------------------------------------------------------------
         
         # constants
-        const_set(:DEFAULT_TABLE_ALIGN,          :left)
+        const_set(:DEFAULT_TABLE_ALIGN,          :right)     # weirdly, works better w/ full width
         const_set(:DEFAULT_TABLE_BORDER_COLOR,   'auto')
         const_set(:DEFAULT_TABLE_BORDER_LINE,    :single)
         const_set(:DEFAULT_TABLE_BORDER_SIZE,    0)          # units in 1/8 points
@@ -51,12 +51,30 @@ module Caracal
         # Public Methods
         #-------------------------------------------------------------
         
-        #=============== GETTERS ==============================
+        #=============== DATA ACCESSORS =======================
         
         def cells
+          rows.flatten
+        end
+        
+        def cols
+          rows.reduce([]) do |array, row|
+            row.each_with_index do |cell, index|
+              array[index]  = []    if array[index].nil?
+              array[index] << cell
+            end
+            array
+          end
+        end
+        
+        def rows
           @table_data || [[]]
         end
         
+        
+        #=============== GETTERS ==============================
+        
+        # border attrs
         [:top, :bottom, :left, :right, :horizontal, :vertical].each do |m|
           [:color, :line, :size, :spacing].each do |attr|
             define_method "table_border_#{ m }_#{ attr }" do
@@ -72,6 +90,7 @@ module Caracal
         # borders
         [:top, :bottom, :left, :right, :horizontal, :vertical].each do |m|
           define_method "border_#{ m }" do |**options, &block|
+            options.merge!({ type: m })
             instance_variable_set("@table_border_#{ m }", Caracal::Core::Models::BorderModel.new(options, &block))
           end
         end

@@ -16,31 +16,57 @@ module Caracal
         
         # constants
         const_set(:DEFAULT_BORDER_COLOR,    'auto')
+        const_set(:DEFAULT_BORDER_LINE,     :single) 
         const_set(:DEFAULT_BORDER_SIZE,     4)        # 0.5pt in 1/8 points
         const_set(:DEFAULT_BORDER_SPACING,  1)        # 0.125pt in 1/8 points
-        const_set(:DEFAULT_BORDER_LINE,     :single) 
+        const_set(:DEFAULT_BORDER_TYPE,     :top)
         
         # accessors
         attr_reader :border_color
+        attr_reader :border_line
         attr_reader :border_size
         attr_reader :border_spacing
-        attr_reader :border_line
-        
+        attr_reader :border_type
         
         # initialization
         def initialize(**options, &block)
           super options, &block
           
           @border_color   ||= DEFAULT_BORDER_COLOR
+          @border_line    ||= DEFAULT_BORDER_LINE
           @border_size    ||= DEFAULT_BORDER_SIZE
           @border_spacing ||= DEFAULT_BORDER_SPACING
-          @border_line    ||= DEFAULT_BORDER_LINE
+          @border_type    ||= DEFAULT_BORDER_TYPE
+        end
+        
+        
+        #-------------------------------------------------------------
+        # Class Methods
+        #-------------------------------------------------------------
+        
+        def self.formatted_type(type)
+          case type.to_s.to_sym
+          when :horizontal  then 'insideH'
+          when :vertical    then 'insideV'
+          when :top         then 'top'
+          when :bottom      then 'bottom'
+          when :left        then 'left'
+          when :right       then 'right'
+          else nil
+          end
         end
         
         
         #-------------------------------------------------------------
         # Public Methods
         #-------------------------------------------------------------
+        
+        #=============== GETTERS ==============================
+        
+        def formatted_type
+          self.class.formatted_type(border_type)
+        end
+        
         
         #=============== SETTERS ==============================
         
@@ -59,7 +85,7 @@ module Caracal
         end
         
         # symbols
-        [:line].each do |m|
+        [:line, :type].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@border_#{ m }", value.to_s.to_sym)
           end
@@ -80,7 +106,7 @@ module Caracal
         private
         
         def option_keys
-          [:color, :size, :spacing, :line]
+          [:color, :line, :size, :spacing, :type]
         end
         
       end

@@ -20,6 +20,10 @@ module Caracal
             options.merge!({ data: data })
             
             model = Caracal::Core::Models::TableModel.new(options, &block)
+            unless model.table_width
+              model.width (page_width - page_margin_left - page_margin_right)
+            end
+            
             if model.valid?
               contents << model
             else

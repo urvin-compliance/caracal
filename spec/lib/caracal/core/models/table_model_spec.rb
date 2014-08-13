@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Caracal::Core::Models::TableModel do
   subject do 
     described_class.new do
-      data            [ ['top left', 'top right'], ['bottom left', 'bottom right'] ]
+      data            [ ['top lft', 'top right'], ['bottom left', 'bottom right'] ]
       align           :right
       border_color    '666666'
       border_line     :double
@@ -21,7 +21,7 @@ describe Caracal::Core::Models::TableModel do
     
     # constants
     describe 'constants' do
-      it { expect(described_class::DEFAULT_TABLE_ALIGN).to          eq :left }
+      it { expect(described_class::DEFAULT_TABLE_ALIGN).to          eq :right }
       it { expect(described_class::DEFAULT_TABLE_BORDER_COLOR).to   eq 'auto' }
       it { expect(described_class::DEFAULT_TABLE_BORDER_LINE).to    eq :single }
       it { expect(described_class::DEFAULT_TABLE_BORDER_SIZE).to    eq 0 }
@@ -31,11 +31,11 @@ describe Caracal::Core::Models::TableModel do
     # accessors
     describe 'accessors' do
       it { expect(subject.table_align).to          eq :right }
+      it { expect(subject.table_width).to          eq 8000 }
       it { expect(subject.table_border_color).to   eq '666666' }
       it { expect(subject.table_border_line).to    eq :double }
       it { expect(subject.table_border_size).to    eq 8 }
       it { expect(subject.table_border_spacing).to eq 4 }
-      it { expect(subject.table_width).to          eq 8000 }
     end
     
   end
@@ -47,13 +47,73 @@ describe Caracal::Core::Models::TableModel do
   
   describe 'public method tests' do
   
+    #=============== DATA ACCESSORS ====================
+    
+    describe 'data tests' do
+      let(:data) { [['top left', 'top right'], ['bottom left', 'bottom right']] }
+      
+      before do
+        allow(subject).to receive(:rows).and_return(data)
+      end
+      
+      # .rows
+      describe '.rows' do
+        it { expect(subject.rows[0]).to be_a(Array) }
+        it { expect(subject.rows[0][1]).to eq 'top right' }
+      end
+      
+      # .cols
+      describe '.cols' do
+        it { expect(subject.cols[0]).to be_a(Array) }
+        it { expect(subject.cols[0][1]).to eq 'bottom left' }
+      end
+      
+      # .cells
+      describe '.cells' do
+        it { expect(subject.cells[0]).to eq 'top left' }   
+      end
+    end    
+    
+    
     #=============== GETTERS ==========================
     
-    describe '.cells' do
-      let(:data) { subject.cells }
+    describe 'getter tests' do
       
-      it { expect(data[0]).to    be_a(Array) }
-      it { expect(data[0][0]).to be_a(String) }   # TODO: Switch when data nodes modeled properly
+      # border attrs
+      describe 'border attr tests' do
+        let(:model) { Caracal::Core::Models::BorderModel.new({ color: 'auto', line: :single, size: 8, spacing: 0 }) }
+        
+        before do
+          allow(subject).to receive(:table_border_color).and_return('auto')
+          allow(subject).to receive(:table_border_line).and_return(:single)
+          allow(subject).to receive(:table_border_size).and_return(8)
+          allow(subject).to receive(:table_border_spacing).and_return(0)
+        end
+        
+        [:top, :bottom, :left, :right, :horizontal, :vertical].each do |m|
+          [:color, :line, :size, :spacing].each do |attr|
+            describe "table_border_#{ m }_#{ attr }" do
+              let(:actual) { subject.send("table_border_#{ m }_#{ attr }") }
+              
+              describe 'when detailed setting present' do
+                before do
+                  allow(subject).to receive("table_border_#{ m }").and_return(model)
+                end
+                
+                it { expect(actual).to eq model.send("border_#{ attr }") }
+              end
+              describe 'when detailed setting not present' do
+                before do
+                  allow(subject).to receive("table_border_#{ m }").and_return(nil)
+                end
+                
+                it { expect(actual).to eq subject.send("table_border_#{ attr }") }
+              end
+            end
+          end
+        end
+      end
+    
     end
     
     
@@ -73,11 +133,25 @@ describe Caracal::Core::Models::TableModel do
       it { expect(subject.table_border_color).to eq '999999' }
     end
     
+    # .border_line
+    describe '.border_line' do
+      before { subject.border_line(:none) }
+      
+      it { expect(subject.table_border_line).to eq :none }
+    end
+    
     # .border_size
     describe '.border_size' do
       before { subject.border_size(24) }
       
       it { expect(subject.table_border_size).to eq 24 }
+    end
+    
+    # .border_spacing
+    describe '.border_spacing' do
+      before { subject.border_spacing(16) }
+      
+      it { expect(subject.table_border_spacing).to eq 16 }
     end
     
     # .width
