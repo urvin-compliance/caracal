@@ -1,4 +1,6 @@
 require 'caracal/core/models/base_model'
+require 'caracal/core/models/border_model'
+require 'caracal/core/models/table_cell_model'
 
 
 module Caracal
@@ -87,14 +89,6 @@ module Caracal
         
         #=============== SETTERS ==============================
         
-        # borders
-        [:top, :bottom, :left, :right, :horizontal, :vertical].each do |m|
-          define_method "border_#{ m }" do |**options, &block|
-            options.merge!({ type: m })
-            instance_variable_set("@table_border_#{ m }", Caracal::Core::Models::BorderModel.new(options, &block))
-          end
-        end
-        
         # integers
         [:border_size, :border_spacing, :width].each do |m|
           define_method "#{ m }" do |value|
@@ -102,10 +96,11 @@ module Caracal
           end
         end
         
-        # objects
-        [:data].each do |m|
-          define_method "#{ m }" do |value|
-            instance_variable_set("@table_#{ m }", value)
+        # models
+        [:top, :bottom, :left, :right, :horizontal, :vertical].each do |m|
+          define_method "border_#{ m }" do |**options, &block|
+            options.merge!({ type: m })
+            instance_variable_set("@table_border_#{ m }", Caracal::Core::Models::BorderModel.new(options, &block))
           end
         end
         
@@ -122,6 +117,11 @@ module Caracal
             instance_variable_set("@table_#{ m }", value.to_s.to_sym)
           end
         end
+        
+        # .data
+        def data(value)
+          @table_data = value
+        end        
         
         
         #=============== VALIDATION ==============================
