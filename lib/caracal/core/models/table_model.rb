@@ -120,14 +120,31 @@ module Caracal
         
         # .data
         def data(value)
-          @table_data = value
+          begin
+            @table_data = value.map do |data_row|
+              data_row.map do |data_cell|
+                case data_cell.class
+                when Caracal::Core::Models::TableCellModel
+                  data_cell
+                when Hash
+                  Caracal::Core::Models::TableCellModel.new(data_cell)
+                when Proc
+                  Caracal::Core::Models::TableCellModel.new(&data_cell)
+                else
+                  Caracal::Core::Models::TableCellModel.new({ content: data_cell.to_s })
+                end
+              end
+            end
+          rescue
+            raise Caracal::Errors::InvalidTableDataError, 'Table data must be a two-dimensional array.'
+          end
         end        
         
         
         #=============== VALIDATION ==============================
         
         def valid?
-          !cells[0][0].nil?
+          cells.first.is_a?(Caracal::Core::Models::TableCellModel)
         end
         
         

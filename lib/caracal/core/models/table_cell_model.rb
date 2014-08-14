@@ -17,7 +17,7 @@ module Caracal
         
         # constants
         const_set(:DEFAULT_CELL_BACKGROUND,   'ffffff')
-        const_set(:DEFAULT_CELL_MARGINS,      Caracal::Core::Models::MarginModel.new)
+        const_set(:DEFAULT_CELL_MARGINS,      Caracal::Core::Models::MarginModel.new({ top: 200, bottom: 200, left: 200, right: 200 }))
         
         # accessors
         attr_reader :cell_background 
@@ -26,6 +26,10 @@ module Caracal
         
         # initialization
         def initialize(**options, &block)
+          if content = options.delete(:content)
+            p content, options.dup
+          end
+          
           super options, &block
           
           @cell_background ||= DEFAULT_CELL_BACKGROUND

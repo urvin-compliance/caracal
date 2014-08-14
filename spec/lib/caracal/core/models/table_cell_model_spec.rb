@@ -24,10 +24,10 @@ describe Caracal::Core::Models::TableCellModel do
     describe 'constants' do
       it { expect(described_class::DEFAULT_CELL_BACKGROUND).to            eq 'ffffff' }
       it { expect(described_class::DEFAULT_CELL_MARGINS).to               be_a(Caracal::Core::Models::MarginModel) }
-      it { expect(described_class::DEFAULT_CELL_MARGINS.margin_top).to    eq 0 }
-      it { expect(described_class::DEFAULT_CELL_MARGINS.margin_bottom).to eq 0 }
-      it { expect(described_class::DEFAULT_CELL_MARGINS.margin_left).to   eq 0 }
-      it { expect(described_class::DEFAULT_CELL_MARGINS.margin_right).to  eq 0 }
+      it { expect(described_class::DEFAULT_CELL_MARGINS.margin_top).to    eq 200 }
+      it { expect(described_class::DEFAULT_CELL_MARGINS.margin_bottom).to eq 200 }
+      it { expect(described_class::DEFAULT_CELL_MARGINS.margin_left).to   eq 200 }
+      it { expect(described_class::DEFAULT_CELL_MARGINS.margin_right).to  eq 200 }
     end
     
     # accessors
@@ -97,7 +97,104 @@ describe Caracal::Core::Models::TableCellModel do
     end
     
     
-    #=============== VALIDATION ===========================
+    #=============== CONTENT FNS =======================
+    
+    describe 'content functions' do
+    
+      # .br
+      describe '.br' do
+        let!(:size) { subject.contents.size }
+      
+        before { subject.br }
+      
+        it { expect(subject.contents.size).to eq size + 1 }
+        it { expect(subject.contents.last).to be_a(Caracal::Core::Models::LineBreakModel) }
+      end
+    
+      # .page
+      describe '.page' do
+        let!(:size) { subject.contents.size }
+      
+        before { subject.page }
+      
+        it { expect(subject.contents.size).to eq size + 1 }
+        it { expect(subject.contents.last).to be_a(Caracal::Core::Models::PageBreakModel) }
+      end
+      
+      # .img
+      describe '.img' do
+        let!(:size) { subject.contents.size }
+      
+        before { subject.img 'https://www.google.com/images/srpr/logo11w.png', width: 538, height: 190 }
+      
+        it { expect(subject.contents.size).to eq size + 1 }
+        it { expect(subject.contents.last).to be_a(Caracal::Core::Models::ImageModel) }
+      end
+      
+      # .ol
+      describe '.ol' do
+        let!(:size) { subject.contents.size }
+      
+        before do 
+          subject.ol do
+            li 'Item 1'
+          end
+        end
+        
+        it { expect(subject.contents.size).to eq size + 1 }
+        it { expect(subject.contents.last).to be_a(Caracal::Core::Models::ListModel) }
+      end
+    
+      # .ul
+      describe '.ul' do
+        let!(:size) { subject.contents.size }
+      
+        before do 
+          subject.ul do
+            li 'Item 1'
+          end
+        end
+        
+        it { expect(subject.contents.size).to eq size + 1 }
+        it { expect(subject.contents.last).to be_a(Caracal::Core::Models::ListModel) }
+      end
+      
+      # .hr
+      describe '.hr' do
+        let!(:size) { subject.contents.size }
+      
+        before { subject.hr }
+      
+        it { expect(subject.contents.size).to eq size + 1 }
+        it { expect(subject.contents.last).to be_a(Caracal::Core::Models::RuleModel) }
+      end
+      
+      # .table
+      describe '.table' do
+        let!(:size) { subject.contents.size }
+      
+        before { subject.table [['Sample Text']] }
+      
+        it { expect(subject.contents.size).to eq size + 1 }
+        it { expect(subject.contents.last).to be_a(Caracal::Core::Models::TableModel) }
+      end
+      
+      # text
+      [:p, :h1, :h2, :h3, :h4, :h5, :h6].each do |cmd|
+        describe ".#{ cmd }" do
+          let!(:size) { subject.contents.size }
+      
+          before { subject.send(cmd, 'Sample text.') }
+      
+          it { expect(subject.contents.size).to eq size + 1 }
+          it { expect(subject.contents.last).to be_a(Caracal::Core::Models::ParagraphModel) }
+        end
+      end
+      
+    end
+    
+    
+    #=============== VALIDATION ========================
     
     describe '.valid?' do
       describe 'when content provided' do

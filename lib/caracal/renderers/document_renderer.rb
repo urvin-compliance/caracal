@@ -240,8 +240,12 @@ module Caracal
       end
       
       def render_table(xml, model)
-        col_size  = model.cols.size
-        col_width = model.table_width / col_size
+        first_row   = model.rows.first
+        cell_widths = first_row.map { |c| c.cell_width.to_i }.reject { |w| w == 0 }
+        
+        remaining_width = model.table_width - cell_widths.reduce(&:+).to_i
+        remaining_cols  = model.cols.size - cell_widths.size
+        default_width   = (remaining_cols == 0) ? 0 : (remaining_width / remaining_cols)
         
         xml.send 'w:tbl' do
           xml.send 'w:tblPr' do
@@ -252,7 +256,8 @@ module Caracal
             xml.send 'w:jc',         { 'w:val' => model.table_align }
             xml.send 'w:tblBorders' do
               %w(top left bottom right horizontal vertical).each do |m|
-                if size = model.send("table_border_#{ m }_size")
+                size = model.send("table_border_#{ m }_size")
+                if size > 0
                   options = {
                     'w:color' => model.send("table_border_#{ m }_color"),
                     'w:val'   => model.send("table_border_#{ m }_line"),
@@ -267,41 +272,32 @@ module Caracal
             xml.send 'w:tblLook',   { 'w:val'  => '0600'  }
           end
           xml.send 'w:tblGrid' do
-            col_size.times do
-              xml.send 'w:gridCol', { 'w:w' => col_width }
+            first_row.each do |tc|
+              xml.send 'w:gridCol', { 'w:w' => (tc.cell_width || default_width) }
             end
             xml.send 'w:tblGridChange', { 'w:id' => '0' } do
               xml.send 'w:tblGrid' do
-                col_size.times do
-                  xml.send 'w:gridCol', { 'w:w' => col_width }
+                first_row.each do |tc|
+                  xml.send 'w:gridCol', { 'w:w' => (tc.cell_width || default_width) }
                 end
               end
             end
           end
           model.rows.each do |row|
             xml.send 'w:tr' do
-              row.each do |cell|
+              row.each do |tc|
                 xml.send 'w:tc' do
                   xml.send 'tcPr' do
-                    xml.send 'w:shd', { 'w:fill' => 'ffffff' }
+                    xml.send 'w:shd', { 'w:fill' => tc.cell_background }  unless tc.cell_background.nil?
                     xml.send 'w:tcMar' do
                       %w(top left bottom right).each do |d|
-                        xml.send "w:#{ d }", { 'w:w' => '100.0', 'w:type' => 'dxa' }
+                        xml.send "w:#{ d }", { 'w:w' => tc.send("cell_margin_#{ d }").to_f, 'w:type' => 'dxa' }
                       end
                     end
                   end
-                  xml.send 'w:p', paragraph_options do
-                    xml.send 'w:pPr' do
-                      xml.send 'w:spacing', { 'w:lineRule' => 'auto', 'w:after' => '0', 'w:line' => '240', 'w:before' => '0' }
-                      xml.send 'w:ind',     { 'w:left' => '0', 'w:firstLine' => '0' }
-                      xml.send 'w:contextualSpacing', { 'w:val' => '0' }
-                    end
-                    xml.send 'w:r', run_options do
-                      xml.send 'w:rPr' do
-                        xml.send 'w:rtl', { 'w:val' => '0' }
-                      end
-                      xml.send 'w:t', { 'xml:space' => 'preserve' }, cell
-                    end
+                  tc.contents.each do |m|
+                    method = render_method_for_model(m)
+                    send(method, xml, m)
                   end
                 end
               end

@@ -5,6 +5,11 @@ module Caracal
     #
     InvalidModelError = Class.new(StandardError)
     
+    # This error is raised whenever a table model is passed an
+    # invalid data structure.
+    #
+    InvalidTableDataError = Class.new(StandardError)
+    
     # This error is raised if the document does not have a default 
     # style declared.
     #
