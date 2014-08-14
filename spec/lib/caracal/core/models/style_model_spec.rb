@@ -7,7 +7,7 @@ describe Caracal::Core::Models::StyleModel do
       name      'normal'
       font      'Arial'
       size      20
-      spacing   360
+      line      360
     end
   end
   
@@ -27,7 +27,7 @@ describe Caracal::Core::Models::StyleModel do
       it { expect(described_class::DEFAULT_STYLE_ALIGN).to eq :left }
       it { expect(described_class::DEFAULT_STYLE_TOP).to eq 0 }
       it { expect(described_class::DEFAULT_STYLE_BOTTOM).to eq 0 }
-      it { expect(described_class::DEFAULT_STYLE_SPACING).to eq 360 }
+      it { expect(described_class::DEFAULT_STYLE_LINE).to eq 360 }
       it { expect(described_class::DEFAULT_STYLE_BASE).to eq 'Normal' }
       it { expect(described_class::DEFAULT_STYLE_NEXT).to eq 'Normal' }
     end
@@ -46,7 +46,7 @@ describe Caracal::Core::Models::StyleModel do
       it { expect(subject.style_align).to eq :left }
       it { expect(subject.style_top).to eq 0 }
       it { expect(subject.style_bottom).to eq 0 }
-      it { expect(subject.style_spacing).to eq 360 }
+      it { expect(subject.style_line).to eq 360 }
       it { expect(subject.style_base).to eq 'Normal' }
       it { expect(subject.style_next).to eq 'Normal' }
     end
@@ -90,10 +90,10 @@ describe Caracal::Core::Models::StyleModel do
       
       it { expect(subject.style_size).to eq 24 }
     end
-    describe '.spacing' do
-      before { subject.spacing(480) }
+    describe '.line' do
+      before { subject.line(480) }
       
-      it { expect(subject.style_spacing).to eq 480 }
+      it { expect(subject.style_line).to eq 480 }
     end
     describe '.top' do
       before { subject.top(100) }
@@ -177,7 +177,7 @@ describe Caracal::Core::Models::StyleModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:bold, :italic, :underline, :top, :bottom, :size, :spacing, :id, :name, :color, :font, :align].sort }
+      let(:expected) { [:bold, :italic, :underline, :top, :bottom, :size, :line, :id, :name, :color, :font, :align].sort }
       
       it { expect(actual).to eq expected }
     end

@@ -43,7 +43,7 @@ module Caracal
                   xml.send 'w:keepNext',     { 'w:val' => '0' }
                   xml.send 'w:keepLines',    { 'w:val' => '0' }
                   xml.send 'w:widowControl', { 'w:val' => '1' }
-                  xml.send 'w:spacing',      { 'w:lineRule' => 'auto', 'w:line' => s.style_spacing, 'w:before' => '0', 'w:after' => '0' }
+                  xml.send 'w:spacing',      { 'w:lineRule' => 'auto', 'w:line' => s.style_line, 'w:before' => '0', 'w:after' => '0' }
                   xml.send 'w:ind',          { 'w:left' => '0', 'w:firstLine' => '0', 'w:right' => '0' }
                   xml.send 'w:jc',           { 'w:val' => s.style_align.to_s }
                 end
@@ -122,7 +122,7 @@ module Caracal
       def spacing_options(style)
         top     = style.style_top
         bottom  = style.style_bottom
-        spacing = style.style_spacing
+        line    = style.style_line
         
         options = nil
         if [top, bottom, spacing].compact.size > 0
@@ -130,7 +130,7 @@ module Caracal
           options['w:lineRule'] = 'auto'
           options['w:before']   = top      unless top.nil?
           options['w:after']    = bottom   unless bottom.nil?
-          options['w:line']     = spacing  unless spacing.nil?
+          options['w:line']     = line     unless line.nil?
         end
         options
       end

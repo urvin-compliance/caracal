@@ -98,7 +98,7 @@ module Caracal
         
         xml.send 'w:p', paragraph_options do
           xml.send 'w:pPr' do
-            xml.send 'w:spacing', { 'w:lineRule' => 'auto', 'w:line' => ds.style_spacing }
+            xml.send 'w:spacing', { 'w:lineRule' => 'auto', 'w:line' => ds.style_line }
             xml.send 'w:contextualSpacing', { 'w:val' => '0' }
             xml.send 'w:jc', { 'w:val' => model.image_align.to_s }
             xml.send 'w:rPr'

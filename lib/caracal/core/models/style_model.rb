@@ -21,7 +21,7 @@ module Caracal
         const_set(:DEFAULT_STYLE_ITALIC,     false)
         const_set(:DEFAULT_STYLE_UNDERLINE,  false)
         const_set(:DEFAULT_STYLE_ALIGN,      :left)
-        const_set(:DEFAULT_STYLE_SPACING,    360)        # 0.25in in twips
+        const_set(:DEFAULT_STYLE_LINE,       360)        # 0.25in in twips
         const_set(:DEFAULT_STYLE_TOP,        0)          # 0.0in  in twips
         const_set(:DEFAULT_STYLE_BOTTOM,     0)          # 0.0in  in twips
         const_set(:DEFAULT_STYLE_BASE,       'Normal')
@@ -40,7 +40,7 @@ module Caracal
         attr_reader :style_align
         attr_reader :style_top
         attr_reader :style_bottom
-        attr_reader :style_spacing
+        attr_reader :style_line
         attr_reader :style_base
         attr_reader :style_next
     
@@ -63,7 +63,7 @@ module Caracal
             @style_align      ||= DEFAULT_STYLE_ALIGN
             @style_top        ||= DEFAULT_STYLE_TOP
             @style_bottom     ||= DEFAULT_STYLE_BOTTOM
-            @style_spacing    ||= DEFAULT_STYLE_SPACING
+            @style_line       ||= DEFAULT_STYLE_LINE
           end
         end
         
@@ -82,7 +82,7 @@ module Caracal
         end
         
         # integers
-        [:bottom, :size, :spacing, :top].each do |m|
+        [:bottom, :size, :line, :top].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@style_#{ m }", value.to_i)
           end
@@ -124,7 +124,7 @@ module Caracal
         private
         
         def option_keys
-          [:bold, :italic, :underline, :top, :bottom, :size, :spacing, :id, :name, :color, :font, :align]
+          [:bold, :italic, :underline, :top, :bottom, :size, :line, :id, :name, :color, :font, :align]
         end
         
       end
