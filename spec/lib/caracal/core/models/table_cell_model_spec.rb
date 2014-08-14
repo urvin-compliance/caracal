@@ -24,10 +24,10 @@ describe Caracal::Core::Models::TableCellModel do
     describe 'constants' do
       it { expect(described_class::DEFAULT_CELL_BACKGROUND).to            eq 'ffffff' }
       it { expect(described_class::DEFAULT_CELL_MARGINS).to               be_a(Caracal::Core::Models::MarginModel) }
-      it { expect(described_class::DEFAULT_CELL_MARGINS.margin_top).to    eq 200 }
-      it { expect(described_class::DEFAULT_CELL_MARGINS.margin_bottom).to eq 200 }
-      it { expect(described_class::DEFAULT_CELL_MARGINS.margin_left).to   eq 200 }
-      it { expect(described_class::DEFAULT_CELL_MARGINS.margin_right).to  eq 200 }
+      it { expect(described_class::DEFAULT_CELL_MARGINS.margin_top).to    eq 100 }
+      it { expect(described_class::DEFAULT_CELL_MARGINS.margin_bottom).to eq 100 }
+      it { expect(described_class::DEFAULT_CELL_MARGINS.margin_left).to   eq 100 }
+      it { expect(described_class::DEFAULT_CELL_MARGINS.margin_right).to  eq 100 }
     end
     
     # accessors

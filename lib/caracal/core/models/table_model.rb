@@ -17,7 +17,7 @@ module Caracal
         #-------------------------------------------------------------
         
         # constants
-        const_set(:DEFAULT_TABLE_ALIGN,          :right)     # weirdly, works better w/ full width
+        const_set(:DEFAULT_TABLE_ALIGN,          :center)    # weirdly, works better w/ full width
         const_set(:DEFAULT_TABLE_BORDER_COLOR,   'auto')
         const_set(:DEFAULT_TABLE_BORDER_LINE,    :single)
         const_set(:DEFAULT_TABLE_BORDER_SIZE,    0)          # units in 1/8 points
@@ -123,14 +123,14 @@ module Caracal
           begin
             @table_data = value.map do |data_row|
               data_row.map do |data_cell|
-                case data_cell.class
-                when Caracal::Core::Models::TableCellModel
+                case data_cell.class.name
+                when 'Caracal::Core::Models::TableCellModel'
                   data_cell
-                when Hash
+                when 'Hash'
                   Caracal::Core::Models::TableCellModel.new(data_cell)
-                when Proc
+                when 'Proc'
                   Caracal::Core::Models::TableCellModel.new(&data_cell)
-                else
+                when 'String'
                   Caracal::Core::Models::TableCellModel.new({ content: data_cell.to_s })
                 end
               end

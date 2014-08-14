@@ -21,7 +21,7 @@ describe Caracal::Core::Models::TableModel do
     
     # constants
     describe 'constants' do
-      it { expect(described_class::DEFAULT_TABLE_ALIGN).to          eq :right }
+      it { expect(described_class::DEFAULT_TABLE_ALIGN).to          eq :center }
       it { expect(described_class::DEFAULT_TABLE_BORDER_COLOR).to   eq 'auto' }
       it { expect(described_class::DEFAULT_TABLE_BORDER_LINE).to    eq :single }
       it { expect(described_class::DEFAULT_TABLE_BORDER_SIZE).to    eq 0 }
