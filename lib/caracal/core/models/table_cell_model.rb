@@ -1,10 +1,3 @@
-require 'caracal/core/breaks'
-require 'caracal/core/images'
-require 'caracal/core/lists'
-require 'caracal/core/rules'
-# require 'caracal/core/tables'
-require 'caracal/core/text'
-
 require 'caracal/core/models/base_model'
 require 'caracal/core/models/margin_model'
 
@@ -21,14 +14,6 @@ module Caracal
         #-------------------------------------------------------------
         # Configuration
         #-------------------------------------------------------------
-        
-        # mixins
-        include Caracal::Core::Breaks
-        include Caracal::Core::Images
-        include Caracal::Core::Lists
-        include Caracal::Core::Rules
-        # include Caracal::Core::Tables
-        include Caracal::Core::Text
         
         # constants
         const_set(:DEFAULT_CELL_BACKGROUND,   'ffffff')
