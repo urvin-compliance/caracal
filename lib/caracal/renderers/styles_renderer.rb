@@ -53,7 +53,10 @@ module Caracal
               xml.send 'w:name', { 'w:val' => s.style_name }
             end
             xml.send 'w:style', { 'w:styleId' => 'TableNormal', 'w:type' => 'table', 'w:default' => '1' } do
-              xml.send  'w:name', { 'w:val' => 'Table Normal'}
+              xml.send 'w:name', { 'w:val' => 'Table Normal'}
+              xml.send 'w:pPr' do
+                xml.send 'w:spacing', { 'w:lineRule' => 'auto', 'w:line' => (s.style_size * 20 * 1.15), 'w:before' => '0', 'w:after' => '0' }
+              end
             end
             default_id = s.style_id
             
@@ -125,7 +128,7 @@ module Caracal
         line    = style.style_line
         
         options = nil
-        if [top, bottom, spacing].compact.size > 0
+        if [top, bottom, line].compact.size > 0
           options               = {}
           options['w:lineRule'] = 'auto'
           options['w:before']   = top      unless top.nil?

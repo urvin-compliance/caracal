@@ -18,7 +18,7 @@ module Caracal
           
           def self.default_styles
             [
-              { id: 'Normal',   name: 'normal',    font: 'Arial',    size: 20, line: 300, color: '333333' },
+              { id: 'Normal',   name: 'normal',    font: 'Arial',    size: 20, line: 320, color: '333333' },
               { id: 'Heading1', name: 'heading 1', font: 'Palatino', size: 36, bottom: 120 },
               { id: 'Heading2', name: 'heading 2', font: 'Arial',    size: 26, top: 120, bottom: 160, bold: true },
               { id: 'Heading3', name: 'heading 3', font: 'Arial',    size: 24, top: 120, bottom: 160, bold: true, italic: true, color: '666666' },
