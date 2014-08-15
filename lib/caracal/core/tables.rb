@@ -29,12 +29,14 @@ module Caracal
             else
               raise Caracal::Errors::InvalidModelError, 'Table must be provided data for at least one cell.'
             end
+            model
           end
           
           
           #-------------------------------------------------------------
           # Private Methods
           #-------------------------------------------------------------
+          private
           
           # This method determines a default table width of the maximum 
           # available width, in the event that no explicit width is 

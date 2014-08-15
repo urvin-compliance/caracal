@@ -45,6 +45,7 @@ module Caracal
             else
               raise Caracal::Errors::InvalidModelError, 'style must define an :id and :name.'
             end
+            model
           end
           
           

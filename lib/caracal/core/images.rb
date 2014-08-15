@@ -26,6 +26,7 @@ module Caracal
             else
               raise Caracal::Errors::InvalidModelError, 'Images require an URL and positive size/margin values.'
             end
+            model
           end
           
         end

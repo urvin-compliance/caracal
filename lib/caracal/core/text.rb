@@ -28,6 +28,7 @@ module Caracal
             else
               raise Caracal::Errors::InvalidModelError, 'Paragraphs and headings, which delegate to the :p command, require at least one text string.'
             end
+            model
           end
           
           

@@ -55,6 +55,7 @@ module Caracal
             else
               raise Caracal::Errors::InvalidModelError, 'list style must define a :type, :level, :format, and :value.'
             end
+            model
           end
           
           

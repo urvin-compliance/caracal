@@ -16,7 +16,9 @@ module Caracal
           #-------------------------------------------------------------
           
           def br
-            contents << Caracal::Core::Models::LineBreakModel.new()
+            model     = Caracal::Core::Models::LineBreakModel.new()
+            contents << model
+            model
           end
           
         end

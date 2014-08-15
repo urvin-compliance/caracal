@@ -38,6 +38,7 @@ module Caracal
             else
               raise Caracal::Errors::InvalidModelError, 'font must specify the :name attribute.'
             end
+            model
           end
           
           

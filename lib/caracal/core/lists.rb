@@ -27,6 +27,7 @@ module Caracal
             else
               raise Caracal::Errors::InvalidModelError, 'Ordered lists require at least one list item.'
             end
+            model
           end
           
           def ul(**options, &block)
@@ -38,6 +39,7 @@ module Caracal
             else
               raise Caracal::Errors::InvalidModelError, 'Unordered lists require at least one list item.'
             end
+            model
           end
           
           

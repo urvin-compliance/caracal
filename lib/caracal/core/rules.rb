@@ -24,6 +24,7 @@ module Caracal
             else
               raise Caracal::Errors::InvalidModelError, 'Horizontal rules require non-zero :size and :spacing values.'
             end
+            model
           end
           
         end

@@ -16,7 +16,9 @@ module Caracal
           #-------------------------------------------------------------
           
           def page
-            contents << Caracal::Core::Models::PageBreakModel.new()
+            model     = Caracal::Core::Models::PageBreakModel.new()
+            contents << model
+            model
           end
           
         end
