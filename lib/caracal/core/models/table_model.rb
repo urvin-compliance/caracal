@@ -45,6 +45,8 @@ module Caracal
           @table_border_size    = DEFAULT_TABLE_BORDER_SIZE
           @table_border_spacing = DEFAULT_TABLE_BORDER_SPACING
           
+          data(options.delete(:data))
+          
           super options, &block
         end
         
@@ -71,6 +73,24 @@ module Caracal
         
         def rows
           @table_data || [[]]
+        end
+        
+        
+        #=============== STYLES ===============================
+        
+        # This method allows tables to be styled several cells 
+        # at a time.
+        #
+        # For example, this would style a header row.
+        #
+        # docx.table data do |t|
+        #   t.cell_style t.rows[0], background: '3366cc', color: 'ffffff', bold: true
+        # end
+        #
+        def cell_style(models, **options)
+          [models].flatten.each do |m|
+            m.apply_styles(options)
+          end  
         end
         
         

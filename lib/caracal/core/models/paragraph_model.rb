@@ -40,6 +40,38 @@ module Caracal
         # Public Instance Methods
         #-------------------------------------------------------------
     
+        #=============== STYLES ===============================
+        
+        # This method allows styles to be applied to this model 
+        # from a table cell.  It attempts to add the style
+        # first to the instance, and then to any runs that 
+        # respond to the method.
+        #
+        # We apply at the run level because, maddeningly, 
+        # paragraphs inside cells seem to ignore properties
+        # at the paragraph level. Weirdsies.
+        #
+        # In all cases, invalid options will simply be ignored.
+        #
+        def apply_styles(**options)
+          # first, try apply to self
+          options.each do |(k,v)|
+            send(k, v) if respond_to?(k)
+          end
+          
+          # then, try apply to runs
+          runs.each do |model|
+            if model.respond_to?(:apply_styles)
+              model.apply_styles(options)
+            else
+              options.each do |k,v|
+                model.send(k, v) if model.respond_to?(k)
+              end
+            end
+          end
+        end
+        
+        
         #=============== GETTERS ==============================
         
         # .runs
