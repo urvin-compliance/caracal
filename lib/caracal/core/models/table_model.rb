@@ -78,6 +78,15 @@ module Caracal
         
         #=============== STYLES ===============================
         
+        # This method sets explicit widths on all wrapped cells
+        # that do not already have widths asided.
+        #
+        def calculate_width(container_width)
+          width(container_width) unless table_width.to_i > 0
+          
+          cells.each { |c| c.calculate_width(default_cell_width) }
+        end
+        
         # This method allows tables to be styled several cells 
         # at a time.
         #
@@ -176,6 +185,13 @@ module Caracal
         # Private Instance Methods
         #-------------------------------------------------------------
         private
+        
+        def default_cell_width
+          cell_widths     = rows.first.map { |c| c.cell_width.to_i }
+          remaining_width = table_width - cell_widths.reduce(&:+).to_i
+          remaining_cols  = cols.size - cell_widths.reject { |w| w == 0 }.size
+          default_width   = (remaining_cols == 0) ? 0 : (remaining_width / remaining_cols)
+        end
         
         def option_keys
           k = []

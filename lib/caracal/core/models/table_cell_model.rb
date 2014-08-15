@@ -52,7 +52,7 @@ module Caracal
         
         # This method allows styles to be applied to this cell 
         # from the table level.  It attempts to add the style
-        # first to the instance, and then to any sub-modls that 
+        # first to the instance, and then to any sub-models that 
         # respond to the method.
         #
         # In all cases, invalid options will simply be ignored.
@@ -60,17 +60,37 @@ module Caracal
         def apply_styles(**options)
           # first, try apply to self
           options.each do |(k,v)|
-            send(k, v) if respond_to?(k)
+            if respond_to?(k)
+              send(k, v)        
+              options.delete(k)    # prevent top-level attrs from trickling down
+            end
           end
           
           # then, try apply to contents
           contents.each do |model|
-            if model.respond_to?(:apply_styles)
-              model.apply_styles(options)
-            else
+            options.each do |k,v|
+              model.send(k, v) if model.respond_to?(k)
+            end
+            
+            # finally, apply to runs. options do trickle down
+            # because paragraph-level styles don't seem to
+            # affect runs within tables. weirdsies.
+            if model.respond_to?(:runs)
               options.each do |k,v|
                 model.send(k, v) if model.respond_to?(k)
               end
+            end
+          end
+        end
+        
+        def calculate_width(default_width)
+          width(default_width) unless cell_width.to_i > 0
+          
+          container_width = cell_width - cell_margin_left - cell_margin_right
+          
+          contents.each do |model|
+            if model.respond_to?(:calculate_width)
+              model.calculate_width(container_width)    # will always be a TableModel
             end
           end
         end

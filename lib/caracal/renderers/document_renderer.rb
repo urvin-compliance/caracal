@@ -245,13 +245,6 @@ module Caracal
       end
       
       def render_table(xml, model)
-        first_row   = model.rows.first
-        cell_widths = first_row.map { |c| c.cell_width.to_i }.reject { |w| w == 0 }
-        
-        remaining_width = model.table_width - cell_widths.reduce(&:+).to_i
-        remaining_cols  = model.cols.size - cell_widths.size
-        default_width   = (remaining_cols == 0) ? 0 : (remaining_width / remaining_cols)
-        
         xml.send 'w:tbl' do
           xml.send 'w:tblPr' do
             xml.send 'w:tblStyle',   { 'w:val' => 'DefaultTable' }
@@ -277,13 +270,13 @@ module Caracal
             xml.send 'w:tblLook',   { 'w:val'  => '0600'  }
           end
           xml.send 'w:tblGrid' do
-            first_row.each do |tc|
-              xml.send 'w:gridCol', { 'w:w' => (tc.cell_width || default_width) }
+            model.rows.first.each do |tc|
+              xml.send 'w:gridCol', { 'w:w' => tc.cell_width }
             end
             xml.send 'w:tblGridChange', { 'w:id' => '0' } do
               xml.send 'w:tblGrid' do
-                first_row.each do |tc|
-                  xml.send 'w:gridCol', { 'w:w' => (tc.cell_width || default_width) }
+                model.rows.first.each do |tc|
+                  xml.send 'w:gridCol', { 'w:w' => tc.cell_width }
                 end
               end
             end
@@ -293,7 +286,7 @@ module Caracal
               row.each do |tc|
                 xml.send 'w:tc' do
                   xml.send 'tcPr' do
-                    xml.send 'w:shd', { 'w:fill' => tc.cell_background }  unless tc.cell_background.nil?
+                    xml.send 'w:shd', { 'w:fill' => tc.cell_background }
                     xml.send 'w:tcMar' do
                       %w(top left bottom right).each do |d|
                         xml.send "w:#{ d }", { 'w:w' => tc.send("cell_margin_#{ d }").to_f, 'w:type' => 'dxa' }
