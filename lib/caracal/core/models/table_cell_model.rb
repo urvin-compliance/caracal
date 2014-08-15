@@ -53,7 +53,7 @@ module Caracal
         # margin attrs
         [:top, :bottom, :left, :right].each do |m|
           define_method "cell_margin_#{ m }" do
-            cell_margins.send("margin_#{ m }")
+            v = cell_margins ? cell_margins.send("margin_#{ m }") : 0
           end
         end
         
@@ -82,7 +82,7 @@ module Caracal
         end
         
         
-        #=============== VALIDATION ==============================
+        #=============== VALIDATION ===========================
         
         def valid?
           contents.size > 0

@@ -22,8 +22,8 @@ require 'caracal/document'
 # and Caracal::Core::Models::TableCellModel.
 #
 Caracal::Core::Models::TableCellModel.class_eval do
-  include Caracal::Core::Breaks
   include Caracal::Core::Images
+  include Caracal::Core::LineBreaks
   include Caracal::Core::Lists
   include Caracal::Core::Rules
   include Caracal::Core::Tables

@@ -17,11 +17,11 @@ module Caracal
         #-------------------------------------------------------------
         
         # constants
-        const_set(:DEFAULT_TABLE_ALIGN,          :center)    # weirdly, works better w/ full width
-        const_set(:DEFAULT_TABLE_BORDER_COLOR,   'auto')
-        const_set(:DEFAULT_TABLE_BORDER_LINE,    :single)
-        const_set(:DEFAULT_TABLE_BORDER_SIZE,    0)          # units in 1/8 points
-        const_set(:DEFAULT_TABLE_BORDER_SPACING, 0)          
+        const_set(:DEFAULT_TABLE_ALIGN,             :center)    # weirdly, works better w/ full width
+        const_set(:DEFAULT_TABLE_BORDER_COLOR,      'auto')
+        const_set(:DEFAULT_TABLE_BORDER_LINE,       :single)
+        const_set(:DEFAULT_TABLE_BORDER_SIZE,       0)          # units in 1/8 points
+        const_set(:DEFAULT_TABLE_BORDER_SPACING,    0)          
         
         # accessors
         attr_reader :table_align
@@ -83,6 +83,10 @@ module Caracal
               model = send("table_border_#{ m }")
               value = (model) ? model.send("border_#{ attr }") : send("table_border_#{ attr }")
             end
+          end
+          define_method "table_border_#{ m }_total_size" do
+            model = send("table_border_#{ m }")
+            value = (model) ? model.total_size : table_border_size + (2 * table_border_spacing)
           end
         end
         

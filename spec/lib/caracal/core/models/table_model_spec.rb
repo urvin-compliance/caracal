@@ -81,13 +81,13 @@ describe Caracal::Core::Models::TableModel do
       
       # border attrs
       describe 'border attr tests' do
-        let(:model) { Caracal::Core::Models::BorderModel.new({ color: 'auto', line: :single, size: 8, spacing: 0 }) }
+        let(:model) { Caracal::Core::Models::BorderModel.new({ color: '000000', line: :double, size: 10, spacing: 2 }) }
         
         before do
           allow(subject).to receive(:table_border_color).and_return('auto')
           allow(subject).to receive(:table_border_line).and_return(:single)
           allow(subject).to receive(:table_border_size).and_return(8)
-          allow(subject).to receive(:table_border_spacing).and_return(0)
+          allow(subject).to receive(:table_border_spacing).and_return(1)
         end
         
         [:top, :bottom, :left, :right, :horizontal, :vertical].each do |m|
@@ -109,6 +109,24 @@ describe Caracal::Core::Models::TableModel do
                 
                 it { expect(actual).to eq subject.send("table_border_#{ attr }") }
               end
+            end
+          end
+          describe "table_border_#{ m }_total_size" do
+            let(:actual) { subject.send("table_border_#{ m }_total_size") }
+            
+            describe 'when detailed setting present' do
+              before do
+                allow(subject).to receive("table_border_#{ m }").and_return(model)
+              end
+              
+              it { expect(actual).to eq model.total_size }
+            end
+            describe 'when detailed setting not present' do
+              before do
+                allow(subject).to receive("table_border_#{ m }").and_return(nil)
+              end
+              
+              it { expect(actual).to eq subject.send("table_border_#{ m }_total_size") }
             end
           end
         end

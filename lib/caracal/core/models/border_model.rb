@@ -67,6 +67,10 @@ module Caracal
           self.class.formatted_type(border_type)
         end
         
+        def total_size
+          border_size + (2 * border_spacing)
+        end
+        
         
         #=============== SETTERS ==============================
         

@@ -71,6 +71,16 @@ describe Caracal::Core::Models::BorderModel do
       end
     end
     
+    # .total_size
+    describe '.total_size' do
+      before do
+        allow(subject).to receive(:border_size).and_return(10)
+        allow(subject).to receive(:border_spacing).and_return(2)
+      end
+      
+      it { expect(subject.total_size).to eq 14}
+    end
+    
     
     #=============== SETTERS ==========================
     
