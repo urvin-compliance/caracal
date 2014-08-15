@@ -26,14 +26,14 @@ module Caracal
         
         # initialization
         def initialize(**options, &block)
+          @cell_background = DEFAULT_CELL_BACKGROUND
+          @cell_margins    = DEFAULT_CELL_MARGINS
+          
           if content = options.delete(:content)
             p content, options.dup
           end
           
           super options, &block
-          
-          @cell_background ||= DEFAULT_CELL_BACKGROUND
-          @cell_margins    ||= DEFAULT_CELL_MARGINS
         end
         
         

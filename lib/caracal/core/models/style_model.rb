@@ -47,14 +47,14 @@ module Caracal
         
         # initialization
         def initialize(**options, &block)
-          super options, &block
-          
           @style_default = false
           @style_base    = DEFAULT_STYLE_BASE
           @style_next    = DEFAULT_STYLE_NEXT
           
+          super options, &block
+          
           if (style_id == DEFAULT_STYLE_BASE)
-            @style_default      = true
+            @style_default    ||= true
             @style_color      ||= DEFAULT_STYLE_COLOR
             @style_size       ||= DEFAULT_STYLE_SIZE
             @style_bold       ||= DEFAULT_STYLE_BOLD

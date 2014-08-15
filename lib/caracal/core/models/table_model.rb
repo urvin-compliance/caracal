@@ -39,13 +39,13 @@ module Caracal
         
         # initialization
         def initialize(**options, &block)
-          super options, &block
+          @table_align          = DEFAULT_TABLE_ALIGN
+          @table_border_color   = DEFAULT_TABLE_BORDER_COLOR
+          @table_border_line    = DEFAULT_TABLE_BORDER_LINE
+          @table_border_size    = DEFAULT_TABLE_BORDER_SIZE
+          @table_border_spacing = DEFAULT_TABLE_BORDER_SPACING
           
-          @table_align          ||= DEFAULT_TABLE_ALIGN
-          @table_border_color   ||= DEFAULT_TABLE_BORDER_COLOR
-          @table_border_line    ||= DEFAULT_TABLE_BORDER_LINE
-          @table_border_size    ||= DEFAULT_TABLE_BORDER_SIZE
-          @table_border_spacing ||= DEFAULT_TABLE_BORDER_SPACING
+          super options, &block
         end
         
         

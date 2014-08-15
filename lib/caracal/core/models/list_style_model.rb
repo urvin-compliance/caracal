@@ -17,6 +17,7 @@ module Caracal
         const_set(:DEFAULT_STYLE_LINE,    360)      # units in twips 
         const_set(:DEFAULT_STYLE_ALIGN,   :left)
         const_set(:DEFAULT_STYLE_START,   1)
+        const_set(:DEFAULT_STYLE_RESTART, true)
         
         # accessors
         attr_reader :style_type
@@ -27,16 +28,18 @@ module Caracal
         attr_reader :style_align
         attr_reader :style_left
         attr_reader :style_line
+        attr_reader :style_restart
         
         
         # initialization
         def initialize(**options, &block)
-          super options, &block
+          @style_align   = DEFAULT_STYLE_ALIGN
+          @style_left    = DEFAULT_STYLE_LEFT
+          @style_line    = DEFAULT_STYLE_LINE
+          @style_start   = DEFAULT_STYLE_START
+          @style_restart = DEFAULT_STYLE_RESTART
           
-          @style_align ||= DEFAULT_STYLE_ALIGN
-          @style_left  ||= DEFAULT_STYLE_LEFT
-          @style_line  ||= DEFAULT_STYLE_LINE
-          @style_start ||= DEFAULT_STYLE_START
+          super options, &block
         end
         
         
@@ -59,8 +62,19 @@ module Caracal
           self.class.formatted_type(style_type)
         end
         
+        def formatted_restart
+          v = style_restart ? '1' : '0'
+        end
+        
         
         #=============== SETTERS ==============================
+        
+        # booleans
+        [:restart].each do |m|
+          define_method "#{ m }" do |value|
+            instance_variable_set("@style_#{ m }", !!value)
+          end
+        end
         
         # integers
         [:level, :left, :line, :start].each do |m|

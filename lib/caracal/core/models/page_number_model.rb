@@ -24,10 +24,10 @@ module Caracal
         
         # initialization
         def initialize(**options, &block)
-          super options, &block
+          @page_number_show  = DEFAULT_PAGE_NUMBER_SHOW
+          @page_number_align = DEFAULT_PAGE_NUMBER_ALIGN
           
-          @page_number_show  ||= DEFAULT_PAGE_NUMBER_SHOW
-          @page_number_align ||= DEFAULT_PAGE_NUMBER_ALIGN
+          super options, &block
         end
         
         

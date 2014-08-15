@@ -167,12 +167,17 @@ module Caracal
       end
       
       def render_list(xml, model)
+        if model.list_level == 0
+          document.toplevel_lists << model
+          list_num = document.toplevel_lists.length   # lists use 1-based index
+        end
+        
         model.recursive_items.each do |item|
-          render_listitem(xml, item)
+          render_listitem(xml, item, list_num)
         end
       end
       
-      def render_listitem(xml, model)
+      def render_listitem(xml, model, list_num)
         ls      = document.find_list_style(model.list_item_type, model.list_item_level)
         hanging = ls.style_left.to_i - ls.style_line.to_i - 1
         
@@ -180,7 +185,7 @@ module Caracal
           xml.send 'w:pPr' do
             xml.send 'w:numPr' do
               xml.send 'w:ilvl', { 'w:val' => model.list_item_level }
-              xml.send 'w:numId', { 'w:val' => ls.formatted_type }
+              xml.send 'w:numId', { 'w:val' => list_num }
             end
             xml.send 'w:ind', { 'w:left' => ls.style_left, 'w:hanging' => hanging }
             xml.send 'w:contextualSpacing', { 'w:val' => '1' }

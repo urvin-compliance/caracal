@@ -35,15 +35,15 @@ module Caracal
         
         # initialization
         def initialize(**options, &block)
-          super options, &block
+          @image_width  = DEFAULT_IMAGE_WIDTH
+          @image_height = DEFAULT_IMAGE_HEIGHT
+          @image_align  = DEFAULT_IMAGE_ALIGN
+          @image_top    = DEFAULT_IMAGE_TOP
+          @image_bottom = DEFAULT_IMAGE_BOTTOM
+          @image_left   = DEFAULT_IMAGE_LEFT
+          @image_right  = DEFAULT_IMAGE_RIGHT
           
-          @image_width  ||= DEFAULT_IMAGE_WIDTH
-          @image_height ||= DEFAULT_IMAGE_HEIGHT
-          @image_align  ||= DEFAULT_IMAGE_ALIGN
-          @image_top    ||= DEFAULT_IMAGE_TOP
-          @image_bottom ||= DEFAULT_IMAGE_BOTTOM
-          @image_left   ||= DEFAULT_IMAGE_LEFT
-          @image_right  ||= DEFAULT_IMAGE_RIGHT
+          super options, &block
         end
         
         

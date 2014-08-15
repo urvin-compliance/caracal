@@ -27,10 +27,10 @@ module Caracal
         
         # initialization
         def initialize(**options, &block)
-          super options, &block
+          @list_type  = DEFAULT_LIST_TYPE
+          @list_level = DEFAULT_LIST_LEVEL
           
-          @list_type  ||= :DEFAULT_LIST_TYPE
-          @list_level ||= :DEFAULT_LIST_LEVEL
+          super options, &block
         end
         
         

@@ -16,6 +16,8 @@ module Caracal
           # Public Methods
           #-------------------------------------------------------------
           
+          #============== ATTRIBUTES ==========================
+          
           def ol(**options, &block)
             options.merge!({ type: :ordered, level: 0 })
             
@@ -36,6 +38,13 @@ module Caracal
             else
               raise Caracal::Errors::InvalidModelError, 'Unordered lists require at least one list item.'
             end
+          end
+          
+          
+          #============== GETTERS ==========================
+          
+          def toplevel_lists
+            @toplevel_lists ||= []
           end
           
         end

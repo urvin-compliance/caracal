@@ -24,10 +24,10 @@ module Caracal
         
         # initialization
         def initialize(**options, &block)
-          super options, &block
+          @page_width  = DEFAULT_PAGE_WIDTH
+          @page_height = DEFAULT_PAGE_HEIGHT
           
-          @page_width  ||= DEFAULT_PAGE_WIDTH
-          @page_height ||= DEFAULT_PAGE_HEIGHT
+          super options, &block
         end
         
         

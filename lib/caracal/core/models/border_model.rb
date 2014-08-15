@@ -30,13 +30,13 @@ module Caracal
         
         # initialization
         def initialize(**options, &block)
-          super options, &block
+          @border_color   = DEFAULT_BORDER_COLOR
+          @border_line    = DEFAULT_BORDER_LINE
+          @border_size    = DEFAULT_BORDER_SIZE
+          @border_spacing = DEFAULT_BORDER_SPACING
+          @border_type    = DEFAULT_BORDER_TYPE
           
-          @border_color   ||= DEFAULT_BORDER_COLOR
-          @border_line    ||= DEFAULT_BORDER_LINE
-          @border_size    ||= DEFAULT_BORDER_SIZE
-          @border_spacing ||= DEFAULT_BORDER_SPACING
-          @border_type    ||= DEFAULT_BORDER_TYPE
+          super options, &block
         end
         
         

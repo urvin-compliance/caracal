@@ -29,12 +29,12 @@ module Caracal
         
         # initialization
         def initialize(**options, &block)
-          super options, &block
+          @margin_top    = DEFAULT_MARGIN_TOP
+          @margin_bottom = DEFAULT_MARGIN_BOTTOM
+          @margin_left   = DEFAULT_MARGIN_LEFT
+          @margin_right  = DEFAULT_MARGIN_RIGHT
           
-          @margin_top    ||= DEFAULT_MARGIN_TOP
-          @margin_bottom ||= DEFAULT_MARGIN_BOTTOM
-          @margin_left   ||= DEFAULT_MARGIN_LEFT
-          @margin_right  ||= DEFAULT_MARGIN_RIGHT
+          super options, &block
         end
         
         
