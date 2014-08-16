@@ -1,4 +1,6 @@
 # Caracal
+[![Build Status](http://img.shields.io/travis/trade-informatics/caracal.svg?style=flat)](https://travis-ci.org/trade-informatics/caracal)
+[![Gem Version](http://img.shields.io/gem/v/caracal.svg?style=flat)](https://rubygems.org/gems/caracal)
 
 Caracal is a ruby library for dynamically creating professional-quality Microsoft Word documents (.docx) using an HTML-style syntax.
 
