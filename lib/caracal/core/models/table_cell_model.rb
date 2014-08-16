@@ -76,7 +76,7 @@ module Caracal
             # because paragraph-level styles don't seem to
             # affect runs within tables. weirdsies.
             if model.respond_to?(:runs)
-              runs.each do |run|
+              model.runs.each do |run|
                 options.each do |k,v|
                   run.send(k, v) if run.respond_to?(k)
                 end
