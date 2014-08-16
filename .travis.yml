@@ -3,18 +3,20 @@ cache: bundler
 rvm:
   - 2.0.0
   - 2.1.0
-  - rbx-2.0.0
-  - rbx-2.1.0
+  - 2.1.1
+  - rbx-2
+  - rbx
   - ruby-head
 matrix:
   include:
     - rvm: jruby
       env: JRUBY_OPTS="--2.0 --debug"
-    - rvm: jruby-head
+    - rvm: jruby
       env: JRUBY_OPTS="--2.1 --debug"
     - rvm: jruby-head
       env: JRUBY_OPTS="--debug"
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-head
+    - rvm: rbx
   fast_finish: true
