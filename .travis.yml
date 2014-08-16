@@ -1,0 +1,18 @@
+language: ruby
+cache: bundler
+rvm:
+  - 2.0.0
+  - 2.1.0
+  - 2.1.1
+  - rbx-2
+  - ruby-head
+matrix:
+  include:
+    - rvm: jruby-19mode
+      env: JRUBY_OPTS="$JRUBY_OPTS --debug"
+    - rvm: jruby-head
+      env: JRUBY_OPTS="$JRUBY_OPTS --debug"
+  allow_failures:
+    - rvm: ruby-head
+    - rvm: jruby-head
+  fast_finish: true
