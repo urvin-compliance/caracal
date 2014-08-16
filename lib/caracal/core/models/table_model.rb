@@ -45,8 +45,6 @@ module Caracal
           @table_border_size    = DEFAULT_TABLE_BORDER_SIZE
           @table_border_spacing = DEFAULT_TABLE_BORDER_SPACING
           
-          data(options.delete(:data))
-          
           super options, &block
         end
         

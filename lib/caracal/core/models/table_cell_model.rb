@@ -60,11 +60,11 @@ module Caracal
         def apply_styles(**options)
           # first, try apply to self
           options.each do |(k,v)|
-            if respond_to?(k)
-              send(k, v)        
-              options.delete(k)    # prevent top-level attrs from trickling down
-            end
+            send(k, v)  if respond_to?(k)
           end
+          
+          # prevent top-level attrs from trickling down
+          options.delete_if { |(k,v)| option_keys.include?(k) }    
           
           # then, try apply to contents
           contents.each do |model|

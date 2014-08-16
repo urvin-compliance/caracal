@@ -19,33 +19,34 @@ module Caracal
       def to_xml
         builder = ::Nokogiri::XML::Builder.with(declaration_xml) do |xml|
           xml.send 'w:numbering', root_options do
-            [:unordered, :ordered].each do |type|
-              type_id = Caracal::Core::Models::ListStyleModel.formatted_type(type) 
-              styles  = document.list_styles.select { |s| s.style_type == type }.sort_by(&:style_level)
-
-              xml.send 'w:abstractNum', { 'w:abstractNumId' => type_id } do
-                styles.each do |s|
-                  xml.send 'w:lvl', { 'w:ilvl' => s.style_level } do
-                    xml.send 'w:start',      { 'w:val' => s.style_start }
-                    xml.send 'w:numFmt',     { 'w:val' => s.style_format }
-                    xml.send 'w:lvlRestart', { 'w:val' => s.formatted_restart }
-                    xml.send 'w:lvlText',    { 'w:val' => s.style_value }
-                    xml.send 'w:lvlJc',      { 'w:val' => s.style_align }
-                    xml.send 'w:pPr' do
-                      xml.send 'w:ind', { 'w:left' => s.style_left, 'w:firstLine' => s.style_line }
-                    end
-                    xml.send 'w:rPr' do
-                      xml.send 'w:u', { 'w:val' => 'none' }
+            
+            # add abstract definitions
+            document.toplevel_lists.each_with_index do |model, i|
+              xml.send 'w:abstractNum', { 'w:abstractNumId' => i + 1 } do
+                model.level_map.each do |(level, type)|
+                  if s = document.find_list_style(type, level)
+                    xml.send 'w:lvl', { 'w:ilvl' => s.style_level } do
+                      xml.send 'w:start',      { 'w:val' => s.style_start }
+                      xml.send 'w:numFmt',     { 'w:val' => s.style_format }
+                      xml.send 'w:lvlRestart', { 'w:val' => s.formatted_restart }
+                      xml.send 'w:lvlText',    { 'w:val' => s.style_value }
+                      xml.send 'w:lvlJc',      { 'w:val' => s.style_align }
+                      xml.send 'w:pPr' do
+                        xml.send 'w:ind', { 'w:left' => s.style_left, 'w:firstLine' => s.style_line }
+                      end
+                      xml.send 'w:rPr' do
+                        xml.send 'w:u', { 'w:val' => 'none' }
+                      end
                     end
                   end
                 end
               end
             end
             
+            # bind individual tables to abstract definitions
             document.toplevel_lists.each_with_index do |model, i|
               xml.send 'w:num', { 'w:numId' => i + 1 } do
-                val = Caracal::Core::Models::ListStyleModel.formatted_type(model.list_type)
-                xml.send 'w:abstractNumId', { 'w:val' => val }
+                xml.send 'w:abstractNumId', { 'w:val' => i + 1 }
               end
             end
           end

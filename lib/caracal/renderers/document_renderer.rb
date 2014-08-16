@@ -169,7 +169,7 @@ module Caracal
       def render_list(xml, model)
         if model.list_level == 0
           document.toplevel_lists << model
-          list_num = document.toplevel_lists.length   # lists use 1-based index
+          list_num = document.toplevel_lists.length   # numbering uses 1-based index
         end
         
         model.recursive_items.each do |item|

@@ -47,6 +47,16 @@ module Caracal
           @items ||= []
         end
         
+        # This method returns a hash, where the keys are levels
+        # and the values are the list type at that level.
+        #
+        def level_map
+          recursive_items.reduce({}) do |hash, item|
+            hash[item.list_item_level] = item.list_item_type
+            hash
+          end
+        end
+      
         # This method returns a flattened array containing every 
         # item within this list's tree.
         #
