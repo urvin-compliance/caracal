@@ -14,8 +14,6 @@ matrix:
       env: JRUBY_OPTS="--1.9 --debug"
     - rvm: jruby
       env: JRUBY_OPTS="--2.0 --debug"
-    - rvm: jruby
-      env: JRUBY_OPTS="--2.1 --debug"
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-head
