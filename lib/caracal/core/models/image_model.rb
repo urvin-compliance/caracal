@@ -34,7 +34,7 @@ module Caracal
         
         
         # initialization
-        def initialize(**options, &block)
+        def initialize(options = {}, &block)
           @image_width  = DEFAULT_IMAGE_WIDTH
           @image_height = DEFAULT_IMAGE_HEIGHT
           @image_align  = DEFAULT_IMAGE_ALIGN

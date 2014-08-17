@@ -38,7 +38,7 @@ module Caracal
         attr_reader :table_border_vertical    # returns border model
         
         # initialization
-        def initialize(**options, &block)
+        def initialize(options = {}, &block)
           @table_align          = DEFAULT_TABLE_ALIGN
           @table_border_color   = DEFAULT_TABLE_BORDER_COLOR
           @table_border_line    = DEFAULT_TABLE_BORDER_LINE
@@ -94,7 +94,7 @@ module Caracal
         #   t.cell_style t.rows[0], background: '3366cc', color: 'ffffff', bold: true
         # end
         #
-        def cell_style(models, **options)
+        def cell_style(models, options = {})
           [models].flatten.each do |m|
             m.apply_styles(options)
           end  
@@ -129,7 +129,7 @@ module Caracal
         
         # models
         [:top, :bottom, :left, :right, :horizontal, :vertical].each do |m|
-          define_method "border_#{ m }" do |**options, &block|
+          define_method "border_#{ m }" do |options = {}, &block|
             options.merge!({ type: m })
             instance_variable_set("@table_border_#{ m }", Caracal::Core::Models::BorderModel.new(options, &block))
           end

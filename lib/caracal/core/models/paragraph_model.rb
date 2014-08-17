@@ -27,7 +27,7 @@ module Caracal
         attr_reader :paragraph_underline
         
         # initialization
-        def initialize(**options, &block)
+        def initialize(options = {}, &block)
           if content = options.delete(:content)
             text content, options.dup
           end
@@ -93,9 +93,9 @@ module Caracal
         #=============== SUB-METHODS ===========================
         
         # .link
-        def link(*args, **options, &block)
-          options.merge!({ content: args[0] }) unless args[0].nil?
-          options.merge!({ href:    args[1] }) unless args[1].nil?
+        def link(content = nil, href = nil, options = {}, &block)
+          options.merge!({ content: content }) if content
+          options.merge!({ href:    href    }) if href
           
           model = Caracal::Core::Models::LinkModel.new(options, &block)
           if model.valid?
@@ -106,8 +106,8 @@ module Caracal
         end
         
         # .text
-        def text(*args, **options, &block)
-          options.merge!({ content: args[0] }) unless args[0].nil?
+        def text(content, options = {}, &block)
+          options.merge!({ content: content }) if content
           
           model = Caracal::Core::Models::TextModel.new(options, &block)
           if model.valid?

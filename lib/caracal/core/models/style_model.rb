@@ -46,7 +46,7 @@ module Caracal
     
         
         # initialization
-        def initialize(**options, &block)
+        def initialize(options = {}, &block)
           @style_default = false
           @style_base    = DEFAULT_STYLE_BASE
           @style_next    = DEFAULT_STYLE_NEXT

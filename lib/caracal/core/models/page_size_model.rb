@@ -23,7 +23,7 @@ module Caracal
         attr_reader :page_height
         
         # initialization
-        def initialize(**options, &block)
+        def initialize(options = {}, &block)
           @page_width  = DEFAULT_PAGE_WIDTH
           @page_height = DEFAULT_PAGE_HEIGHT
           

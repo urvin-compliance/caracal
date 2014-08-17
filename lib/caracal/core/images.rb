@@ -16,9 +16,8 @@ module Caracal
           # Public Methods
           #-------------------------------------------------------------
           
-          def img(*text, **options, &block)
-            text.flatten!            
-            options.merge!( { url: text[0] })  unless text[0].nil?
+          def img(url, options={}, &block)
+            options.merge!({ url: url }) if url
             
             model = Caracal::Core::Models::ImageModel.new(options, &block)
             if model.valid?

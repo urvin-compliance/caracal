@@ -16,7 +16,7 @@ module Caracal
           # Public Methods
           #-------------------------------------------------------------
           
-          def table(data, **options, &block)
+          def table(data, options = {}, &block)
             options.merge!({ data: data })
             
             model = Caracal::Core::Models::TableModel.new(options, &block)

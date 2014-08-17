@@ -25,7 +25,7 @@ module Caracal
         attr_reader :cell_margins
         
         # initialization
-        def initialize(**options, &block)
+        def initialize(options = {}, &block)
           @cell_background = DEFAULT_CELL_BACKGROUND
           @cell_margins    = DEFAULT_CELL_MARGINS
           
@@ -57,7 +57,7 @@ module Caracal
         #
         # In all cases, invalid options will simply be ignored.
         #
-        def apply_styles(**options)
+        def apply_styles(options = {})
           # first, try apply to self
           options.each do |(k,v)|
             send(k, v)  if respond_to?(k)
@@ -119,7 +119,7 @@ module Caracal
         
         # models
         [:margins].each do |m|
-          define_method "#{ m }" do |**options, &block|
+          define_method "#{ m }" do |options = {}, &block|
             instance_variable_set("@cell_#{ m }", Caracal::Core::Models::MarginModel.new(options, &block))
           end
         end

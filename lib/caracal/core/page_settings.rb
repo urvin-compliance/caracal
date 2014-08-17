@@ -33,7 +33,7 @@ module Caracal
           # This method controls the physical margins of the printed page. Defaults 
           # to 1in on each side.
           #
-          def page_margins(**options, &block)
+          def page_margins(options = {}, &block)
             model = Caracal::Core::Models::MarginModel.new(options, &block)
 
             if model.valid?
@@ -53,7 +53,7 @@ module Caracal
           # This method controls the physical width and height of the printed page. Defaults 
           # to US standard A4 portrait size.
           #
-          def page_size(**options, &block)
+          def page_size(options = {}, &block)
             model = Caracal::Core::Models::PageSizeModel.new(options, &block)
             
             if model.valid?
