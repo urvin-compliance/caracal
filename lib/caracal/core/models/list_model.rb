@@ -91,8 +91,8 @@ module Caracal
         #=============== SUB-METHODS ===========================
         
         # .li
-        def li(args, options = {}, &block)
-          options.merge!({ content: args[0]    }) unless args[0].nil?
+        def li(content = nil, options = {}, &block)
+          options.merge!({ content: content }) if content
           options.merge!({ type:    list_type  })
           options.merge!({ level:   list_level })
           

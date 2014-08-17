@@ -106,7 +106,7 @@ module Caracal
         end
         
         # .text
-        def text(content, options = {}, &block)
+        def text(content = nil, options = {}, &block)
           options.merge!({ content: content }) if content
           
           model = Caracal::Core::Models::TextModel.new(options, &block)
