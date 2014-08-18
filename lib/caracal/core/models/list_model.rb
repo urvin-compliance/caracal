@@ -91,8 +91,9 @@ module Caracal
         #=============== SUB-METHODS ===========================
         
         # .li
-        def li(content = nil, options = {}, &block)
-          options.merge!({ content: content }) if content
+        def li(*args, &block)
+          options = args.last.is_a?(Hash) ? args.pop : {}
+          options.merge!({ content: args[0] }) if args[0]
           options.merge!({ type:    list_type  })
           options.merge!({ level:   list_level })
           
