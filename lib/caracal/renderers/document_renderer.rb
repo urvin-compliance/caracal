@@ -66,20 +66,24 @@ module Caracal
       # This method renders a standard node of run properties based on the 
       # model's attributes.
       #
-      def render_run_attributes(xml, model)
+      def render_run_attributes(xml, model, paragraph_level=false)
         if model.respond_to? :run_attributes
           attrs = model.run_attributes.delete_if { |k, v| v.nil? } 
-        
-          xml.send 'w:rPr' do
-            unless attrs.empty?
-              xml.send 'w:rStyle', { 'w:val' => attrs[:style] }                            unless attrs[:style].nil?
-              xml.send 'w:color',  { 'w:val' => attrs[:color] }                            unless attrs[:color].nil?
-              xml.send 'w:sz',     { 'w:val' => attrs[:size]  }                            unless attrs[:size].nil?
-              xml.send 'w:b',      { 'w:val' => (attrs[:bold] ? '1' : '0') }               unless attrs[:bold].nil?
-              xml.send 'w:i',      { 'w:val' => (attrs[:italic] ? '1' : '0') }             unless attrs[:italic].nil?
-              xml.send 'w:u',      { 'w:val' => (attrs[:underline] ? 'single' : 'none') }  unless attrs[:underline].nil?
+          
+          if paragraph_level && attrs.empty?
+            # skip
+          else
+            xml.send 'w:rPr' do
+              unless attrs.empty?
+                xml.send 'w:rStyle', { 'w:val' => attrs[:style] }                            unless attrs[:style].nil?
+                xml.send 'w:color',  { 'w:val' => attrs[:color] }                            unless attrs[:color].nil?
+                xml.send 'w:sz',     { 'w:val' => attrs[:size]  }                            unless attrs[:size].nil?
+                xml.send 'w:b',      { 'w:val' => (attrs[:bold] ? '1' : '0') }               unless attrs[:bold].nil?
+                xml.send 'w:i',      { 'w:val' => (attrs[:italic] ? '1' : '0') }             unless attrs[:italic].nil?
+                xml.send 'w:u',      { 'w:val' => (attrs[:underline] ? 'single' : 'none') }  unless attrs[:underline].nil?
+              end
+              xml.send 'w:rtl',    { 'w:val' => '0' }
             end
-            xml.send 'w:rtl',    { 'w:val' => '0' }
           end
         end
       end
@@ -160,7 +164,7 @@ module Caracal
         
         xml.send 'w:hyperlink', { 'r:id' => rel.formatted_id } do
           xml.send 'w:r', run_options do
-            render_run_attributes(xml, model)
+            render_run_attributes(xml, model, false)
             xml.send 'w:t', { 'xml:space' => 'preserve' }, model.link_content
           end
         end
@@ -216,7 +220,7 @@ module Caracal
             xml.send 'w:pStyle',            { 'w:val' => model.paragraph_style }  unless model.paragraph_style.nil?
             xml.send 'w:contextualSpacing', { 'w:val' => '0' }
             xml.send 'w:jc',                { 'w:val' => model.paragraph_align }  unless model.paragraph_align.nil?
-            render_run_attributes(xml, model)
+            render_run_attributes(xml, model, true)
           end
           model.runs.each do |run|
             method = render_method_for_model(run)
@@ -239,12 +243,16 @@ module Caracal
       
       def render_text(xml, model)
         xml.send 'w:r', run_options do
-          render_run_attributes(xml, model)
+          render_run_attributes(xml, model, false)
           xml.send 'w:t', { 'xml:space' => 'preserve' }, model.text_content
         end
       end
       
       def render_table(xml, model)
+        borders = %w(top left bottom right horizontal vertical).select do |m|
+          model.send("table_border_#{ m }_size") > 0
+        end
+        
         xml.send 'w:tbl' do
           xml.send 'w:tblPr' do
             xml.send 'w:tblStyle',   { 'w:val' => 'DefaultTable' }
@@ -252,14 +260,13 @@ module Caracal
             xml.send 'w:tblW',       { 'w:w'   => model.table_width.to_f, 'w:type' => 'dxa' }
             xml.send 'w:tblInd',     { 'w:w'   => '0.0', 'w:type' => 'dxa' }
             xml.send 'w:jc',         { 'w:val' => model.table_align }
-            xml.send 'w:tblBorders' do
-              %w(top left bottom right horizontal vertical).each do |m|
-                size = model.send("table_border_#{ m }_size")
-                if size > 0
+            unless borders.empty?
+              xml.send 'w:tblBorders' do
+                borders.each do |m|
                   options = {
                     'w:color' => model.send("table_border_#{ m }_color"),
                     'w:val'   => model.send("table_border_#{ m }_line"),
-                    'w:sz'    => size,
+                    'w:sz'    => model.send("table_border_#{ m }_size"),
                     'w:space' => model.send("table_border_#{ m }_spacing")
                   }
                   xml.send "w:#{ Caracal::Core::Models::BorderModel.formatted_type(m) }", options
@@ -302,6 +309,10 @@ module Caracal
             end
           end
         end
+        
+        # don't know why this is needed, but it prevents a 
+        # rendering error.
+        render_linebreak(xml, Caracal::Core::Models::LineBreakModel.new)
       end      
       
       

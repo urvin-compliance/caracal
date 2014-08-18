@@ -57,7 +57,11 @@ module Caracal
         #
         # In all cases, invalid options will simply be ignored.
         #
-        def apply_styles(options = {})
+        def apply_styles(opts = {})
+          # make dup of options so we don't
+          # harm any siblings
+          options = opts.dup
+          
           # first, try apply to self
           options.each do |(k,v)|
             send(k, v)  if respond_to?(k)
