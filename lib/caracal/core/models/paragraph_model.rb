@@ -93,9 +93,10 @@ module Caracal
         #=============== SUB-METHODS ===========================
         
         # .link
-        def link(content = nil, href = nil, options = {}, &block)
-          options.merge!({ content: content }) if content
-          options.merge!({ href:    href    }) if href
+        def link(*args, &block)
+          options = args.last.is_a?(Hash) ? args.pop : {}
+          options.merge!({ content: args[0] }) if args[0]
+          options.merge!({ href:    args[1]    }) if args[1]
           
           model = Caracal::Core::Models::LinkModel.new(options, &block)
           if model.valid?
@@ -106,8 +107,9 @@ module Caracal
         end
         
         # .text
-        def text(content = nil, options = {}, &block)
-          options.merge!({ content: content }) if content
+        def text(*args, &block)
+          options = args.last.is_a?(Hash) ? args.pop : {}
+          options.merge!({ content: args[0] }) if args[0]
           
           model = Caracal::Core::Models::TextModel.new(options, &block)
           if model.valid?
