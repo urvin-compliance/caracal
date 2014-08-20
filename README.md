@@ -1,32 +1,53 @@
 # Caracal
+
 [![Build Status](http://img.shields.io/travis/trade-informatics/caracal.svg?style=flat)](https://travis-ci.org/trade-informatics/caracal)
 [![Gem Version](http://img.shields.io/gem/v/caracal.svg?style=flat)](https://rubygems.org/gems/caracal)
 
-Caracal is a ruby library for dynamically creating professional-quality Microsoft Word documents (.docx) using an HTML-style syntax.
-
-
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'caracal'
-```
-
-Then execute:
-
-```bash
-bundle install
-```
 
 ## Overview
 
-Many people don't know that .docx files are little more than a zipped collection of XML documents that follow the OfficeOpen XML (OpenXML or OOXML) standard.  This means constructing a .docx file from scratch actually requires the creation of several files.  Caracal abstracts users from this process by providing a simple set of Ruby commands and HTML-style syntax for generating Word content.
+Caracal is a ruby library for dynamically creating professional-quality Microsoft Word documents using an HTML-style syntax.
+
+Caracal is not a magical HTML to Word translator. Instead, it is a markup language for generating Office Open XML (OOXML). Programmers create Word documents by issuing a series of simple commands against a document object. When the document is rendered, Caracal takes care of translating those Ruby commands into the requisite OOXML. At its core, the library is essentially a templating engine for the :docx format.
+
+Or, said differently, if you use [Prawn](https://github.com/prawnpdf/prawn) for PDF generation, you'll probably like Caracal. Only you'll probably like it better. :)
+
+
+### Why is Caracal Needed?
+
+We created Caracal to satisfy a genuine business requirement.  We were working on a system that produced a periodic PDF report and our clients asked if the report could instead be generated as a Word document, which would allow them to perform edits before passing the report along to their clients.
+
+Now, as you may have noticed, the Ruby community has never exactly been known for its enthusiastic support of Microsoft standards. So it might not surprise you to learn that the existing options on Rubygems for Word document generation were limited.  Those libraries, by and large, fell into a couple of categories:
+
+* **HTML to Word Convertors**  
+We understand the motivating idea here (two output streams from one set of instructions), but the reality is the number of possible permutations of nested HTML tags is simply too great for this strategy to ever work for anything other than the simplest kinds of documents. Most of these libraries rely on a number of undocumented assumptions about the structure of your HTML (which undermines the whole value proposition of a convertor) and fail to support basic features of a professional-quality Word document (e.g., images, lists, tables, etc). The remaining libraries simply did not work at all.
+
+* **Weekend Projects**  
+We also found a number of inactive projects that appeared to be experiments in the space. Obviously, these libraries were out of the question for a commercial product.
+
+What we wanted was a Prawn-style library for the :docx format. In the absence of an active project organized along those lines, we decided to write one.
+
+
+### Design
+
+Caracal is designed to separate the process of parsing and collecting rendering instructions from the process of rendering itself.
+
+First, the library consumes all programmer instructions and organizes several collections of data models that capture those instructions. These collections are ordered and nested exactly as the instructions we given. Each model is contains all the data required to render it and is responsible for declaring itself valid or invalid.
+
+***Note**: Some instructions create more than one model. For example, the `img` method both appends both an `ImageModel` to the main contents collection and determines whether or not a new `RelationshipModel` should be added to the relationships collection.*
+
+Only after all the programmer instructions have been parsed does the document attempt to render the collection to XML. Generally speaking renderers simply convert model data to markup that conforms to the OOXML specification.  But, this strategy gives the rendering process a tremendous amount of flexibility in the rare cases where renderers combine data from more than one collection.
+
+
+### File Structure
+
+You may not know that .docx files are simply a zipped collection of XML documents that follow the OOXML standard. (We didn't, in any event.) This means constructing a .docx file from scratch actually requires the creation of several files.  Caracal abstracts users from this process entirely.
 
 For each Caracal request, the following document structure will be created and zipped into the final output file:
 
     example.docx
       |- _rels
+      	|- .rels
       |- docProps
         |- app.xml
         |- core.xml
@@ -44,6 +65,7 @@ For each Caracal request, the following document structure will be created and z
         |- settings.xml
         |- styles.xml
       |- [Content_Types].xml
+
 
 ### File Descriptions
 
@@ -86,9 +108,9 @@ Defines all paragraph and table styles used through the document.  Caracal adds 
 Pairs extensions and XML files with schema content types so Word can parse them correctly. *This file is generated automatically by the library based on other user directives.*
 
 
-## Units
+### Units
 
-OpenXML uses a few basic units.
+OpenXML properties are specified in several different units, depending on which attribute is being set.
 
 **Points**  
 Most spacing declarations are measured in full points.
@@ -108,14 +130,61 @@ In Word documents, pixels are equivalent to points.
 **EMUs (English Metric Unit)**  
 EMUs are a virtual unit designed to facilitate the smooth conversion between inches, milliimeters, and pixels for images and vector graphics.  1in == 914400 EMUs == 72dpi x 100 x 254.
 
+At present, Caracal expects values to be specified in whichever unit the OOXML requires. This is admittedly difficult for new Caracal users. Eventually, we'll probably implement a utility object under the hood to convert user-specified units into the format expected by OOXML. 
 
-## Syntax
+
+### Syntax Flexibility
+
+Generally speaking, Caracal commands will accept instructions via any combination of a parameters hash and/or a block.  For example, all of the folowing commands are equivalent.
+
+```ruby
+docx.style 'special', size: 24, bold: true
+
+docx.style 'special', size: 24 do
+  bold true
+end
+
+docx.style 'special' do
+  size 24
+  bold true
+end
+```
+
+Parameter options are always evaluated before block options. This means if the same option is provided in the parameter hash and in the block, the value in the block will overwrite the value from the parameter hash. Tread carefully.
+
+
+### Validations
+
+All Caracal models perform basic validations on their attributes, but this is, without question, the least sophisticated part of the library at present.
+
+In forthcoming versions of Caracal, we'll be looking to expand the `InvalidModelError` class to provide broader error reporting abilities across the entire library.
+
+
+## Installation
+
+Add this line to your application's Gemfile:
+
+```ruby
+gem 'caracal'
+```
+
+Then execute:
+
+```bash
+bundle install
+```
+
+
+## Commands
 
 In the following examples, the variable `docx` is assumed to be an instance of Caracal::Document.
 
 ```ruby
 docx = Caracal::Document.new('example_document.docx')
 ```
+
+Most code examples show optional values being passed in a block.  As noted above, you may also pass these options as a parameter hash or as a combination of a parameter hash and a block.
+
 
 ### File Name
 
@@ -124,7 +193,7 @@ The final output document's title can be set at initialization or via the `file_
 ```ruby
 docx = Caracal::Document.new('example_document.docx')
 
-docx.file_name 'example_document.docx'
+docx.file_name 'different_name.docx'
 ```
 
 The current document name can be returned by invoking the `name` method:
@@ -135,11 +204,12 @@ docx.name    # => 'example_document.docx'
 
 *The default file name is caracal.docx.*
 
+
 ### Page Size
 
 Page dimensions can be set using the `page_size` method.  The method accepts two parameters for controlling the width and height of the document.
 
-*Pages default to the United States standard A4, portrait dimensions (8.5in x 11in).*
+*Page size defaults to United States standard A4, portrait dimensions (8.5in x 11in).*
 
 ```ruby
 # options via block
