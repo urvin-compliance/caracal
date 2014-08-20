@@ -70,7 +70,7 @@ Caracal is designed to separate the process of parsing and collecting rendering 
 
 First, the library consumes all programmer instructions and organizes several collections of data models that capture those instructions. These collections are ordered and nested exactly as the instructions we given. Each model contains all the data required to render it and is responsible for declaring itself valid or invalid.
 
-*Note: Some instructions create more than one model. For example, the `img` method both appends both an `ImageModel` to the main contents collection and determines whether or not a new `RelationshipModel` should be added to the relationships collection.*
+*Note: Some instructions create more than one model. For example, the `img` method both appends an `ImageModel` to the main contents collection and determines whether or not a new `RelationshipModel` should be added to the relationships collection.*
 
 Only after all the programmer instructions have been parsed does the document attempt to render the data to XML. This strategy gives the rendering process a tremendous amount of flexibility in the rare cases where renderers combine data from more than one collection.
 
@@ -358,8 +358,13 @@ docx.p 'Sample text.'
 docx.p 'Sample text.', style: 'custom_style'
 
 docx.p 'Sample text.' do
-  color 'cc0000'
-  bold  true
+  style     'custom_style'    # sets the paragraph style. generally used at the exclusion of other attributes.
+  align     :left             # sewts the alignment. accepts :left, :center, :right, and :both.
+  color     '333333'          # sets the font color.
+  size      32                # sets the font size. units in 1/2 points.
+  bold      true              # sets whether or not to render the text with a bold weight.
+  italic    false             # sets whether or not render the text in italic style.
+  underline false             # sets whether or not to underline the text.
 end
 ```
 
