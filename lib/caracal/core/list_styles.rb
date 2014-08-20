@@ -48,7 +48,7 @@ module Caracal
           
           #============== ATTRIBUTES ==========================
           
-          def list_style(options = {}, &block)
+          def list_style(options={}, &block)
             model = Caracal::Core::Models::ListStyleModel.new(options, &block)
             
             if model.valid?

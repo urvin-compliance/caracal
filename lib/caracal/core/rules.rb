@@ -16,7 +16,7 @@ module Caracal
           # Public Methods
           #-------------------------------------------------------------
           
-          def hr(options = {}, &block)
+          def hr(options={}, &block)
             model = Caracal::Core::Models::RuleModel.new(options, &block)
             
             if model.valid?

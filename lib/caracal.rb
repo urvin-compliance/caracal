@@ -7,6 +7,7 @@ require 'tilt'
 
 # odds & ends
 require 'caracal/errors'
+require 'caracal/utilities'
 require 'caracal/version'
 
 # document

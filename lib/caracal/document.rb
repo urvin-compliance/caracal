@@ -59,16 +59,6 @@ module Caracal
     # Public Class Methods
     #-------------------------------------------------------------
     
-    #============ GETTERS ===================================
-    
-    # This method returns an array of models which constitute the 
-    # set of instructions for producing the document content.
-    #
-    def contents
-      @contents ||= []
-    end
-    
-    
     #============ OUTPUT ====================================
     
     # This method renders a new Word document and returns it as a
@@ -117,6 +107,16 @@ module Caracal
       if block_given?
         (block.arity < 1) ? instance_eval(&block) : block[self]
       end
+    end
+    
+    
+    #============ GETTERS ===================================
+    
+    # This method returns an array of models which constitute the 
+    # set of instructions for producing the document content.
+    #
+    def contents
+      @contents ||= []
     end
     
     

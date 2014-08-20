@@ -26,7 +26,7 @@ module Caracal
         
         
         # initialization
-        def initialize(options = {}, &block)
+        def initialize(options={}, &block)
           @list_type  = DEFAULT_LIST_TYPE
           @list_level = DEFAULT_LIST_LEVEL
           
@@ -91,8 +91,9 @@ module Caracal
         #=============== SUB-METHODS ===========================
         
         # .li
-        def li(content = nil, options = {}, &block)
-          options.merge!({ content: content }) if content
+        def li(*args, &block)
+          options = Caracal::Utilities.extract_options!(args)
+          options.merge!({ content: args.first }) if args.first
           options.merge!({ type:    list_type  })
           options.merge!({ level:   list_level })
           

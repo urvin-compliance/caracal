@@ -13,6 +13,42 @@ Caracal is not a magical HTML to Word translator. Instead, it is a markup langua
 Or, said differently, if you use [Prawn](https://github.com/prawnpdf/prawn) for PDF generation, you'll probably like Caracal. Only you'll probably like it better. :)
 
 
+## Teaser
+
+How would you like to make a Word document like this?
+
+```ruby
+Caracal::Document.save 'example.docx' do |docx|
+  # page 1
+  docx.h1 'Page 1 Header'
+  docx.hr
+  docx.br
+  docx.h2 'Section 1'
+  docx.p  'Lorem ipsum dolor....'
+  docx.br
+  docx.table @my_data, border_size: 4 do
+    cell_style rows[0], background: 'cccccc', bold: true
+  end
+  
+  # page 2
+  docx.page
+  docx.h1 'Page 2 Header'
+  docx.hr
+  docx.br
+  docx.h2 'Section 2'
+  docx.p  'Lorem ipsum dolor....'
+  docx.ul do
+    li 'Item 1'
+    li 'Item 2'
+  end
+  docx.br
+  docx.img image_url('graph.png'), width: 500, height: 300
+end
+```
+
+**You can! Read on.**
+
+
 ## Why is Caracal Needed?
 
 We created Caracal to satisfy a genuine business requirement.  We were working on a system that produced a periodic PDF report and our clients asked if the report could instead be generated as a Word document, which would allow them to perform edits before passing the report along to their clients.
@@ -32,11 +68,11 @@ What we wanted was a Prawn-style library for the `:docx` format. In the absence 
 
 Caracal is designed to separate the process of parsing and collecting rendering instructions from the process of rendering itself.
 
-First, the library consumes all programmer instructions and organizes several collections of data models that capture those instructions. These collections are ordered and nested exactly as the instructions we given. Each model is contains all the data required to render it and is responsible for declaring itself valid or invalid.
+First, the library consumes all programmer instructions and organizes several collections of data models that capture those instructions. These collections are ordered and nested exactly as the instructions we given. Each model contains all the data required to render it and is responsible for declaring itself valid or invalid.
 
-***Note**: Some instructions create more than one model. For example, the `img` method both appends both an `ImageModel` to the main contents collection and determines whether or not a new `RelationshipModel` should be added to the relationships collection.*
+*Note: Some instructions create more than one model. For example, the `img` method both appends both an `ImageModel` to the main contents collection and determines whether or not a new `RelationshipModel` should be added to the relationships collection.*
 
-Only after all the programmer instructions have been parsed does the document attempt to render the collection to XML. Generally speaking renderers simply convert model data to markup that conforms to the OOXML specification.  But, this strategy gives the rendering process a tremendous amount of flexibility in the rare cases where renderers combine data from more than one collection.
+Only after all the programmer instructions have been parsed does the document attempt to render the data to XML. This strategy gives the rendering process a tremendous amount of flexibility in the rare cases where renderers combine data from more than one collection.
 
 
 ## File Structure
@@ -130,7 +166,7 @@ In Word documents, pixels are equivalent to points.
 **EMUs (English Metric Unit)**  
 EMUs are a virtual unit designed to facilitate the smooth conversion between inches, milliimeters, and pixels for images and vector graphics.  1in == 914400 EMUs == 72dpi x 100 x 254.
 
-At present, Caracal expects values to be specified in whichever unit the OOXML requires. This is admittedly difficult for new Caracal users. Eventually, we'll probably implement a utility object under the hood to convert user-specified units into the format expected by OOXML. 
+At present, Caracal expects values to be specified in whichever unit OOXML requires. This is admittedly difficult for new Caracal users. Eventually, we'll probably implement a utility object under the hood to convert user-specified units into the format expected by OOXML. 
 
 
 ## Syntax Flexibility
@@ -138,13 +174,16 @@ At present, Caracal expects values to be specified in whichever unit the OOXML r
 Generally speaking, Caracal commands will accept instructions via any combination of a parameters hash and/or a block.  For example, all of the folowing commands are equivalent.
 
 ```ruby
-docx.style 'special', size: 24, bold: true
+docx.style id: 'special', name: 'Special', size: 24, bold: true
 
-docx.style 'special', size: 24 do
+docx.style id: 'special', size: 24 do
+  name 'Special'
   bold true
 end
 
-docx.style 'special' do
+docx.style do
+  id   'special'
+  name 'Special'
   size 24
   bold true
 end
@@ -531,10 +570,10 @@ If your table contains more complex data (multiple paragraphs, images, lists, et
 c1 = Caracal::Core::Models:TableCellModel.new do
   background 'cccccc'    # sets the background color. defaults to 'ffffff'.
   margins do
-    top                  # sets the top margin. units in twips.
-    bottom               # sets the bottom margin. units in twips.
-    left                 # sets the left margin. units in twips.
-    right                # sets the right margin. units in twips.
+    top                  # sets the top margin. defaults to 0. units in twips.
+    bottom               # sets the bottom margin. defaults to 0. units in twips.
+    left                 # sets the left margin. defaults to 0. units in twips.
+    right                # sets the right margin. defaults to 0. units in twips.
   end
   
   p 'This is a sentence above an image.'

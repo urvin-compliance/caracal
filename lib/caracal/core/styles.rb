@@ -37,7 +37,7 @@ module Caracal
           
           #============== ATTRIBUTES ==========================
           
-          def style(options = {}, &block)
+          def style(options={}, &block)
             model = Caracal::Core::Models::StyleModel.new(options, &block)
             
             if model.valid?

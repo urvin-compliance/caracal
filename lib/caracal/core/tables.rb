@@ -16,8 +16,9 @@ module Caracal
           # Public Methods
           #-------------------------------------------------------------
           
-          def table(data, options = {}, &block)
-            options.merge!({ data: data })
+          def table(*args, &block)
+            options = Caracal::Utilities.extract_options!(args)
+            options.merge!({ data: args.first }) if args.first
             
             model = Caracal::Core::Models::TableModel.new(options, &block)
             if respond_to?(:page_width)

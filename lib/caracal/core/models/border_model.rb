@@ -29,7 +29,7 @@ module Caracal
         attr_reader :border_type
         
         # initialization
-        def initialize(options = {}, &block)
+        def initialize(options={}, &block)
           @border_color   = DEFAULT_BORDER_COLOR
           @border_line    = DEFAULT_BORDER_LINE
           @border_size    = DEFAULT_BORDER_SIZE

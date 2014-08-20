@@ -23,7 +23,7 @@ module Caracal
         attr_reader :page_number_show
         
         # initialization
-        def initialize(options = {}, &block)
+        def initialize(options={}, &block)
           @page_number_show  = DEFAULT_PAGE_NUMBER_SHOW
           @page_number_align = DEFAULT_PAGE_NUMBER_ALIGN
           

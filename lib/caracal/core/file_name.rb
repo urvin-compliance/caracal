@@ -26,7 +26,7 @@ module Caracal
           # This method sets the name of the output file. Defaults
           # to the name of the library.
           #
-          def file_name(value = nil)
+          def file_name(value=nil)
             v = value.to_s.strip
             @name = (v == '') ? self.class::DEFAULT_FILE_NAME : v
           end

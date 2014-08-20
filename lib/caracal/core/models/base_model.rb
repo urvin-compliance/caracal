@@ -12,7 +12,7 @@ module Caracal
         #-------------------------------------------------------------
     
         # initialization
-        def initialize(options = {}, &block)
+        def initialize(options={}, &block)
           options.keep_if { |k,v| option_keys.include? k }
           options.each do |(key, value)|
             send(key, value)

@@ -28,7 +28,7 @@ module Caracal
         
         
         # initialization
-        def initialize(options = {}, &block)
+        def initialize(options={}, &block)
           @margin_top    = DEFAULT_MARGIN_TOP
           @margin_bottom = DEFAULT_MARGIN_BOTTOM
           @margin_left   = DEFAULT_MARGIN_LEFT

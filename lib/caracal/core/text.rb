@@ -18,8 +18,9 @@ module Caracal
           
           #============== PARAGRAPHS ==========================
           
-          def p(text = nil, options = {}, &block)
-            options.merge!({ content: text }) if text
+          def p(*args, &block)
+            options = Caracal::Utilities.extract_options!(args)
+            options.merge!({ content: args.first }) if args.first
             
             model = Caracal::Core::Models::ParagraphModel.new(options, &block)
             if model.valid?
@@ -37,9 +38,10 @@ module Caracal
           # model with an explicitly set style class.
           #
           [:h1, :h2, :h3, :h4, :h5, :h6].each do |cmd|
-            define_method "#{ cmd }" do |text = nil, options = {}, &block|
+            define_method "#{ cmd }" do |*args, &block|
+              options = Caracal::Utilities.extract_options!(args)
               options.merge!({ style: style_id_for_header(cmd) })
-              p(text, options, &block)
+              p(args.first, options, &block)
             end
           end
           

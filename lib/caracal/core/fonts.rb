@@ -30,8 +30,8 @@ module Caracal
           
           #============== ATTRIBUTES ==========================
           
-          def font(opts, &block)
-            model = Caracal::Core::Models::FontModel.new(opts, &block)
+          def font(options={}, &block)
+            model = Caracal::Core::Models::FontModel.new(options, &block)
             
             if model.valid?
               register_font(model)

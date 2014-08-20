@@ -30,7 +30,7 @@ module Caracal
         alias_method :link_underline, :text_underline
         
         # initialization
-        def initialize(options = {}, &block)
+        def initialize(options={}, &block)
           @text_color     = DEFAULT_LINK_COLOR
           @text_underline = DEFAULT_LINK_UNDERLINE
           

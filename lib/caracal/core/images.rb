@@ -16,8 +16,9 @@ module Caracal
           # Public Methods
           #-------------------------------------------------------------
           
-          def img(url = nil, options={}, &block)
-            options.merge!({ url: url }) if url
+          def img(*args, &block)
+            options = Caracal::Utilities.extract_options!(args)
+            options.merge!({ url: args.first }) if args.first
             
             model = Caracal::Core::Models::ImageModel.new(options, &block)
             if model.valid?

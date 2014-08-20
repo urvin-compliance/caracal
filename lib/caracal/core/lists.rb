@@ -18,7 +18,7 @@ module Caracal
           
           #============== ATTRIBUTES ==========================
           
-          def ol(options = {}, &block)
+          def ol(options={}, &block)
             options.merge!({ type: :ordered, level: 0 })
             
             model = Caracal::Core::Models::ListModel.new(options, &block)
@@ -30,7 +30,7 @@ module Caracal
             model
           end
           
-          def ul(options = {}, &block)
+          def ul(options={}, &block)
             options.merge!({ type: :unordered, level: 0 })
             
             model = Caracal::Core::Models::ListModel.new(options, &block)

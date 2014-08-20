@@ -25,7 +25,7 @@ module Caracal
         attr_reader :cell_margins
         
         # initialization
-        def initialize(options = {}, &block)
+        def initialize(options={}, &block)
           @cell_background = DEFAULT_CELL_BACKGROUND
           @cell_margins    = DEFAULT_CELL_MARGINS
           
@@ -57,9 +57,9 @@ module Caracal
         #
         # In all cases, invalid options will simply be ignored.
         #
-        def apply_styles(opts = {})
+        def apply_styles(opts={})
           # make dup of options so we don't
-          # harm any siblings
+          # harm args sent to sibling cells
           options = opts.dup
           
           # first, try apply to self

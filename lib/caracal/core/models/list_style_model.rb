@@ -32,7 +32,7 @@ module Caracal
         
         
         # initialization
-        def initialize(options = {}, &block)
+        def initialize(options={}, &block)
           @style_align   = DEFAULT_STYLE_ALIGN
           @style_left    = DEFAULT_STYLE_LEFT
           @style_indent  = DEFAULT_STYLE_INDENT

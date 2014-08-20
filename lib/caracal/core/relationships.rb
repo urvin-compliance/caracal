@@ -40,7 +40,7 @@ module Caracal
           
           #============== ATTRIBUTES ==========================
           
-          def relationship(options = {}, &block)
+          def relationship(options={}, &block)
             id = relationship_counter.to_i + 1
             options.merge!({ id: id })
 

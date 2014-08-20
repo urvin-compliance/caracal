@@ -56,7 +56,7 @@ module Caracal
         #=============== SUB-METHODS ===========================
         
         # .ol
-        def ol(options = {}, &block)
+        def ol(options={}, &block)
           options.merge!({ type: :ordered, level: list_item_level + 1 })
           
           model = Caracal::Core::Models::ListModel.new(options, &block)
@@ -68,7 +68,7 @@ module Caracal
         end
         
         # .ul
-        def ul(options = {}, &block)
+        def ul(options={}, &block)
           options.merge!({ type: :unordered, level: list_item_level + 1 })
           
           model = Caracal::Core::Models::ListModel.new(options, &block)
