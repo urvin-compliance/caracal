@@ -9,9 +9,9 @@ describe Caracal::Core::Models::ListStyleModel do
       value   '%3.'
       align   :right
       left    800
-      line    400
+      indent  400
       start   2
-      restart false
+      restart 2
     end
   end
   
@@ -23,11 +23,11 @@ describe Caracal::Core::Models::ListStyleModel do
     
     # constants
     describe 'constants' do
-      it { expect(described_class::DEFAULT_STYLE_ALIGN).to eq :left  }
-      it { expect(described_class::DEFAULT_STYLE_LEFT).to  eq 720    }
-      it { expect(described_class::DEFAULT_STYLE_LINE).to  eq 360    }
-      it { expect(described_class::DEFAULT_STYLE_START).to eq 1      }
-      it { expect(described_class::DEFAULT_STYLE_RESTART).to eq true }
+      it { expect(described_class::DEFAULT_STYLE_ALIGN).to   eq :left  }
+      it { expect(described_class::DEFAULT_STYLE_LEFT).to    eq 720    }
+      it { expect(described_class::DEFAULT_STYLE_INDENT).to  eq 360    }
+      it { expect(described_class::DEFAULT_STYLE_START).to   eq 1      }
+      it { expect(described_class::DEFAULT_STYLE_RESTART).to eq 1 }
     end
     
     # accessors
@@ -38,9 +38,9 @@ describe Caracal::Core::Models::ListStyleModel do
       it { expect(subject.style_value).to   eq '%3.'      }
       it { expect(subject.style_align).to   eq :right     }
       it { expect(subject.style_left).to    eq 800        }
-      it { expect(subject.style_line).to    eq 400        }
+      it { expect(subject.style_indent).to  eq 400        }
       it { expect(subject.style_start).to   eq 2          }
-      it { expect(subject.style_restart).to eq false      }
+      it { expect(subject.style_restart).to eq 2          }
     end
     
   end
@@ -85,28 +85,14 @@ describe Caracal::Core::Models::ListStyleModel do
       end
     end
     
-    # .formatted_restart
-    describe '.formatted_restart' do
-      describe 'when restart true' do
-        before { allow(subject).to receive(:style_restart).and_return(true) }
-        
-        it { expect(subject.formatted_restart).to eq '1' }
-      end
-      describe 'when unordered list' do
-        before { allow(subject).to receive(:style_restart).and_return(false) }
-        
-        it { expect(subject.formatted_restart).to eq '0' }
-      end
-    end
-    
     
     #=============== SETTERS ==========================
     
     # booleans
     describe '.restart' do
-      before { subject.restart(false) }
+      before { subject.restart(3) }
       
-      it { expect(subject.style_restart).to eq false }
+      it { expect(subject.style_restart).to eq 3 }
     end
     
     # integers
@@ -120,10 +106,10 @@ describe Caracal::Core::Models::ListStyleModel do
       
       it { expect(subject.style_left).to eq 800 }
     end
-    describe '.line' do
-      before { subject.line(400) }
+    describe '.indent' do
+      before { subject.indent(400) }
       
-      it { expect(subject.style_line).to eq 400 }
+      it { expect(subject.style_indent).to eq 400 }
     end
     describe '.start' do
       before { subject.start(2) }
@@ -202,7 +188,7 @@ describe Caracal::Core::Models::ListStyleModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:type, :level, :format, :value, :align, :left, :line, :start].sort }
+      let(:expected) { [:type, :level, :format, :value, :align, :left, :indent, :start].sort }
       
       it { expect(actual).to eq expected }    
     end

@@ -183,7 +183,7 @@ module Caracal
       
       def render_listitem(xml, model, list_num)
         ls      = document.find_list_style(model.list_item_type, model.list_item_level)
-        hanging = ls.style_left.to_i - ls.style_line.to_i - 1
+        hanging = ls.style_left.to_i - ls.style_indent.to_i - 1
         
         xml.send 'w:p', paragraph_options do
           xml.send 'w:pPr' do

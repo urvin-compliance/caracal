@@ -28,11 +28,11 @@ module Caracal
                     xml.send 'w:lvl', { 'w:ilvl' => s.style_level } do
                       xml.send 'w:start',      { 'w:val' => s.style_start }
                       xml.send 'w:numFmt',     { 'w:val' => s.style_format }
-                      xml.send 'w:lvlRestart', { 'w:val' => s.formatted_restart }
+                      xml.send 'w:lvlRestart', { 'w:val' => s.style_restart }
                       xml.send 'w:lvlText',    { 'w:val' => s.style_value }
                       xml.send 'w:lvlJc',      { 'w:val' => s.style_align }
                       xml.send 'w:pPr' do
-                        xml.send 'w:ind', { 'w:left' => s.style_left, 'w:firstLine' => s.style_line }
+                        xml.send 'w:ind', { 'w:left' => s.style_left, 'w:firstLine' => s.style_indent }
                       end
                       xml.send 'w:rPr' do
                         xml.send 'w:u', { 'w:val' => 'none' }

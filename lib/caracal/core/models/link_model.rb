@@ -14,6 +14,10 @@ module Caracal
         # Configuration
         #-------------------------------------------------------------
         
+        # constants
+        const_set(:DEFAULT_LINK_COLOR,      '1155cc')
+        const_set(:DEFAULT_LINK_UNDERLINE,  true) 
+        
         # readers (create aliases for superclass methods to conform 
         # to expected naming convention.)
         attr_reader  :link_href
@@ -25,6 +29,13 @@ module Caracal
         alias_method :link_italic,    :text_italic
         alias_method :link_underline, :text_underline
         
+        # initialization
+        def initialize(options = {}, &block)
+          @text_color     = DEFAULT_LINK_COLOR
+          @text_underline = DEFAULT_LINK_UNDERLINE
+          
+          super options, &block
+        end
         
         
         #-------------------------------------------------------------

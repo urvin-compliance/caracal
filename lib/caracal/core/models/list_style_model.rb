@@ -14,10 +14,10 @@ module Caracal
         # constants
         const_set(:TYPE_MAP,              { ordered: 1, unordered: 2 })
         const_set(:DEFAULT_STYLE_LEFT,    720)      # units in twips 
-        const_set(:DEFAULT_STYLE_LINE,    360)      # units in twips 
+        const_set(:DEFAULT_STYLE_INDENT,  360)      # units in twips 
         const_set(:DEFAULT_STYLE_ALIGN,   :left)
         const_set(:DEFAULT_STYLE_START,   1)
-        const_set(:DEFAULT_STYLE_RESTART, true)
+        const_set(:DEFAULT_STYLE_RESTART, 1)
         
         # accessors
         attr_reader :style_type
@@ -27,7 +27,7 @@ module Caracal
         attr_reader :style_start
         attr_reader :style_align
         attr_reader :style_left
-        attr_reader :style_line
+        attr_reader :style_indent
         attr_reader :style_restart
         
         
@@ -35,7 +35,7 @@ module Caracal
         def initialize(options = {}, &block)
           @style_align   = DEFAULT_STYLE_ALIGN
           @style_left    = DEFAULT_STYLE_LEFT
-          @style_line    = DEFAULT_STYLE_LINE
+          @style_indent  = DEFAULT_STYLE_INDENT
           @style_start   = DEFAULT_STYLE_START
           @style_restart = DEFAULT_STYLE_RESTART
           
@@ -62,22 +62,11 @@ module Caracal
           self.class.formatted_type(style_type)
         end
         
-        def formatted_restart
-          v = style_restart ? '1' : '0'
-        end
-        
         
         #=============== SETTERS ==============================
         
-        # booleans
-        [:restart].each do |m|
-          define_method "#{ m }" do |value|
-            instance_variable_set("@style_#{ m }", !!value)
-          end
-        end
-        
         # integers
-        [:level, :left, :line, :start].each do |m|
+        [:level, :left, :indent, :start, :restart].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@style_#{ m }", value.to_i)
           end
@@ -119,7 +108,7 @@ module Caracal
         private
         
         def option_keys
-          [:type, :level, :format, :value, :align, :left, :line, :start]
+          [:type, :level, :format, :value, :align, :left, :indent, :start]
         end
         
       end

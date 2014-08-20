@@ -20,6 +20,12 @@ describe Caracal::Core::Models::LinkModel do
 
   describe 'configuration tests' do
     
+    # constants
+    describe 'constants' do
+      it { expect(described_class::DEFAULT_LINK_COLOR).to     eq '1155cc' }
+      it { expect(described_class::DEFAULT_LINK_UNDERLINE).to eq true }
+    end
+    
     # accessors
     describe 'accessors' do
       it { expect(subject.link_content).to eq 'Link Text' }
