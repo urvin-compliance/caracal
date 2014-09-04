@@ -24,6 +24,7 @@ module Caracal
         
         # accessors
         attr_reader :image_url
+        attr_reader :image_data
         attr_reader :image_width
         attr_reader :image_height
         attr_reader :image_align
@@ -60,6 +61,10 @@ module Caracal
           end
         end
         
+        def relationship_target
+          image_url || image_data
+        end
+        
         
         #=============== SETTERS ==============================
         
@@ -71,7 +76,7 @@ module Caracal
         end
         
         # strings
-        [:url].each do |m|
+        [:data, :url].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@image_#{ m }", value.to_s)
           end

@@ -304,7 +304,7 @@ end
 
 Fonts are added to the font table file by calling the `font` method and passing the name of the font.  
 
-*At present, Caracal only supports declaring the primary font name.
+*At present, Caracal only supports declaring the primary font name.*
 
 ```ruby
 docx.font do
@@ -514,6 +514,7 @@ Images can be added by using the `img` method.  The method accepts several optio
 
 ```ruby
 docx.img image_url('example.png') do
+  data    raw_data  # sets the file data directly instead of opening the url
   width   396       # sets the image width. units specified in pixels.
   height  216       # sets the image height. units specified in pixels.
   align   :right    # controls the justification of the image. default is :left.
@@ -523,6 +524,11 @@ docx.img image_url('example.png') do
   right   10        # sets the right margin. units specified in pixels.
 end
 ```
+
+*Note: If you provide the image data, you should still supply a URL. I know this 
+is a bit hacky, but it allows the library to key the image more effectively and 
+Caracal needs a file extension to apply to the renamed media file. This seemed 
+the simplest solution to both problems.*
 
 
 ### Tables

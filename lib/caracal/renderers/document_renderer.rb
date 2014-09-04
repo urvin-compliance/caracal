@@ -96,7 +96,7 @@ module Caracal
           raise Caracal::Errors::NoDefaultStyleError 'Document must declare a default paragraph style.'
         end
         
-        rel      = document.relationship({ target: model.image_url, type: :image })
+        rel      = document.relationship({ type: :image, target: model.image_url, data: model.image_data })
         rel_id   = rel.relationship_id
         rel_name = rel.formatted_target
         

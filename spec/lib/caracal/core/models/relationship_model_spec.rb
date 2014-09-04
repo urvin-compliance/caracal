@@ -27,10 +27,11 @@ describe Caracal::Core::Models::RelationshipModel do
     
     # accessors
     describe 'accessors' do
-      it { expect(subject.relationship_id).to eq 3 }
-      it { expect(subject.relationship_type).to eq :footer }
+      it { expect(subject.relationship_id).to     eq 3 }
+      it { expect(subject.relationship_key).to    eq 'footer.xml' }
+      it { expect(subject.relationship_type).to   eq :footer }
       it { expect(subject.relationship_target).to eq 'footer.xml' }
-      it { expect(subject.relationship_key).to eq 'footer.xml' }
+      it { expect(subject.relationship_data).to   eq nil }
     end
     
   end
@@ -51,6 +52,15 @@ describe Caracal::Core::Models::RelationshipModel do
       it { expect(subject.relationship_id).to eq 3 }
     end
     
+    # .type
+    describe '.type' do
+      before do
+        subject.type('link')
+      end
+      
+      it { expect(subject.relationship_type).to eq :link }
+    end
+    
     # .target
     describe '.target' do
       before do
@@ -61,13 +71,13 @@ describe Caracal::Core::Models::RelationshipModel do
       it { expect(subject.relationship_key).to eq 'dummy.xml' }
     end
     
-    # .type
-    describe '.type' do
+    # .data
+    describe '.data' do
       before do
-        subject.type('link')
+        subject.data('Dummy data')
       end
       
-      it { expect(subject.relationship_type).to eq :link }
+      it { expect(subject.relationship_data).to eq 'Dummy data' }
     end
     
     
@@ -173,7 +183,7 @@ describe Caracal::Core::Models::RelationshipModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:id, :type, :target].sort }
+      let(:expected) { [:id, :type, :target, :data].sort }
       
       it { expect(actual).to eq expected }
     end

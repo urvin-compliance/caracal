@@ -36,6 +36,7 @@ describe Caracal::Core::Models::ImageModel do
     # accessors
     describe 'accessors' do
       it { expect(subject.image_url).to    eq 'https://www.google.com/images/srpr/logo11w.png' }
+      it { expect(subject.image_data).to   eq nil }
       it { expect(subject.image_width).to  eq 250 }
       it { expect(subject.image_height).to eq 200 }
       it { expect(subject.image_align).to  eq :right }
@@ -75,6 +76,13 @@ describe Caracal::Core::Models::ImageModel do
       before { subject.url('https://www.google.com/images/dummy.png') }
       
       it { expect(subject.image_url).to eq 'https://www.google.com/images/dummy.png' }
+    end
+    
+    # .data
+    describe '.data' do
+      before { subject.data('PNG Data follows here') }
+      
+      it { expect(subject.image_data).to eq 'PNG Data follows here' }
     end
     
     # .width

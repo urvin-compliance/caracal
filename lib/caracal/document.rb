@@ -196,7 +196,9 @@ module Caracal
     def render_media(zip)
       images = relationships.select { |r| r.relationship_type == :image }
       images.each do |rel|
-        content = open(rel.relationship_target).read
+        unless content = rel.relationship_data
+          content = open(rel.relationship_target).read
+        end
         
         zip.put_next_entry("word/#{ rel.formatted_target }")
         zip.write(content)

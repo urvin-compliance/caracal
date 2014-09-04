@@ -27,10 +27,11 @@ module Caracal
         
         # accessors
         attr_reader :relationship_id
+        attr_reader :relationship_key
         attr_reader :relationship_type
         attr_reader :relationship_target
-        attr_reader :relationship_key
-        
+        attr_reader :relationship_data
+    
         
         
         #-------------------------------------------------------------
@@ -63,13 +64,17 @@ module Caracal
           @relationship_id = value.to_i
         end
         
+        def type(value)
+          @relationship_type = value.to_s.downcase.to_sym
+        end
+        
         def target(value)
           @relationship_target = value.to_s
           @relationship_key    = value.to_s.downcase
         end
         
-        def type(value)
-          @relationship_type = value.to_s.downcase.to_sym
+        def data(value)
+          @relationship_data = value.to_s
         end
         
         
@@ -98,7 +103,7 @@ module Caracal
         private
         
         def option_keys
-          [:id, :type, :target]
+          [:id, :type, :target, :data]
         end
         
       end
