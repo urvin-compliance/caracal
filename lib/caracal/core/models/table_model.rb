@@ -161,7 +161,7 @@ module Caracal
                   Caracal::Core::Models::TableCellModel.new(data_cell)
                 when 'Proc'
                   Caracal::Core::Models::TableCellModel.new(&data_cell)
-                when 'String'
+                else
                   Caracal::Core::Models::TableCellModel.new({ content: data_cell.to_s })
                 end
               end
