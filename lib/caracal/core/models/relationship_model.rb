@@ -47,6 +47,7 @@ module Caracal
         def formatted_target
           if relationship_type == :image
             ext = relationship_target.to_s.split('.').last
+            ext = ext.split('?').first
             "media/image#{ relationship_id }.#{ ext }"
           else
             relationship_target
