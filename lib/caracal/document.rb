@@ -196,7 +196,7 @@ module Caracal
     def render_media(zip)
       images = relationships.select { |r| r.relationship_type == :image }
       images.each do |rel|
-        if rel.relationship_data
+        if rel.relationship_data.to_s.size > 0
           content = rel.relationship_data
         else
           content = open(rel.relationship_target).read
