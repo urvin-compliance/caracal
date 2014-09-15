@@ -14,6 +14,7 @@ module Caracal
         #-------------------------------------------------------------
         
         # constants
+        const_set(:DEFAULT_IMAGE_PPI,     72)       # pixels per inch
         const_set(:DEFAULT_IMAGE_WIDTH,   0)        # units in pixels. (will cause error)
         const_set(:DEFAULT_IMAGE_HEIGHT,  0)        # units in pixels. (will cause error)
         const_set(:DEFAULT_IMAGE_ALIGN,   :left) 
@@ -25,6 +26,7 @@ module Caracal
         # accessors
         attr_reader :image_url
         attr_reader :image_data
+        attr_reader :image_ppi
         attr_reader :image_width
         attr_reader :image_height
         attr_reader :image_align
@@ -36,6 +38,7 @@ module Caracal
         
         # initialization
         def initialize(options={}, &block)
+          @image_ppi    = DEFAULT_IMAGE_PPI
           @image_width  = DEFAULT_IMAGE_WIDTH
           @image_height = DEFAULT_IMAGE_HEIGHT
           @image_align  = DEFAULT_IMAGE_ALIGN
@@ -54,10 +57,17 @@ module Caracal
         
         #=============== GETTERS ==============================
         
-        [:width, :height, :top, :bottom, :left, :right].each do |m|
+        [:width, :height].each do |m|
           define_method "formatted_#{ m }" do
             value = send("image_#{ m }")
-            pixels_to_emus(value)
+            pixels_to_emus(value, image_ppi)
+          end
+        end
+        
+        [:top, :bottom, :left, :right].each do |m|
+          define_method "formatted_#{ m }" do
+            value = send("image_#{ m }")
+            pixels_to_emus(value, 72)
           end
         end
         
@@ -69,7 +79,7 @@ module Caracal
         #=============== SETTERS ==============================
         
         # integers
-        [:width, :height, :top, :bottom, :left, :right].each do |m|
+        [:ppi, :width, :height, :top, :bottom, :left, :right].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@image_#{ m }", value.to_i)
           end
@@ -93,7 +103,7 @@ module Caracal
         #=============== VALIDATION ==============================
         
         def valid?
-          dims = [:width, :height, :top, :bottom, :left, :right].map { |m| send("image_#{ m }") }
+          dims = [:ppi, :width, :height, :top, :bottom, :left, :right].map { |m| send("image_#{ m }") }
           dims.all? { |d| d > 0 }
         end
         
@@ -108,9 +118,9 @@ module Caracal
           [:url, :width, :height, :align, :top, :bottom, :left, :right]
         end
         
-        def pixels_to_emus(value)
+        def pixels_to_emus(value, ppi)
           pixels        = value.to_i
-          inches        = pixels / 72.0
+          inches        = pixels / ppi.to_f
           emus_per_inch = 914400
         
           emus = (inches * emus_per_inch).to_i 

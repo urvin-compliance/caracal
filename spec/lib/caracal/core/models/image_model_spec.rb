@@ -4,6 +4,7 @@ describe Caracal::Core::Models::ImageModel do
   subject do 
     described_class.new do
       url    'https://www.google.com/images/srpr/logo11w.png'
+      ppi     96
       width   250
       height  200
       align   :right
@@ -24,6 +25,7 @@ describe Caracal::Core::Models::ImageModel do
     
     # constants
     describe 'constants' do
+      it { expect(described_class::DEFAULT_IMAGE_PPI).to eq 72 }
       it { expect(described_class::DEFAULT_IMAGE_WIDTH).to eq 0 }
       it { expect(described_class::DEFAULT_IMAGE_HEIGHT).to eq 0 }
       it { expect(described_class::DEFAULT_IMAGE_ALIGN).to eq :left }
@@ -37,6 +39,7 @@ describe Caracal::Core::Models::ImageModel do
     describe 'accessors' do
       it { expect(subject.image_url).to    eq 'https://www.google.com/images/srpr/logo11w.png' }
       it { expect(subject.image_data).to   eq nil }
+      it { expect(subject.image_ppi).to    eq 96 }
       it { expect(subject.image_width).to  eq 250 }
       it { expect(subject.image_height).to eq 200 }
       it { expect(subject.image_align).to  eq :right }
@@ -57,8 +60,22 @@ describe Caracal::Core::Models::ImageModel do
   
     #=============== GETTERS ==========================
     
-    # emu conversions
-    [:width, :height, :top, :bottom, :left, :right].each do |m|
+    # emu conversions (dimensions)
+    [:width, :height].each do |m|
+      describe ".formatted_#{ m }" do
+        let(:actual) { subject.send("formatted_#{ m }") }
+        
+        before do
+          allow(subject).to receive("image_#{ m }").and_return(540)
+          allow(subject).to receive("image_ppi").and_return(96)
+        end
+        
+        it { expect(actual).to eq 5143500 }
+      end
+    end
+    
+    # emu conversions (margins)
+    [:top, :bottom, :left, :right].each do |m|
       describe ".formatted_#{ m }" do
         let(:actual) { subject.send("formatted_#{ m }") }
         
@@ -67,6 +84,9 @@ describe Caracal::Core::Models::ImageModel do
         it { expect(actual).to eq 114300 }
       end
     end
+    
+    # .relationship_target
+    
     
     
     #=============== SETTERS ==========================
@@ -83,6 +103,13 @@ describe Caracal::Core::Models::ImageModel do
       before { subject.data('PNG Data follows here') }
       
       it { expect(subject.image_data).to eq 'PNG Data follows here' }
+    end
+    
+    # .ppi
+    describe '.ppi' do
+      before { subject.ppi(108) }
+      
+      it { expect(subject.image_ppi).to eq 108 }
     end
     
     # .width
@@ -171,7 +198,7 @@ describe Caracal::Core::Models::ImageModel do
     
     # .pixels_to_emus
     describe '.pixels_to_emus' do
-      let(:actual) { subject.send(:pixels_to_emus, value) }
+      let(:actual) { subject.send(:pixels_to_emus, value, 72) }
       
       describe 'when argument is nil' do
         let(:value) { nil }
