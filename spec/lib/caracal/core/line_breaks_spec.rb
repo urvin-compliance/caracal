@@ -17,7 +17,7 @@ describe Caracal::Core::LineBreaks do
       before { subject.br }
       
       it { expect(subject.contents.size).to eq size + 1 }
-      it { expect(subject.contents.last).to be_a(Caracal::Core::Models::LineBreakModel) }
+      it { expect(subject.contents.last).to be_a(Caracal::Core::Models::ParagraphModel) }
     end
     
   end

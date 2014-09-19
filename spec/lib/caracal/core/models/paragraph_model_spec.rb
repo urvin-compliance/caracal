@@ -110,6 +110,15 @@ describe Caracal::Core::Models::ParagraphModel do
       
       it { expect(subject.runs.size).to eq length + 1 }
     end
+
+    # .br
+    describe '.br' do
+      let!(:length) { subject.runs.length }
+      
+      before { subject.br }
+      
+      it { expect(subject.runs.size).to eq length + 1 }
+    end
     
     # .text
     describe '.text' do
