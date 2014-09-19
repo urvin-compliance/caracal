@@ -149,13 +149,8 @@ module Caracal
       end
       
       def render_linebreak(xml, model)
-        xml.send 'w:p', paragraph_options do
-          xml.send 'w:pPr' do
-            xml.send 'w:contextualSpacing', { 'w:val' => '0' }
-          end
-          xml.send 'w:r', run_options do
-            xml.send 'w:rtl', { 'w:val' => '0' }
-          end
+        xml.send 'w:r' do
+          xml.send 'w:br'
         end
       end
       

@@ -16,7 +16,7 @@ module Caracal
           #-------------------------------------------------------------
           
           def br
-            model     = Caracal::Core::Models::LineBreakModel.new()
+            model     = Caracal::Core::Models::ParagraphModel.new()
             contents << model
             model
           end
