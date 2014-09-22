@@ -108,7 +108,7 @@ describe Caracal::Core::Models::TableCellModel do
         before { subject.br }
       
         it { expect(subject.contents.size).to eq size + 1 }
-        it { expect(subject.contents.last).to be_a(Caracal::Core::Models::ParagraphModel) }
+        it { expect(subject.contents.last).to be_a(Caracal::Core::Models::LineBreakModel) }
       end
     
       # .img

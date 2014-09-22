@@ -28,10 +28,8 @@ module Caracal
         
         # initialization
         def initialize(options={}, &block)
-          if content = options.delete(:content)
-            text content, options.dup
-          end
-
+          content = options.delete(:content) { "" }
+          text content, options.dup
           super options, &block
         end
         

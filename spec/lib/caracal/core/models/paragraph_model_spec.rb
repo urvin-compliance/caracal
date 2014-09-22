@@ -13,6 +13,7 @@ describe Caracal::Core::Models::ParagraphModel do
     end
   end
   
+
   #-------------------------------------------------------------
   # Configuration
   #-------------------------------------------------------------
@@ -29,9 +30,9 @@ describe Caracal::Core::Models::ParagraphModel do
       it { expect(subject.paragraph_italic).to eq false }
       it { expect(subject.paragraph_underline).to eq true }
     end
-    
+
   end
-  
+
   
   #-------------------------------------------------------------
   # Public Methods
