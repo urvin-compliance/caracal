@@ -22,10 +22,10 @@ Caracal::Document.save 'example.docx' do |docx|
   # page 1
   docx.h1 'Page 1 Header'
   docx.hr
-  docx.br
+  docx.p
   docx.h2 'Section 1'
   docx.p  'Lorem ipsum dolor....'
-  docx.br
+  docx.p
   docx.table @my_data, border_size: 4 do
     cell_style rows[0], background: 'cccccc', bold: true
   end
@@ -34,14 +34,14 @@ Caracal::Document.save 'example.docx' do |docx|
   docx.page
   docx.h1 'Page 2 Header'
   docx.hr
-  docx.br
+  docx.p
   docx.h2 'Section 2'
   docx.p  'Lorem ipsum dolor....'
   docx.ul do
     li 'Item 1'
     li 'Item 2'
   end
-  docx.br
+  docx.p
   docx.img image_url('graph.png'), width: 500, height: 300
 end
 ```
@@ -348,7 +348,7 @@ Caracal establishes a standard set of default styles for every document. Default
 
 ### Paragraphs
 
-Paragrpah text can be added using the `p` method.  The method accepts several optional parameters for controlling the style and behavior of the paragrpah. 
+Paragraph text can be added using the `p` method.  The method accepts several optional parameters for controlling the style and behavior of the paragrpah. 
 
 In its simple form, a paragraph accepts a text string and formatting options.
 
@@ -375,6 +375,7 @@ docx.p do
   text 'Here is a sentence with a ', style: 'custom_style'
   link 'link', 'https://www.example.com'
   text ' to something awesome', color: '555555', size: 32, bold: true, italic: true, underline: true
+  br # Creates a line break inside the paragraph
   text '.'
 end
 ```
@@ -431,10 +432,19 @@ end
 
 ### Line Breaks
 
-Line breaks can be added via the `br` method.  The method accepts no parameters.
+Line breaks can be added via the `br` method inside paragraphs.
 
 ```ruby
-docx.br     # adds a blank line using the default paragrpah style.
+docx.p do
+  text "Some text"
+  br                   # adds a line break
+  text "More text
+end
+```
+
+If you want to create an empty line between paragraphs, just add an empty paragraph.
+```ruby
+docx.p
 ```
 
 
