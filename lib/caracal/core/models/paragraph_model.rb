@@ -102,11 +102,12 @@ module Caracal
           else
             raise Caracal::Errors::InvalidModelError, ':link method must receive strings for the display text and the external href.'
           end
+          model
         end
 
         # .br
         def br
-          model     = Caracal::Core::Models::LineBreakModel.new()
+          model = Caracal::Core::Models::LineBreakModel.new()
           runs << model
           model
         end
@@ -122,6 +123,7 @@ module Caracal
           else
             raise Caracal::Errors::InvalidModelError, ':text method must receive a string for the display text.'
           end
+          model
         end
         
         

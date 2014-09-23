@@ -103,6 +103,7 @@ module Caracal
           else
             raise Caracal::Errors::InvalidModelError, 'List item must have at least one run.'
           end
+          model
         end
         
         
