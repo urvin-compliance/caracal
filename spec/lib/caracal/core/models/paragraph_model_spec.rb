@@ -13,6 +13,7 @@ describe Caracal::Core::Models::ParagraphModel do
     end
   end
   
+
   #-------------------------------------------------------------
   # Configuration
   #-------------------------------------------------------------
@@ -29,9 +30,9 @@ describe Caracal::Core::Models::ParagraphModel do
       it { expect(subject.paragraph_italic).to eq false }
       it { expect(subject.paragraph_underline).to eq true }
     end
-    
+
   end
-  
+
   
   #-------------------------------------------------------------
   # Public Methods
@@ -107,6 +108,15 @@ describe Caracal::Core::Models::ParagraphModel do
       let!(:length) { subject.runs.length }
       
       before { subject.link 'Text', 'http://www.google.com' }
+      
+      it { expect(subject.runs.size).to eq length + 1 }
+    end
+
+    # .br
+    describe '.br' do
+      let!(:length) { subject.runs.length }
+      
+      before { subject.br }
       
       it { expect(subject.runs.size).to eq length + 1 }
     end

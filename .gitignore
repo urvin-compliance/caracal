@@ -21,3 +21,4 @@ tmp
 *.a
 mkmf.log
 gemfiles/*.gemfile.lock
+.DS_Store

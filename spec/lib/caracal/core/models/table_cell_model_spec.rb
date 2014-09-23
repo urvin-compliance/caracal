@@ -101,14 +101,14 @@ describe Caracal::Core::Models::TableCellModel do
     
     describe 'content functions' do
     
-      # .br
-      describe '.br' do
+      # .p
+      describe '.p' do
         let!(:size) { subject.contents.size }
       
-        before { subject.br }
+        before { subject.p }
       
         it { expect(subject.contents.size).to eq size + 1 }
-        it { expect(subject.contents.last).to be_a(Caracal::Core::Models::LineBreakModel) }
+        it { expect(subject.contents.last).to be_a(Caracal::Core::Models::ParagraphModel) }
       end
     
       # .img

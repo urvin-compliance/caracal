@@ -4,7 +4,6 @@ require 'zip'
 require 'caracal/core/file_name'
 require 'caracal/core/fonts'
 require 'caracal/core/images'
-require 'caracal/core/line_breaks'
 require 'caracal/core/list_styles'
 require 'caracal/core/lists'
 require 'caracal/core/page_breaks'
@@ -47,7 +46,6 @@ module Caracal
     include Caracal::Core::ListStyles
     
     include Caracal::Core::Images
-    include Caracal::Core::LineBreaks
     include Caracal::Core::Lists
     include Caracal::Core::PageBreaks
     include Caracal::Core::Rules

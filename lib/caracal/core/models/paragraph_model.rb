@@ -28,10 +28,8 @@ module Caracal
         
         # initialization
         def initialize(options={}, &block)
-          if content = options.delete(:content)
-            text content, options.dup
-          end
-          
+          content = options.delete(:content) { "" }
+          text content, options.dup
           super options, &block
         end
         
@@ -104,6 +102,13 @@ module Caracal
           else
             raise Caracal::Errors::InvalidModelError, ':link method must receive strings for the display text and the external href.'
           end
+        end
+
+        # .br
+        def br
+          model     = Caracal::Core::Models::LineBreakModel.new()
+          runs << model
+          model
         end
         
         # .text
