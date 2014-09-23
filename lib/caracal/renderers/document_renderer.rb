@@ -307,7 +307,7 @@ module Caracal
         
         # don't know why this is needed, but it prevents a 
         # rendering error.
-        render_linebreak(xml, Caracal::Core::Models::LineBreakModel.new)
+        render_paragraph(xml, Caracal::Core::Models::ParagraphModel.new)
       end
 
       

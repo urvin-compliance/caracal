@@ -46,7 +46,7 @@ Caracal::Document.save 'example.docx' do |docx|
 end
 ```
 
-**You can! Read on.**
+**You can!** Read on.
 
 
 ## Why is Caracal Needed?
@@ -330,7 +330,8 @@ docx.style do
   align     :left           # sets the alignment. accepts :left, :center, :right, and :both.
   line      360             # sets the line height. units in twips.
   top       100             # sets the spacing above the paragraph. units in twips.
-  bottom    0               # sets the spacing below the paragraph. units in twips.end
+  bottom    0               # sets the spacing below the paragraph. units in twips.
+end
 ```
 
 Caracal establishes a standard set of default styles for every document. Default styles can be overridden by issuing a `style` command referencing an existing id. Default style ids are:
@@ -375,8 +376,9 @@ docx.p do
   text 'Here is a sentence with a ', style: 'custom_style'
   link 'link', 'https://www.example.com'
   text ' to something awesome', color: '555555', size: 32, bold: true, italic: true, underline: true
-  br # Creates a line break inside the paragraph
   text '.'
+  br
+  text 'This text follows a line break.'
 end
 ```
 
@@ -436,13 +438,14 @@ Line breaks can be added via the `br` method inside paragraphs.
 
 ```ruby
 docx.p do
-  text "Some text"
-  br                   # adds a line break
-  text "More text
+  text 'This sentence precedes the line break.'
+  br
+  text 'This sentence follows the line break.'
 end
 ```
 
-If you want to create an empty line between paragraphs, just add an empty paragraph.
+Line breaks only work instead paragraph-like commands. If you want to create an empty line between two paragraphs, use an empty paragraph instead.
+
 ```ruby
 docx.p
 ```
@@ -459,6 +462,8 @@ docx.ol do
     text 'Second item with a '
     link 'link', 'http://www.google.com'
     text '.'
+    br
+    text 'This sentence follows a line break.'
   end
 end
 ```
@@ -472,6 +477,8 @@ docx.ul do
     text 'Second item with a '
     link 'link', 'http://www.google.com'
     text '.'
+    br
+    text 'This sentence follows a line break.'
   end
 end
 ```
@@ -598,7 +605,7 @@ c1 = Caracal::Core::Models:TableCellModel.new do
   end
   
   p 'This is a sentence above an image.'
-  br
+  p
   img image_url('example.png'), width: 200, height: 100
 end  
 ```
