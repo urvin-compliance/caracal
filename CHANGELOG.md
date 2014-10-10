@@ -1,4 +1,4 @@
-#### Unreleased
+#### v0.2.0
 
 * Enhancements
 	* Implemented true line breaks within paragraphs (@Linuus).
