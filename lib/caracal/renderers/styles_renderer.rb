@@ -30,6 +30,7 @@ module Caracal
                   xml.send 'w:rFonts',    font_options(s)
                   xml.send 'w:b',         { 'w:val' => (s.style_bold ? '1' : '0') }
                   xml.send 'w:i',         { 'w:val' => (s.style_italic ? '1' : '0') }
+                  xml.send 'w:caps',      { 'w:val' => (s.style_caps ? '1' : '0') }
                   xml.send 'w:smallCaps', { 'w:val' => '0' }
                   xml.send 'w:strike',    { 'w:val' => '0' }
                   xml.send 'w:color',     { 'w:val' => s.style_color }
@@ -43,7 +44,7 @@ module Caracal
                   xml.send 'w:keepNext',     { 'w:val' => '0' }
                   xml.send 'w:keepLines',    { 'w:val' => '0' }
                   xml.send 'w:widowControl', { 'w:val' => '1' }
-                  xml.send 'w:spacing',      { 'w:lineRule' => 'auto', 'w:line' => s.style_line, 'w:before' => '0', 'w:after' => '0' }
+                  xml.send 'w:spacing',      spacing_options(s, true)
                   xml.send 'w:ind',          { 'w:left' => '0', 'w:firstLine' => '0', 'w:right' => '0' }
                   xml.send 'w:jc',           { 'w:val' => s.style_align.to_s }
                 end
@@ -69,8 +70,9 @@ module Caracal
                 xml.send 'w:basedOn', { 'w:val' => s.style_base }
                 xml.send 'w:next',    { 'w:val' => s.style_next }
                 xml.send 'w:pPr' do
-                  xml.send 'w:keepNext',          { 'w:val' => '1' }
-                  xml.send 'w:keepLines',         { 'w:val' => '1' }
+                  xml.send 'w:keepNext',          { 'w:val' => '0' }
+                  xml.send 'w:keepLines',         { 'w:val' => '0' }
+                  xml.send 'w:widowControl',      { 'w:val' => '1' }
                   xml.send 'w:spacing',           spacing_options(s)                              unless spacing_options(s).nil?
                   xml.send 'w:contextualSpacing', { 'w:val' => '1' }
                   xml.send 'w:jc',                { 'w:val' => s.style_align.to_s }               unless s.style_align.nil?
@@ -123,9 +125,9 @@ module Caracal
         { 'w:cs' => name, 'w:hAnsi' => name, 'w:eastAsia' => name, 'w:ascii' => name }
       end
 
-      def spacing_options(style)
-        top     = style.style_top
-        bottom  = style.style_bottom
+      def spacing_options(style, default=false)
+        top     = (default) ? style.style_top.to_i    : style.style_top
+        bottom  = (default) ? style.style_bottom.to_i : style.style_bottom
         line    = style.style_line
 
         options = nil
