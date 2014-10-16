@@ -1,3 +1,10 @@
+#### Unreleased
+
+* Enhancements
+  * Added :caps attribute to paragraph styles (@jensljungblad)
+
+
+
 #### v0.2.0
 
 * Enhancements
@@ -14,4 +21,4 @@
 #### v0.1.x
 
 * Enhancements
-	* Initial commits. (@jpdugan) 	 
+	* Initial commits. (@jpdugan)

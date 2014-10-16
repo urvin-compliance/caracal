@@ -29,7 +29,7 @@ Caracal::Document.save 'example.docx' do |docx|
   docx.table @my_data, border_size: 4 do
     cell_style rows[0], background: 'cccccc', bold: true
   end
-  
+
   # page 2
   docx.page
   docx.h1 'Page 2 Header'
@@ -55,10 +55,10 @@ We created Caracal to satisfy a genuine business requirement.  We were working o
 
 Now, as you may have noticed, the Ruby community has never exactly been known for its enthusiastic support of Microsoft standards. So it might not surprise you to learn that the existing options on Rubygems for Word document generation were limited.  Those libraries, by and large, fell into a couple of categories:
 
-* **HTML to Word Convertors**  
+* **HTML to Word Convertors**
 We understand the motivating idea here (two output streams from one set of instructions), but the reality is the number of possible permutations of nested HTML tags is simply too great for this strategy to ever work for anything other than the simplest kinds of documents. Most of these libraries rely on a number of undocumented assumptions about the structure of your HTML (which undermines the whole value proposition of a convertor) and fail to support basic features of a professional-quality Word document (e.g., images, lists, tables, etc). The remaining libraries simply did not work at all.
 
-* **Weekend Projects**  
+* **Weekend Projects**
 We also found a number of inactive projects that appeared to be experiments in the space. Obviously, these libraries were out of the question for a commercial product.
 
 What we wanted was a Prawn-style library for the `:docx` format. In the absence of an active project organized along those lines, we decided to write one.
@@ -107,40 +107,40 @@ For each Caracal request, the following document structure will be created and z
 
 The following provides a brief description for each component of the final document:
 
-**_rels/.rels**  
+**_rels/.rels**
 Defines an internal identifier and type for global content items. *This file is generated automatically by the library based on other user directives.*
 
-**docProps/app.xml**  
+**docProps/app.xml**
 Specifies the name of the application that generated the document. *This file is generated automatically by the library based on other user directives.*
 
-**docProps/core.xml**  
+**docProps/core.xml**
 Specifies the title of the document. *This file is generated automatically by the library based on other user directives.*
 
-**word/_rels/document.xml.rels**  
+**word/_rels/document.xml.rels**
 Defines an internal identifier and type with all external content items (images, links, etc). *This file is generated automatically by the library based on other user directives.*
 
-**word/media/**  
+**word/media/**
 A collection of media assets (each of which should have an entry in document.xml.rels).
 
-**word/document.xml**  
+**word/document.xml**
 The main content file for the document.
 
-**word/fontTable.xml**  
+**word/fontTable.xml**
 Specifies the fonts used in the document.
 
-**word/footer.xml**  
+**word/footer.xml**
 Defines the formatting of the document footer.
 
-**word/numbering.xml**  
+**word/numbering.xml**
 Defines ordered and unordered list styles.
 
-**word/settings.xml**  
+**word/settings.xml**
 Defines global directives for the document (e.g., whether to show background images, tab widths, etc). Also, establishes compatibility with older versions on Word.
 
-**word/styles.xml**  
+**word/styles.xml**
 Defines all paragraph and table styles used through the document.  Caracal adds a default set of styles to match its HTML-like content syntax.  These defaults can be overridden.
 
-**[Content_Types].xml**  
+**[Content_Types].xml**
 Pairs extensions and XML files with schema content types so Word can parse them correctly. *This file is generated automatically by the library based on other user directives.*
 
 
@@ -148,25 +148,25 @@ Pairs extensions and XML files with schema content types so Word can parse them 
 
 OpenXML properties are specified in several different units, depending on which attribute is being set.
 
-**Points**  
+**Points**
 Most spacing declarations are measured in full points.
 
-**Half Points**  
+**Half Points**
 All font sizes are measure in half points.  A font size of 24 is equivalent to 12pt.
 
-**Eighth Points**  
+**Eighth Points**
 Borders are measured in 1/8 points.  A border size of 4 is equivalent to 0.5pt.
 
-**Twips**  
+**Twips**
 A twip is 1/20 of a point.  Word documents are printed at 72dpi.  1in == 72pt == 1440 twips.
 
-**Pixels**  
+**Pixels**
 In Word documents, pixels are equivalent to points.
 
-**EMUs (English Metric Unit)**  
+**EMUs (English Metric Unit)**
 EMUs are a virtual unit designed to facilitate the smooth conversion between inches, milliimeters, and pixels for images and vector graphics.  1in == 914400 EMUs == 72dpi x 100 x 254.
 
-At present, Caracal expects values to be specified in whichever unit OOXML requires. This is admittedly difficult for new Caracal users. Eventually, we'll probably implement a utility object under the hood to convert user-specified units into the format expected by OOXML. 
+At present, Caracal expects values to be specified in whichever unit OOXML requires. This is admittedly difficult for new Caracal users. Eventually, we'll probably implement a utility object under the hood to convert user-specified units into the format expected by OOXML.
 
 
 ## Syntax Flexibility
@@ -263,7 +263,7 @@ Both the `width` and `height` attributes require positive integer values.
 ### Page Margins
 
 Page margins can be set using the `page_margins` method.  The method accepts four parameters for controlling the margins of the document.
-  
+
 *Margins default to 1.0in for all sides.*
 
 ```ruby
@@ -302,7 +302,7 @@ end
 
 ### Fonts
 
-Fonts are added to the font table file by calling the `font` method and passing the name of the font.  
+Fonts are added to the font table file by calling the `font` method and passing the name of the font.
 
 *At present, Caracal only supports declaring the primary font name.*
 
@@ -326,7 +326,8 @@ docx.style do
   size      28              # sets the font size. units in half points.
   bold      false           # sets the font weight.
   italic    false           # sets the font style.
-  underline false           # sets whether or not to underline the text.  
+  underline false           # sets whether or not to underline the text.
+  caps      false           # sets whether or not text should be rendered in all capital letters.
   align     :left           # sets the alignment. accepts :left, :center, :right, and :both.
   line      360             # sets the line height. units in twips.
   top       100             # sets the spacing above the paragraph. units in twips.
@@ -349,7 +350,7 @@ Caracal establishes a standard set of default styles for every document. Default
 
 ### Paragraphs
 
-Paragraph text can be added using the `p` method.  The method accepts several optional parameters for controlling the style and behavior of the paragrpah. 
+Paragraph text can be added using the `p` method.  The method accepts several optional parameters for controlling the style and behavior of the paragrpah.
 
 In its simple form, a paragraph accepts a text string and formatting options.
 
@@ -385,7 +386,7 @@ end
 
 ### Links
 
-Links can be added inside paragraphs using the `link` method.  The method accepts several optional parameters for controlling the style and behavior of the rule.  
+Links can be added inside paragraphs using the `link` method.  The method accepts several optional parameters for controlling the style and behavior of the rule.
 
 *At present, all links are assumed to be external.*
 
@@ -420,7 +421,7 @@ end
 
 ### Rules
 
-Horizontal rules can be added using the `hr` method.  The method accepts several optional parameters for controlling the style of the rule.  
+Horizontal rules can be added using the `hr` method.  The method accepts several optional parameters for controlling the style of the rule.
 
 ```ruby
 docx.hr do
@@ -458,7 +459,7 @@ Ordered lists can be added using the `ol` and `li` methods.  The `li` method sub
 ```ruby
 docx.ol do
   li 'First item'
-  li do 
+  li do
     text 'Second item with a '
     link 'link', 'http://www.google.com'
     text '.'
@@ -473,7 +474,7 @@ Similarly, unordered lists can be added using the `ul` and `li` methods.
 ```ruby
 docx.ul do
   li 'First item'
-  li do 
+  li do
     text 'Second item with a '
     link 'link', 'http://www.google.com'
     text '.'
@@ -497,7 +498,7 @@ docx.ul do
         end
       end
     end
-  end  
+  end
 end
 ```
 
@@ -514,7 +515,7 @@ docx.list_style do
   level   2           # sets the nesting level. 0-based index.
   format  'decimal'   # sets the list style. see OOXML docs for details.
   value   '%3.'       # sets the value of the list item marker. see OOXML docs for details.
-  align   :left       # sets the alignment. accepts :left, :center: and :right. defaults to :left. 
+  align   :left       # sets the alignment. accepts :left, :center: and :right. defaults to :left.
   indent  400         # sets the indention of the marker from the margin. units in twips.
   left    800         # sets the indention of the text from the margin. units in twips.
   start   2           # sets the number at which item counts begin. defaults to 1.
@@ -542,9 +543,9 @@ docx.img image_url('example.png') do
 end
 ```
 
-*Note: If you provide the image data, you should still supply a URL. I know this 
-is a bit hacky, but it allows the library to key the image more effectively and 
-Caracal needs a file extension to apply to the renamed media file. This seemed 
+*Note: If you provide the image data, you should still supply a URL. I know this
+is a bit hacky, but it allows the library to key the image more effectively and
+Caracal needs a file extension to apply to the renamed media file. This seemed
 the simplest solution to both problems.*
 
 
@@ -557,7 +558,7 @@ The `table` command accepts data in the form of a two-dimensional arrays. This c
 ```ruby
 docx.table [['Header 1','Header 2'],['Cell 1', 'Cell 2']] do
   border_color   '666666'   # sets the border color. defaults to 'auto'.
-  border_line    :single    # sets the border style. defaults to :single. see OOXML docs for details.      
+  border_line    :single    # sets the border style. defaults to :single. see OOXML docs for details.
   border_size    4          # sets the border width. defaults to 0. units in twips.
   border_spacing 4          # sets the spacing around the border. deaults to 0. units in twips.
 end
@@ -592,7 +593,7 @@ end
 
 ### Table Cells
 
-If your table contains more complex data (multiple paragraphs, images, lists, etc.), you will probably want to instantiate your `TableCellModel` instances directly.  With the exception of page breaks, table cells can contain anything the document can contain, including another table. 
+If your table contains more complex data (multiple paragraphs, images, lists, etc.), you will probably want to instantiate your `TableCellModel` instances directly.  With the exception of page breaks, table cells can contain anything the document can contain, including another table.
 
 ```ruby
 c1 = Caracal::Core::Models:TableCellModel.new do
@@ -603,11 +604,11 @@ c1 = Caracal::Core::Models:TableCellModel.new do
     left                 # sets the left margin. defaults to 0. units in twips.
     right                # sets the right margin. defaults to 0. units in twips.
   end
-  
+
   p 'This is a sentence above an image.'
   p
   img image_url('example.png'), width: 200, height: 100
-end  
+end
 ```
 
 
@@ -640,7 +641,7 @@ end
 
 ## Template Rendering
 
-Caracal includes [Tilt](https://github.com/rtomayko/tilt) integration to facilitate its inclusion in other frameworks.  
+Caracal includes [Tilt](https://github.com/rtomayko/tilt) integration to facilitate its inclusion in other frameworks.
 
 Rails integration can be added via the [Caracal-Rails](https://github.com/trade-informatics/caracal-rails) gem.
 
