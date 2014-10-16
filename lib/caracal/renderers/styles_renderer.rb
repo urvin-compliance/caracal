@@ -7,20 +7,20 @@ require 'caracal/errors'
 module Caracal
   module Renderers
     class StylesRenderer < XmlRenderer
-      
+
       #-------------------------------------------------------------
       # Public Methods
       #-------------------------------------------------------------
-      
-      # This method produces the xml required for the `word/styles.xml` 
+
+      # This method produces the xml required for the `word/styles.xml`
       # sub-document.
       #
       def to_xml
         builder = ::Nokogiri::XML::Builder.with(declaration_xml) do |xml|
           xml.send 'w:styles', root_options do
-            
+
             #============ DEFAULT STYLES ================================
-            
+
             unless s = document.default_style
               raise Caracal::Errors::NoDefaultStyleError 'Document must declare a default paragraph style.'
             end
@@ -30,6 +30,7 @@ module Caracal
                   xml.send 'w:rFonts',    font_options(s)
                   xml.send 'w:b',         { 'w:val' => (s.style_bold ? '1' : '0') }
                   xml.send 'w:i',         { 'w:val' => (s.style_italic ? '1' : '0') }
+                  xml.send 'w:caps',      { 'w:val' => (s.style_caps ? '1' : '0') }
                   xml.send 'w:smallCaps', { 'w:val' => '0' }
                   xml.send 'w:strike',    { 'w:val' => '0' }
                   xml.send 'w:color',     { 'w:val' => s.style_color }
@@ -59,10 +60,10 @@ module Caracal
               end
             end
             default_id = s.style_id
-            
-            
+
+
             #============ PARAGRAPH STYLES ================================
-            
+
             document.styles.reject { |s| s.style_id == default_id }.each do |s|
               xml.send 'w:style', { 'w:styleId' => s.style_id, 'w:type' => 'paragraph' } do
                 xml.send 'w:name',    { 'w:val' => s.style_name }
@@ -80,15 +81,16 @@ module Caracal
                   xml.send 'w:rFonts',    font_options(s)                                         unless s.style_font.nil?
                   xml.send 'w:b',         { 'w:val' => (s.style_bold ? '1' : '0') }               unless s.style_bold.nil?
                   xml.send 'w:i',         { 'w:val' => (s.style_italic ? '1' : '0') }             unless s.style_italic.nil?
+                  xml.send 'w:caps',      { 'w:val' => (s.style_caps ? '1' : '0') }               unless s.style_caps.nil?
                   xml.send 'w:color',     { 'w:val' => s.style_color }                            unless s.style_color.nil?
                   xml.send 'w:sz',        { 'w:val' => s.style_size }                             unless s.style_size.nil?
                   xml.send 'w:u',         { 'w:val' => (s.style_underline ? 'single' : 'none') }  unless s.style_underline.nil?
                 end
               end
             end
-            
+
             #============ TABLE STYLES ================================
-            
+
             xml.send 'w:style', { 'w:styleId' => 'DefaultTable', 'w:type' => 'table' } do
               xml.send 'w:basedOn', { 'w:val' => 'TableNormal' }
               xml.send 'w:tblPr' do
@@ -105,29 +107,29 @@ module Caracal
                 xml.send 'w:tblStylePr', { 'w:type' => type }
               end
             end
-          
+
           end
         end
         builder.to_xml(save_options)
       end
-      
-      
-      
+
+
+
       #-------------------------------------------------------------
       # Private Methods
-      #------------------------------------------------------------- 
+      #-------------------------------------------------------------
       private
-      
+
       def font_options(style)
         name = style.style_font
         { 'w:cs' => name, 'w:hAnsi' => name, 'w:eastAsia' => name, 'w:ascii' => name }
       end
-      
+
       def spacing_options(style, default=false)
         top     = (default) ? style.style_top.to_i    : style.style_top
         bottom  = (default) ? style.style_bottom.to_i : style.style_bottom
         line    = style.style_line
-        
+
         options = nil
         if [top, bottom, line].compact.size > 0
           options               = {}
@@ -138,7 +140,7 @@ module Caracal
         end
         options
       end
-      
+
       def root_options
         {
           'xmlns:mc'  => 'http://schemas.openxmlformats.org/markup-compatibility/2006',
@@ -158,7 +160,7 @@ module Caracal
           'xmlns:dgm' => 'http://schemas.openxmlformats.org/drawingml/2006/diagram'
         }
       end
-   
+
     end
   end
 end
