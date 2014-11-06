@@ -154,12 +154,12 @@ module Caracal
           begin
             @table_data = value.map do |data_row|
               data_row.map do |data_cell|
-                case data_cell.class.name
-                when 'Caracal::Core::Models::TableCellModel'
+                case data_cell
+                when Caracal::Core::Models::TableCellModel
                   data_cell
-                when 'Hash'
+                when Hash
                   Caracal::Core::Models::TableCellModel.new(data_cell)
-                when 'Proc'
+                when Proc
                   Caracal::Core::Models::TableCellModel.new(&data_cell)
                 else
                   Caracal::Core::Models::TableCellModel.new({ content: data_cell.to_s })
