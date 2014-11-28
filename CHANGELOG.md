@@ -1,8 +1,8 @@
-#### Unreleased
+#### v0.2.1
 
 * Enhancements
-  * Added :caps attribute to paragraph styles (@jensljungblad)
-
+  * Added :caps attribute to paragraph styles (@jensljungblad).
+  * Change table model to allow TableCellModel to be subclassed (@gh4me).
 
 
 #### v0.2.0
