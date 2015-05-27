@@ -7,16 +7,16 @@ require 'caracal/errors'
 module Caracal
   module Core
     module Models
-      
+
       # This class encapsulates the logic needed to store and manipulate
       # paragraph data.
       #
       class ParagraphModel < BaseModel
-        
+
         #-------------------------------------------------------------
         # Configuration
         #-------------------------------------------------------------
-        
+
         # readers
         attr_reader :paragraph_style
         attr_reader :paragraph_align
@@ -25,26 +25,26 @@ module Caracal
         attr_reader :paragraph_bold
         attr_reader :paragraph_italic
         attr_reader :paragraph_underline
-        
+
         # initialization
         def initialize(options={}, &block)
           content = options.delete(:content) { "" }
           text content, options.dup
           super options, &block
         end
-        
-        
+
+
         #-------------------------------------------------------------
         # Public Instance Methods
         #-------------------------------------------------------------
-    
+
         #=============== GETTERS ==============================
-        
+
         # .runs
         def runs
           @runs ||= []
         end
-        
+
         # .run_attributes
         def run_attributes
           {
@@ -55,47 +55,47 @@ module Caracal
             underline:  paragraph_underline,
           }
         end
-        
-        
+
+
         #=============== SETTERS ==============================
-        
+
         # booleans
         [:bold, :italic, :underline].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@paragraph_#{ m }", !!value)
           end
         end
-        
+
         # integers
         [:size].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@paragraph_#{ m }", value.to_i)
           end
         end
-        
+
         # strings
         [:color, :style].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@paragraph_#{ m }", value.to_s)
           end
         end
-        
+
         # symbols
         [:align].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@paragraph_#{ m }", value.to_s.to_sym)
           end
         end
-        
-        
+
+
         #=============== SUB-METHODS ===========================
-        
+
         # .link
         def link(*args, &block)
           options = Caracal::Utilities.extract_options!(args)
           options.merge!({ content: args[0] }) if args[0]
           options.merge!({ href:    args[1] }) if args[1]
-          
+
           model = Caracal::Core::Models::LinkModel.new(options, &block)
           if model.valid?
             runs << model
@@ -111,12 +111,12 @@ module Caracal
           runs << model
           model
         end
-        
+
         # .text
         def text(*args, &block)
           options = Caracal::Utilities.extract_options!(args)
           options.merge!({ content: args.first }) if args.first
-          
+
           model = Caracal::Core::Models::TextModel.new(options, &block)
           if model.valid?
             runs << model
@@ -125,26 +125,40 @@ module Caracal
           end
           model
         end
-        
-        
+
+        # .img
+        def img(*args, &block)
+          options = Caracal::Utilities.extract_options!(args)
+          options.merge!({ url: args.first }) if args.first
+
+          model = Caracal::Core::Models::ImageModel.new(options, &block)
+          if model.valid?
+            runs << model
+          else
+            raise Caracal::Errors::InvalidModelError, 'Images require an URL and positive size/margin values.'
+          end
+          model
+        end
+
+
         #=============== VALIDATION ===========================
-        
+
         def valid?
           runs.size > 0
         end
-        
-        
+
+
         #-------------------------------------------------------------
         # Private Instance Methods
         #-------------------------------------------------------------
         private
-        
+
         def option_keys
           [:content, :style, :align, :color, :size, :bold, :italic, :underline]
         end
-        
+
       end
-      
+
     end
   end
 end
