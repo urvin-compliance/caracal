@@ -81,27 +81,28 @@ You may not know that .docx files are simply a zipped collection of XML document
 
 For each Caracal request, the following document structure will be created and zipped into the final output file:
 
-    example.docx
-      |- _rels
-      	|- .rels
-      |- docProps
-        |- app.xml
-        |- core.xml
-      |- word
-        |- _rels
-          |- document.xml.rels
-        |- media
-          |- image001.png
-          |- image002.png
-          ...
-        |- document.xml
-        |- fontTable.xml
-        |- footer.xml
-        |- numbering.xml
-        |- settings.xml
-        |- styles.xml
-      |- [Content_Types].xml
-
+```shell
+example.docx
+  ├── [Content_Types].xml
+  └── _rels
+    ├── .rels
+  └── docProps
+    ├── app.xml
+    ├── core.xml
+  └── word
+    ├── _rels
+    ├── document.xml.rels
+    ├── media
+    ├── image001.png
+    ├── image002.png
+      ...
+    ├── document.xml
+    ├── fontTable.xml
+    ├── footer.xml
+    ├── numbering.xml
+    ├── settings.xml
+    └── styles.xml
+```
 
 ## File Descriptions
 
@@ -380,6 +381,7 @@ docx.p do
   text '.'
   br
   text 'This text follows a line break.'
+  img image_url('example.png'), width: 200, height: 100
 end
 ```
 
