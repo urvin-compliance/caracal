@@ -1,3 +1,9 @@
+#### v0.3.0
+
+* Deprecations
+  * The :style attribute is no longer allowed on text and link commands. Use :font, :size, etc. instead.
+
+
 #### v0.2.1
 
 * Enhancements

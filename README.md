@@ -374,9 +374,9 @@ More complex paragraph runs can be accomplished by using the `text` method inste
 
 ```ruby
 docx.p do
-  text 'Here is a sentence with a ', style: 'custom_style'
+  text 'Here is a sentence with a '
   link 'link', 'https://www.example.com'
-  text ' to something awesome', color: '555555', size: 32, bold: true, italic: true, underline: true
+  text ' to something awesome', font: 'Courier New', color: '555555', size: 32, bold: true, italic: true, underline: true
   text '.'
   br
   text 'This text follows a line break.'
@@ -393,12 +393,12 @@ Links can be added inside paragraphs using the `link` method.  The method accept
 ```ruby
 p do
   link 'Example Text', 'https://wwww.example.com' do
-    style       'my_style'   # sets the style class. defaults to nil.
-    color       '0000ff'     # sets the color of the text. defaults to 1155cc.
-    size        24           # sets the font size. units in half-points. defaults to nil.
-    bold        false        # sets whether or not the text will be bold. defaults to false.
-    italic      false        # sets whether or not the text will be italic. defaults to false.
-    underline   true         # sets whether or not the text will be underlined. defaults to true.
+    font       'Courier New'  # sets the font name to use. defaults to nil.
+    color       '0000ff'      # sets the color of the text. defaults to 1155cc.
+    size        24            # sets the font size. units in half-points. defaults to nil.
+    bold        false         # sets whether or not the text will be bold. defaults to false.
+    italic      false         # sets whether or not the text will be italic. defaults to false.
+    underline   true          # sets whether or not the text will be underlined. defaults to true.
   end
 end
 ```

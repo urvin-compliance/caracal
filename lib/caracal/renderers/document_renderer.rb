@@ -7,12 +7,12 @@ require 'caracal/errors'
 module Caracal
   module Renderers
     class DocumentRenderer < XmlRenderer
-      
+
       #-------------------------------------------------------------
       # Public Methods
       #-------------------------------------------------------------
-      
-      # This method produces the xml required for the `word/document.xml` 
+
+      # This method produces the xml required for the `word/document.xml`
       # sub-document.
       #
       def to_xml
@@ -20,16 +20,16 @@ module Caracal
           xml.send 'w:document', root_options do
             xml.send 'w:background', { 'w:color' => 'FFFFFF' }
             xml.send 'w:body' do
-              
+
               #============= CONTENTS ===================================
-              
+
               document.contents.each do |model|
                 method = render_method_for_model(model)
                 send(method, xml, model)
               end
-              
+
               #============= PAGE SETTINGS ==============================
-              
+
               xml.send 'w:sectPr' do
                 if document.page_number_show
                   if rel = document.find_relationship('footer1.xml')
@@ -39,37 +39,37 @@ module Caracal
                 xml.send 'w:pgSz', page_size_options
                 xml.send 'w:pgMar', page_margin_options
               end
-              
+
             end
           end
         end
         builder.to_xml(save_options)
       end
-      
-      
+
+
       #-------------------------------------------------------------
       # Private Methods
-      #------------------------------------------------------------- 
+      #-------------------------------------------------------------
       private
-      
+
       #============= COMMON RENDERERS ==========================
-      
+
       # This method converts a model class name to a rendering
-      # function on this class (e.g., Caracal::Core::Models::ParagraphModel 
+      # function on this class (e.g., Caracal::Core::Models::ParagraphModel
       # translates to `render_paragraph`).
       #
       def render_method_for_model(model)
         type = model.class.name.split('::').last.downcase.gsub('model', '')
         "render_#{ type }"
       end
-      
-      # This method renders a standard node of run properties based on the 
+
+      # This method renders a standard node of run properties based on the
       # model's attributes.
       #
       def render_run_attributes(xml, model, paragraph_level=false)
         if model.respond_to? :run_attributes
-          attrs = model.run_attributes.delete_if { |k, v| v.nil? } 
-          
+          attrs = model.run_attributes.delete_if { |k, v| v.nil? }
+
           if paragraph_level && attrs.empty?
             # skip
           else
@@ -81,25 +81,29 @@ module Caracal
                 xml.send 'w:b',      { 'w:val' => (attrs[:bold] ? '1' : '0') }               unless attrs[:bold].nil?
                 xml.send 'w:i',      { 'w:val' => (attrs[:italic] ? '1' : '0') }             unless attrs[:italic].nil?
                 xml.send 'w:u',      { 'w:val' => (attrs[:underline] ? 'single' : 'none') }  unless attrs[:underline].nil?
+                unless attrs[:font].nil?
+                  f = attrs[:font]
+                  xml.send 'w:rFonts', { 'w:ascii' => f, 'w:hAnsi' => f, 'w:eastAsia' => f, 'w:cs' => f }
+                end
               end
               xml.send 'w:rtl',    { 'w:val' => '0' }
             end
           end
         end
       end
-      
-    
+
+
       #============= MODEL RENDERERS ===========================
-      
+
       def render_image(xml, model)
         unless ds = document.default_style
           raise Caracal::Errors::NoDefaultStyleError 'Document must declare a default paragraph style.'
         end
-        
+
         rel      = document.relationship({ type: :image, target: model.image_url, data: model.image_data })
         rel_id   = rel.relationship_id
         rel_name = rel.formatted_target
-        
+
         xml.send 'w:p', paragraph_options do
           xml.send 'w:pPr' do
             xml.send 'w:spacing', { 'w:lineRule' => 'auto', 'w:line' => ds.style_line }
@@ -147,16 +151,16 @@ module Caracal
           end
         end
       end
-      
+
       def render_linebreak(xml, model)
         xml.send 'w:r' do
           xml.send 'w:br'
         end
       end
-      
+
       def render_link(xml, model)
         rel = document.relationship({ target: model.link_href, type: :link })
-        
+
         xml.send 'w:hyperlink', { 'r:id' => rel.formatted_id } do
           xml.send 'w:r', run_options do
             render_run_attributes(xml, model, false)
@@ -164,22 +168,22 @@ module Caracal
           end
         end
       end
-      
+
       def render_list(xml, model)
         if model.list_level == 0
           document.toplevel_lists << model
           list_num = document.toplevel_lists.length   # numbering uses 1-based index
         end
-        
+
         model.recursive_items.each do |item|
           render_listitem(xml, item, list_num)
         end
       end
-      
+
       def render_listitem(xml, model, list_num)
         ls      = document.find_list_style(model.list_item_type, model.list_item_level)
         hanging = ls.style_left.to_i - ls.style_indent.to_i - 1
-        
+
         xml.send 'w:p', paragraph_options do
           xml.send 'w:pPr' do
             xml.send 'w:numPr' do
@@ -198,7 +202,7 @@ module Caracal
           end
         end
       end
-      
+
       def render_pagebreak(xml, model)
         xml.send 'w:p', paragraph_options do
           xml.send 'w:r', run_options do
@@ -206,10 +210,10 @@ module Caracal
           end
         end
       end
-      
+
       def render_paragraph(xml, model)
         run_props = [:color, :size, :bold, :italic, :underline].map { |m| model.send("paragraph_#{ m }") }.compact
-        
+
         xml.send 'w:p', paragraph_options do
           xml.send 'w:pPr' do
             xml.send 'w:pStyle',            { 'w:val' => model.paragraph_style }  unless model.paragraph_style.nil?
@@ -221,12 +225,12 @@ module Caracal
             method = render_method_for_model(run)
             send(method, xml, run)
           end
-        end 
+        end
       end
-      
+
       def render_rule(xml, model)
-        options = { 'w:color' => model.rule_color, 'w:sz' => model.rule_size, 'w:val' => model.rule_line, 'w:space' => model.rule_spacing } 
-          
+        options = { 'w:color' => model.rule_color, 'w:sz' => model.rule_size, 'w:val' => model.rule_line, 'w:space' => model.rule_spacing }
+
         xml.send 'w:p', paragraph_options do
           xml.send 'w:pPr' do
             xml.send 'w:pBdr' do
@@ -235,19 +239,19 @@ module Caracal
           end
         end
       end
-      
+
       def render_text(xml, model)
         xml.send 'w:r', run_options do
           render_run_attributes(xml, model, false)
           xml.send 'w:t', { 'xml:space' => 'preserve' }, model.text_content
         end
       end
-      
+
       def render_table(xml, model)
         borders = %w(top left bottom right horizontal vertical).select do |m|
           model.send("table_border_#{ m }_size") > 0
         end
-        
+
         xml.send 'w:tbl' do
           xml.send 'w:tblPr' do
             xml.send 'w:tblStyle',   { 'w:val' => 'DefaultTable' }
@@ -304,15 +308,15 @@ module Caracal
             end
           end
         end
-        
-        # don't know why this is needed, but it prevents a 
+
+        # don't know why this is needed, but it prevents a
         # rendering error.
         render_paragraph(xml, Caracal::Core::Models::ParagraphModel.new)
       end
 
-      
+
       #============= OPTIONS ===================================
-      
+
       def root_options
         {
           'xmlns:mc'   => 'http://schemas.openxmlformats.org/markup-compatibility/2006',
@@ -332,23 +336,23 @@ module Caracal
           'xmlns:dgm'  => 'http://schemas.openxmlformats.org/drawingml/2006/diagram'
         }
       end
-      
+
       def page_margin_options
-        { 
-          'w:top'    => document.page_margin_top, 
-          'w:bottom' => document.page_margin_bottom, 
-          'w:left'   => document.page_margin_left, 
-          'w:right'  => document.page_margin_right 
+        {
+          'w:top'    => document.page_margin_top,
+          'w:bottom' => document.page_margin_bottom,
+          'w:left'   => document.page_margin_left,
+          'w:right'  => document.page_margin_right
         }
       end
-      
+
       def page_size_options
-        { 
-          'w:w' => document.page_width, 
-          'w:h' => document.page_height 
+        {
+          'w:w' => document.page_width,
+          'w:h' => document.page_height
         }
       end
-   
+
     end
   end
 end
