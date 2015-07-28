@@ -11,6 +11,7 @@ describe Caracal::Core::Models::LinkModel do
       bold        false
       italic      false
       underline   true
+      bgcolor     'cccccc'
     end
   end
 
@@ -36,6 +37,7 @@ describe Caracal::Core::Models::LinkModel do
       it { expect(subject.link_bold).to eq false }
       it { expect(subject.link_italic).to eq false }
       it { expect(subject.link_underline).to eq true }
+      it { expect(subject.link_bgcolor).to eq 'cccccc' }
     end
 
   end
@@ -51,7 +53,7 @@ describe Caracal::Core::Models::LinkModel do
 
     # .run_attributes
     describe '.run_attributes' do
-      let(:expected) { { font: 'Courier New', color: '666666', size: 20, bold: false, italic: false, underline: true } }
+      let(:expected) { { font: 'Courier New', color: '666666', size: 20, bold: false, italic: false, underline: true, bgcolor: 'cccccc' } }
 
       it { expect(subject.run_attributes).to eq expected }
     end
@@ -84,6 +86,11 @@ describe Caracal::Core::Models::LinkModel do
     end
 
     # strings
+    describe '.bgcolor' do
+      before { subject.bgcolor('dddddd') }
+
+      it { expect(subject.link_bgcolor).to eq 'dddddd' }
+    end
     describe '.color' do
       before { subject.color('999999') }
 
@@ -135,7 +142,7 @@ describe Caracal::Core::Models::LinkModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:content, :href, :font, :color, :size, :bold, :italic, :underline].sort }
+      let(:expected) { [:content, :href, :font, :color, :size, :bold, :italic, :underline, :bgcolor].sort }
 
       it { expect(actual).to eq expected }
     end

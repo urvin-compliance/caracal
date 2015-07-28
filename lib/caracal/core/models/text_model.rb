@@ -22,6 +22,7 @@ module Caracal
         attr_reader :text_bold
         attr_reader :text_italic
         attr_reader :text_underline
+        attr_reader :text_bgcolor
 
 
 
@@ -40,6 +41,7 @@ module Caracal
             bold:       text_bold,
             italic:     text_italic,
             underline:  text_underline,
+            bgcolor:    text_bgcolor
           }
         end
 
@@ -61,7 +63,7 @@ module Caracal
         end
 
         # strings
-        [:color, :content, :font].each do |m|
+        [:bgcolor, :color, :content, :font].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@text_#{ m }", value.to_s)
           end
@@ -82,7 +84,7 @@ module Caracal
         private
 
         def option_keys
-          [:content, :font, :color, :size, :bold, :italic, :underline]
+          [:content, :font, :color, :size, :bold, :italic, :underline, :bgcolor]
         end
 
       end

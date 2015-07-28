@@ -74,13 +74,17 @@ module Caracal
             # skip
           else
             xml.send 'w:rPr' do
+              puts '='*80
+              puts attrs.inspect
+              puts '='*80
               unless attrs.empty?
-                xml.send 'w:rStyle', { 'w:val' => attrs[:style] }                            unless attrs[:style].nil?
-                xml.send 'w:color',  { 'w:val' => attrs[:color] }                            unless attrs[:color].nil?
-                xml.send 'w:sz',     { 'w:val' => attrs[:size]  }                            unless attrs[:size].nil?
-                xml.send 'w:b',      { 'w:val' => (attrs[:bold] ? '1' : '0') }               unless attrs[:bold].nil?
-                xml.send 'w:i',      { 'w:val' => (attrs[:italic] ? '1' : '0') }             unless attrs[:italic].nil?
-                xml.send 'w:u',      { 'w:val' => (attrs[:underline] ? 'single' : 'none') }  unless attrs[:underline].nil?
+                xml.send 'w:rStyle', { 'w:val'  => attrs[:style] }                            unless attrs[:style].nil?
+                xml.send 'w:color',  { 'w:val'  => attrs[:color] }                            unless attrs[:color].nil?
+                xml.send 'w:sz',     { 'w:val'  => attrs[:size]  }                            unless attrs[:size].nil?
+                xml.send 'w:b',      { 'w:val'  => (attrs[:bold] ? '1' : '0') }               unless attrs[:bold].nil?
+                xml.send 'w:i',      { 'w:val'  => (attrs[:italic] ? '1' : '0') }             unless attrs[:italic].nil?
+                xml.send 'w:u',      { 'w:val'  => (attrs[:underline] ? 'single' : 'none') }  unless attrs[:underline].nil?
+                xml.send 'w:shd',    { 'w:fill' => attrs[:bgcolor], 'w:val' => 'clear' }      unless attrs[:bgcolor].nil?
                 unless attrs[:font].nil?
                   f = attrs[:font]
                   xml.send 'w:rFonts', { 'w:ascii' => f, 'w:hAnsi' => f, 'w:eastAsia' => f, 'w:cs' => f }

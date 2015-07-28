@@ -367,6 +367,7 @@ docx.p 'Sample text.' do
   bold      true              # sets whether or not to render the text with a bold weight.
   italic    false             # sets whether or not render the text in italic style.
   underline false             # sets whether or not to underline the text.
+  bgcolor   'cccccc'          # sets the background color.
 end
 ```
 
@@ -376,7 +377,7 @@ More complex paragraph runs can be accomplished by using the `text` method inste
 docx.p do
   text 'Here is a sentence with a '
   link 'link', 'https://www.example.com'
-  text ' to something awesome', font: 'Courier New', color: '555555', size: 32, bold: true, italic: true, underline: true
+  text ' to something awesome', font: 'Courier New', color: '555555', size: 32, bold: true, italic: true, underline: true, bgcolor: 'cccccc'
   text '.'
   br
   text 'This text follows a line break.'
@@ -399,6 +400,7 @@ p do
     bold        false         # sets whether or not the text will be bold. defaults to false.
     italic      false         # sets whether or not the text will be italic. defaults to false.
     underline   true          # sets whether or not the text will be underlined. defaults to true.
+    bgcolor     'cccccc'      # sets the background color.
   end
 end
 ```

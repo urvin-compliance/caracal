@@ -6,20 +6,20 @@ require 'caracal/errors'
 module Caracal
   module Core
     module Models
-      
+
       # This class encapsulates the logic needed to store and manipulate
       # list item data.
       #
       class ListItemModel < ParagraphModel
-        
+
         #-------------------------------------------------------------
         # Configuration
         #-------------------------------------------------------------
-        
+
         # accessors
         attr_accessor :nested_list
-        
-        # readers (create aliases for superclass methods to conform 
+
+        # readers (create aliases for superclass methods to conform
         # to expected naming convention.)
         attr_reader  :list_item_type
         attr_reader  :list_item_level
@@ -29,15 +29,16 @@ module Caracal
         alias_method :list_item_bold,      :paragraph_bold
         alias_method :list_item_italic,    :paragraph_italic
         alias_method :list_item_underline, :paragraph_underline
-        
-        
-        
+        alias_method :list_item_bgcolor,   :paragraph_bgcolor
+
+
+
         #-------------------------------------------------------------
         # Public Instance Methods
         #-------------------------------------------------------------
-        
+
         #=============== SETTERS ==============================
-        
+
         # integers
         [:level].each do |m|
           define_method "#{ m }" do |value|
@@ -51,14 +52,14 @@ module Caracal
             instance_variable_set("@list_item_#{ m }", value.to_s.to_sym)
           end
         end
-        
-        
+
+
         #=============== SUB-METHODS ===========================
-        
+
         # .ol
         def ol(options={}, &block)
           options.merge!({ type: :ordered, level: list_item_level + 1 })
-          
+
           model = Caracal::Core::Models::ListModel.new(options, &block)
           if model.valid?
             @nested_list = model
@@ -67,11 +68,11 @@ module Caracal
           end
           model
         end
-        
+
         # .ul
         def ul(options={}, &block)
           options.merge!({ type: :unordered, level: list_item_level + 1 })
-          
+
           model = Caracal::Core::Models::ListModel.new(options, &block)
           if model.valid?
             @nested_list = model
@@ -80,28 +81,28 @@ module Caracal
           end
           model
         end
-        
-        
+
+
         #=============== VALIDATION ===========================
-        
+
         def valid?
           a = [:type, :level]
           required = a.map { |m| send("list_item_#{ m }") }.compact.size == a.size
           required && !runs.empty?
         end
-        
-        
+
+
         #-------------------------------------------------------------
         # Private Instance Methods
         #-------------------------------------------------------------
         private
-        
+
         def option_keys
-          [:type, :level, :content, :style, :color, :size, :bold, :italic, :underline]
+          [:type, :level, :content, :style, :color, :size, :bold, :italic, :underline, :bgcolor]
         end
-        
+
       end
-      
+
     end
   end
 end

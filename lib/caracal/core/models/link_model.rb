@@ -28,6 +28,7 @@ module Caracal
         alias_method :link_bold,      :text_bold
         alias_method :link_italic,    :text_italic
         alias_method :link_underline, :text_underline
+        alias_method :link_bgcolor,   :text_bgcolor
 
         # initialization
         def initialize(options={}, &block)

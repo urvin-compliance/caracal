@@ -10,6 +10,7 @@ describe Caracal::Core::Models::TextModel do
       bold        false
       italic      false
       underline   true
+      bgcolor     'cccccc'
     end
   end
 
@@ -28,6 +29,7 @@ describe Caracal::Core::Models::TextModel do
       it { expect(subject.text_bold).to eq false }
       it { expect(subject.text_italic).to eq false }
       it { expect(subject.text_underline).to eq true }
+      it { expect(subject.text_bgcolor).to eq 'cccccc' }
     end
 
   end
@@ -43,7 +45,7 @@ describe Caracal::Core::Models::TextModel do
 
     # .run_attributes
     describe '.run_attributes' do
-      let(:expected) { { font: 'Courier New', color: '666666', size: 20, bold: false, italic: false, underline: true } }
+      let(:expected) { { font: 'Courier New', color: '666666', size: 20, bold: false, italic: false, underline: true, bgcolor: 'cccccc' } }
 
       it { expect(subject.run_attributes).to eq expected }
     end
@@ -76,6 +78,11 @@ describe Caracal::Core::Models::TextModel do
     end
 
     # strings
+    describe '.bgcolor' do
+      before { subject.color('dddddd') }
+
+      it { expect(subject.text_color).to eq 'dddddd' }
+    end
     describe '.color' do
       before { subject.color('999999') }
 
@@ -122,7 +129,7 @@ describe Caracal::Core::Models::TextModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:content, :font, :color, :size, :bold, :italic, :underline].sort }
+      let(:expected) { [:bgcolor, :bold, :color, :content, :font, :italic, :size, :underline].sort }
 
       it { expect(actual).to eq expected }
     end
