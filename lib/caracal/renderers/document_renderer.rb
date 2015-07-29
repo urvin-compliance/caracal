@@ -74,9 +74,6 @@ module Caracal
             # skip
           else
             xml.send 'w:rPr' do
-              puts '='*80
-              puts attrs.inspect
-              puts '='*80
               unless attrs.empty?
                 xml.send 'w:rStyle', { 'w:val'  => attrs[:style] }                            unless attrs[:style].nil?
                 xml.send 'w:color',  { 'w:val'  => attrs[:color] }                            unless attrs[:color].nil?
