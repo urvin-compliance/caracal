@@ -12,6 +12,9 @@ Caracal is not a magical HTML to Word translator. Instead, it is a markup langua
 
 Or, said differently, if you use [Prawn](https://github.com/prawnpdf/prawn) for PDF generation, you'll probably like Caracal. Only you'll probably like it better. :)
 
+Please see the [caracal-example](https://github.com/trade-informatics/caracal-example) repository for
+a working demonstration of the library's capabilities.
+
 
 ## Teaser
 
@@ -42,7 +45,7 @@ Caracal::Document.save 'example.docx' do |docx|
     li 'Item 2'
   end
   docx.p
-  docx.img image_url('graph.png'), width: 500, height: 300
+  docx.img 'https://www.example.com/logo.png', width: 500, height: 300
 end
 ```
 
@@ -533,7 +536,7 @@ Images can be added by using the `img` method.  The method accepts several optio
 *Caracal will automatically embed the image in the Word document.*
 
 ```ruby
-docx.img image_url('example.png') do
+docx.img 'https://www.example.com/logo.png' do
   data    raw_data  # sets the file data directly instead of opening the url
   width   396       # sets the image width. units specified in pixels.
   height  216       # sets the image height. units specified in pixels.
@@ -609,7 +612,7 @@ c1 = Caracal::Core::Models:TableCellModel.new do
 
   p 'This is a sentence above an image.'
   p
-  img image_url('example.png'), width: 200, height: 100
+  img 'https://www.example.com/logo.png', width: 200, height: 100
 end
 ```
 

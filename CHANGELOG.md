@@ -1,3 +1,9 @@
+#### v1.0.2
+
+* Enhancements
+  * Corrected image markup to support Word 2007 (@Alnoroid).
+
+
 #### v0.3.0
 
 * Deprecations
