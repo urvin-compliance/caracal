@@ -359,13 +359,15 @@ Paragraph style classes can be defined using the `style` method.  The method acc
 
 ```ruby
 docx.custom_property do
-  name      'property name 1' # sets the internal identifier for the style.
-  value     'test'            # sets the friendly name of the style.
+  name      'property name 1' # sets the name of the custom property.
+  value     'test'            # sets the value of the custom property.
   type      :text             # sets the property type. accepts :text, :number, :date, :boolean.
 end
 ```
 
 The `name`, `value`, and `height` attributes are required. If any of the attributes are missing, the custom property will not be created.
+
+There can be as many `docx.custom_property` blocks in a file. The only restriction is they must be unique in `name` or `type`.
 
 
 ### Paragraphs
