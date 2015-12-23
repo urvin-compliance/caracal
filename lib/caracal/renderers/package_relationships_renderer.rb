@@ -35,7 +35,8 @@ module Caracal
         [
           ['docProps/app.xml',  'http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties'],
           ['docProps/core.xml', 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties'],
-          ['word/document.xml', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument']
+          ['word/document.xml', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument'],
+          ['docProps/custom.xml', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties']
         ]
       end
       

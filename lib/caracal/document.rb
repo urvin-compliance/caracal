@@ -9,6 +9,7 @@ require 'caracal/core/lists'
 require 'caracal/core/page_breaks'
 require 'caracal/core/page_numbers'
 require 'caracal/core/page_settings'
+require 'caracal/core/custom_properties'
 require 'caracal/core/relationships'
 require 'caracal/core/rules'
 require 'caracal/core/styles'
@@ -18,6 +19,7 @@ require 'caracal/core/text'
 require 'caracal/renderers/app_renderer'
 require 'caracal/renderers/content_types_renderer'
 require 'caracal/renderers/core_renderer'
+require 'caracal/renderers/custom_renderer'
 require 'caracal/renderers/document_renderer'
 require 'caracal/renderers/fonts_renderer'
 require 'caracal/renderers/footer_renderer'
@@ -37,6 +39,7 @@ module Caracal
     
     # mixins (order is important)
     include Caracal::Core::FileName
+    include Caracal::Core::CustomProperties
     
     include Caracal::Core::Relationships
     include Caracal::Core::Fonts
@@ -94,6 +97,7 @@ module Caracal
       page_size 
       page_margins top: 1440, bottom: 1440, left: 1440, right: 1440
       page_numbers
+      custom_property
       
       [:relationship, :font, :style, :list_style].each do |method|
         collection = self.class.send("default_#{ method }s")
@@ -129,6 +133,7 @@ module Caracal
         render_content_types(zip)
         render_app(zip)
         render_core(zip)
+        render_custom(zip)
         render_fonts(zip)
         render_footer(zip)
         render_settings(zip)
@@ -170,6 +175,13 @@ module Caracal
       zip.write(content)
     end
     
+    def render_custom(zip)
+      content = ::Caracal::Renderers::CustomRenderer.render(self)
+      
+      zip.put_next_entry('docProps/custom.xml')
+      zip.write(content)
+    end
+
     def render_document(zip)
       content = ::Caracal::Renderers::DocumentRenderer.render(self)
       
