@@ -25,6 +25,7 @@ module Caracal
             xml.send 'Default', { 'Extension' => 'xml',  'ContentType' => 'application/xml' }
             xml.send 'Override', { 'PartName' => '/docProps/app.xml',   'ContentType' => 'application/vnd.openxmlformats-officedocument.extended-properties+xml' }
             xml.send 'Override', { 'PartName' => '/docProps/core.xml',  'ContentType' => 'application/vnd.openxmlformats-package.core-properties+xml' }
+            xml.send 'Override', { 'PartName' => '/docProps/custom.xml',  'ContentType' => 'application/vnd.openxmlformats-officedocument.custom-properties+xml' }
             xml.send 'Override', { 'PartName' => '/word/document.xml',  'ContentType' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml' }
             xml.send 'Override', { 'PartName' => '/word/footer1.xml',   'ContentType' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml' }
             xml.send 'Override', { 'PartName' => '/word/fontTable.xml', 'ContentType' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml' }

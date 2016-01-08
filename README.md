@@ -119,6 +119,9 @@ Specifies the name of the application that generated the document. *This file is
 **docProps/core.xml**
 Specifies the title of the document. *This file is generated automatically by the library based on other user directives.*
 
+**docProps/custom.xml**
+Specifies the custom document properties. *This file is generated automatically by the library based on other user directives.*
+
 **word/_rels/document.xml.rels**
 Defines an internal identifier and type with all external content items (images, links, etc). *This file is generated automatically by the library based on other user directives.*
 
@@ -349,6 +352,22 @@ Caracal establishes a standard set of default styles for every document. Default
 * Heading4
 * Heading5
 * Heading6
+
+### Custom Properties
+
+Paragraph style classes can be defined using the `style` method.  The method accepts several optional parameters to control the rendering of text using the style.
+
+```ruby
+docx.custom_property do
+  name      'property name 1' # sets the name of the custom property.
+  value     'test'            # sets the value of the custom property.
+  type      :text             # sets the property type. accepts :text, :number, :date, :boolean.
+end
+```
+
+The `name`, `value`, and `height` attributes are required. If any of the attributes are missing, the custom property will not be created.
+
+There can be as many `docx.custom_property` blocks in a file. The only restriction is they must be unique in `name` or `type`.
 
 
 ### Paragraphs
