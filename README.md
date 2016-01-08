@@ -171,14 +171,14 @@ A twip is 1/20 of a point.  Word documents are printed at 72dpi.  1in == 72pt ==
 In Word documents, pixels are equivalent to points.
 
 **EMUs (English Metric Unit)**
-EMUs are a virtual unit designed to facilitate the smooth conversion between inches, milliimeters, and pixels for images and vector graphics.  1in == 914400 EMUs == 72dpi x 100 x 254.
+EMUs are a virtual unit designed to facilitate the smooth conversion between inches, millimeters, and pixels for images and vector graphics.  1in == 914400 EMUs == 72dpi x 100 x 254.
 
 At present, Caracal expects values to be specified in whichever unit OOXML requires. This is admittedly difficult for new Caracal users. Eventually, we'll probably implement a utility object under the hood to convert user-specified units into the format expected by OOXML.
 
 
 ## Syntax Flexibility
 
-Generally speaking, Caracal commands will accept instructions via any combination of a parameters hash and/or a block.  For example, all of the folowing commands are equivalent.
+Generally speaking, Caracal commands will accept instructions via any combination of a parameters hash and/or a block.  For example, all of the following commands are equivalent.
 
 ```ruby
 docx.style id: 'special', name: 'Special', size: 24, bold: true
@@ -376,7 +376,7 @@ A document may have zero or many custom properties. Each custom property's `name
 
 ### Paragraphs
 
-Paragraph text can be added using the `p` method.  The method accepts several optional parameters for controlling the style and behavior of the paragrpah.
+Paragraph text can be added using the `p` method.  The method accepts several optional parameters for controlling the style and behavior of the paragraph.
 
 In its simple form, a paragraph accepts a text string and formatting options.
 
@@ -387,7 +387,7 @@ docx.p 'Sample text.', style: 'custom_style'
 
 docx.p 'Sample text.' do
   style     'custom_style'    # sets the paragraph style. generally used at the exclusion of other attributes.
-  align     :left             # sewts the alignment. accepts :left, :center, :right, and :both.
+  align     :left             # sets the alignment. accepts :left, :center, :right, and :both.
   color     '333333'          # sets the font color.
   size      32                # sets the font size. units in 1/2 points.
   bold      true              # sets whether or not to render the text with a bold weight.
@@ -589,7 +589,7 @@ docx.table [['Header 1','Header 2'],['Cell 1', 'Cell 2']] do
   border_color   '666666'   # sets the border color. defaults to 'auto'.
   border_line    :single    # sets the border style. defaults to :single. see OOXML docs for details.
   border_size    4          # sets the border width. defaults to 0. units in twips.
-  border_spacing 4          # sets the spacing around the border. deaults to 0. units in twips.
+  border_spacing 4          # sets the spacing around the border. defaults to 0. units in twips.
 end
 ```
 
