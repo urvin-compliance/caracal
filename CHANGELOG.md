@@ -1,8 +1,14 @@
+#### v1.0.3
+
+* Enhancements
+  * Added custom properties (@davidtolsma).
+  * Added page breaks to paragraph model sub-functions (@jdugan).
+
+
 #### v1.0.2
 
 * Enhancements
   * Corrected image markup to support Word 2007 (@Alnoroid).
-  * Added custom properties (@davidtolsma).
 
 
 #### v0.3.0
@@ -28,7 +34,6 @@
 
 * Deprecations
 	* Line breaks are no longer allowed at the document level. Use blank paragraphs instead (@jdugan).
-
 
 
 #### v0.1.x

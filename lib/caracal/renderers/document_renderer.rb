@@ -205,7 +205,13 @@ module Caracal
       end
 
       def render_pagebreak(xml, model)
-        xml.send 'w:p', paragraph_options do
+        if model.page_break_wrap
+          xml.send 'w:p', paragraph_options do
+            xml.send 'w:r', run_options do
+              xml.send 'w:br', { 'w:type' => 'page' }
+            end
+          end
+        else
           xml.send 'w:r', run_options do
             xml.send 'w:br', { 'w:type' => 'page' }
           end

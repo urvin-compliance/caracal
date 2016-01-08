@@ -92,6 +92,13 @@ module Caracal
 
         #=============== SUB-METHODS ===========================
 
+        # .br
+        def br
+          model = Caracal::Core::Models::LineBreakModel.new()
+          runs << model
+          model
+        end
+
         # .link
         def link(*args, &block)
           options = Caracal::Utilities.extract_options!(args)
@@ -107,9 +114,9 @@ module Caracal
           model
         end
 
-        # .br
-        def br
-          model = Caracal::Core::Models::LineBreakModel.new()
+        # .page
+        def page
+          model = Caracal::Core::Models::PageBreakModel.new({ wrap: false })
           runs << model
           model
         end
