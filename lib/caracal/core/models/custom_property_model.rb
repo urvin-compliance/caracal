@@ -22,26 +22,28 @@ module Caracal
 
 
         #=================== SETTERS =============================
-        
+
         def name(value)
           @custom_property_name = value.to_s
         end
-        
+
         def value(value)
           @custom_property_value = value.to_s
         end
-        
+
         def type(value)
           @custom_property_type = value.to_s
         end
 
 
         #=============== VALIDATION ===========================
-        
+
         def valid?
           required = option_keys
           required.all? { |m| !send("custom_property_#{ m }").nil? }
         end
+
+        
         #-------------------------------------------------------------
         # Private Instance Methods
         #-------------------------------------------------------------

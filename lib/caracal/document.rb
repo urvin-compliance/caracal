@@ -32,99 +32,98 @@ require 'caracal/renderers/styles_renderer'
 
 module Caracal
   class Document
-    
+
     #-------------------------------------------------------------
     # Configuration
     #-------------------------------------------------------------
-    
+
     # mixins (order is important)
     include Caracal::Core::FileName
     include Caracal::Core::CustomProperties
-    
+
     include Caracal::Core::Relationships
     include Caracal::Core::Fonts
     include Caracal::Core::PageSettings
     include Caracal::Core::PageNumbers
     include Caracal::Core::Styles
     include Caracal::Core::ListStyles
-    
+
     include Caracal::Core::Images
     include Caracal::Core::Lists
     include Caracal::Core::PageBreaks
     include Caracal::Core::Rules
     include Caracal::Core::Tables
     include Caracal::Core::Text
-    
-    
+
+
     #-------------------------------------------------------------
     # Public Class Methods
     #-------------------------------------------------------------
-    
+
     #============ OUTPUT ====================================
-    
+
     # This method renders a new Word document and returns it as a
     # a string.
     #
     def self.render(f_name = nil, &block)
       docx   = new(f_name, &block)
       buffer = docx.render
-      
+
       buffer.rewind
       buffer.sysread
     end
-    
+
     # This method renders a new Word document and saves it to the
     # file system.
     #
     def self.save(f_name = nil, &block)
       docx   = new(f_name, &block)
       buffer = docx.render
-      
+
       File.open("./#{ docx.name }", 'w') { |f| f.write(buffer.string) }
     end
-    
-    
-    
+
+
+
     #-------------------------------------------------------------
     # Public Instance Methods
     #-------------------------------------------------------------
-    
+
     # This method instantiates a new word document.
     #
     def initialize(name = nil, &block)
       file_name(name)
-      
-      page_size 
+
+      page_size
       page_margins top: 1440, bottom: 1440, left: 1440, right: 1440
       page_numbers
-      custom_property
-      
+
       [:relationship, :font, :style, :list_style].each do |method|
         collection = self.class.send("default_#{ method }s")
         collection.each do |item|
           send(method, item)
         end
       end
-            
+
       if block_given?
         (block.arity < 1) ? instance_eval(&block) : block[self]
       end
     end
-    
-    
+
+
     #============ GETTERS ===================================
-    
-    # This method returns an array of models which constitute the 
+
+    # This method returns an array of models which constitute the
     # set of instructions for producing the document content.
     #
     def contents
       @contents ||= []
     end
-    
-    
+
+
     #============ RENDERING =================================
-    
-    # This method renders the word document instance into 
+
+    # This method renders the word document instance into
     # a string buffer. Order is important!
     #
     def render
@@ -144,65 +143,65 @@ module Caracal
         render_numbering(zip)       # Must go here: Depends on document renderer
       end
     end
-    
-    
-    
+
+
+
     #-------------------------------------------------------------
     # Private Instance Methods
     #-------------------------------------------------------------
     private
-    
+
     #============ RENDERERS =====================================
-    
+
     def render_app(zip)
       content = ::Caracal::Renderers::AppRenderer.render(self)
-      
+
       zip.put_next_entry('docProps/app.xml')
       zip.write(content)
     end
-    
+
     def render_content_types(zip)
       content = ::Caracal::Renderers::ContentTypesRenderer.render(self)
-      
+
       zip.put_next_entry('[Content_Types].xml')
       zip.write(content)
     end
-    
+
     def render_core(zip)
       content = ::Caracal::Renderers::CoreRenderer.render(self)
-      
+
       zip.put_next_entry('docProps/core.xml')
       zip.write(content)
     end
-    
+
     def render_custom(zip)
       content = ::Caracal::Renderers::CustomRenderer.render(self)
-      
+
       zip.put_next_entry('docProps/custom.xml')
       zip.write(content)
     end
 
     def render_document(zip)
       content = ::Caracal::Renderers::DocumentRenderer.render(self)
-      
+
       zip.put_next_entry('word/document.xml')
       zip.write(content)
     end
-    
+
     def render_fonts(zip)
       content = ::Caracal::Renderers::FontsRenderer.render(self)
-      
+
       zip.put_next_entry('word/fontTable.xml')
       zip.write(content)
     end
-    
+
     def render_footer(zip)
       content = ::Caracal::Renderers::FooterRenderer.render(self)
-      
+
       zip.put_next_entry('word/footer1.xml')
       zip.write(content)
     end
-    
+
     def render_media(zip)
       images = relationships.select { |r| r.relationship_type == :image }
       images.each do |rel|
@@ -211,46 +210,46 @@ module Caracal
         else
           content = open(rel.relationship_target).read
         end
-        
+
         zip.put_next_entry("word/#{ rel.formatted_target }")
         zip.write(content)
       end
     end
-    
+
     def render_numbering(zip)
       content = ::Caracal::Renderers::NumberingRenderer.render(self)
-      
+
       zip.put_next_entry('word/numbering.xml')
       zip.write(content)
     end
-    
+
     def render_package_relationships(zip)
       content = ::Caracal::Renderers::PackageRelationshipsRenderer.render(self)
-      
+
       zip.put_next_entry('_rels/.rels')
       zip.write(content)
     end
-    
+
     def render_relationships(zip)
       content = ::Caracal::Renderers::RelationshipsRenderer.render(self)
-      
+
       zip.put_next_entry('word/_rels/document.xml.rels')
       zip.write(content)
     end
-    
+
     def render_settings(zip)
       content = ::Caracal::Renderers::SettingsRenderer.render(self)
-      
+
       zip.put_next_entry('word/settings.xml')
       zip.write(content)
     end
-    
+
     def render_styles(zip)
       content = ::Caracal::Renderers::StylesRenderer.render(self)
-      
+
       zip.put_next_entry('word/styles.xml')
       zip.write(content)
     end
-        
+
   end
 end

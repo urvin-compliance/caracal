@@ -6,12 +6,12 @@ require 'caracal/renderers/xml_renderer'
 module Caracal
   module Renderers
     class PackageRelationshipsRenderer < XmlRenderer
-      
+
       #-------------------------------------------------------------
       # Public Methods
       #-------------------------------------------------------------
-      
-      # This method produces the xml required for the `word/settings.xml` 
+
+      # This method produces the xml required for the `word/settings.xml`
       # sub-document.
       #
       def to_xml
@@ -24,28 +24,28 @@ module Caracal
         end
         builder.to_xml(save_options)
       end
-      
-      
+
+
       #-------------------------------------------------------------
       # Private Methods
-      #------------------------------------------------------------- 
+      #-------------------------------------------------------------
       private
-      
+
       def relationship_data
         [
-          ['docProps/app.xml',  'http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties'],
-          ['docProps/core.xml', 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties'],
-          ['word/document.xml', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument'],
-          ['docProps/custom.xml', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties']
+          ['docProps/app.xml',    'http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties'],
+          ['docProps/core.xml',   'http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties'],
+          ['docProps/custom.xml', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties'],
+          ['word/document.xml',   'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument']
         ]
       end
-      
+
       def root_options
         {
           'xmlns' => 'http://schemas.openxmlformats.org/package/2006/relationships'
         }
       end
-   
+
     end
   end
 end

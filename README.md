@@ -353,9 +353,11 @@ Caracal establishes a standard set of default styles for every document. Default
 * Heading5
 * Heading6
 
+
+
 ### Custom Properties
 
-Paragraph style classes can be defined using the `style` method.  The method accepts several optional parameters to control the rendering of text using the style.
+Custom document properties can be defined using the `custom_property` method.  The method accepts a few required parameters to control the definition of the custom property.
 
 ```ruby
 docx.custom_property do
@@ -367,7 +369,8 @@ end
 
 The `name`, `value`, and `height` attributes are required. If any of the attributes are missing, the custom property will not be created.
 
-There can be as many `docx.custom_property` blocks in a file. The only restriction is they must be unique in `name` or `type`.
+A document may have zero or many custom properties. Each custom property's `name` should be unique with its `type`.
+
 
 
 ### Paragraphs
