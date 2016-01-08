@@ -90,6 +90,7 @@ For each Caracal request, the following document structure will be created and z
       |- docProps
         |- app.xml
         |- core.xml
+        |- custom.xml
       |- word
         |- _rels
           |- document.xml.rels
@@ -406,6 +407,7 @@ docx.p do
   text '.'
   br
   text 'This text follows a line break.'
+  page
 end
 ```
 
