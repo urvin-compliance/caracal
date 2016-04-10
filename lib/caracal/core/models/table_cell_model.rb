@@ -16,19 +16,22 @@ module Caracal
         #-------------------------------------------------------------
         
         # constants
-        const_set(:DEFAULT_CELL_BACKGROUND,   'ffffff')
-        const_set(:DEFAULT_CELL_MARGINS,      Caracal::Core::Models::MarginModel.new({ top: 100, bottom: 100, left: 100, right: 100 }))
-        
+        const_set(:DEFAULT_CELL_BACKGROUND,       'ffffff')
+        const_set(:DEFAULT_CELL_MARGINS,          Caracal::Core::Models::MarginModel.new({ top: 100, bottom: 100, left: 100, right: 100 }))
+        const_set(:DEFAULT_CELL_VERTICAL_ALIGN,   :top)
+
         # accessors
         attr_reader :cell_background 
         attr_reader :cell_width
         attr_reader :cell_margins
-        
+        attr_reader :cell_vertical_align
+
         # initialization
         def initialize(options={}, &block)
-          @cell_background = DEFAULT_CELL_BACKGROUND
-          @cell_margins    = DEFAULT_CELL_MARGINS
-          
+          @cell_background      = DEFAULT_CELL_BACKGROUND
+          @cell_margins         = DEFAULT_CELL_MARGINS
+          @cell_vertical_align  = DEFAULT_CELL_VERTICAL_ALIGN
+
           if content = options.delete(:content)
             p content, options.dup
           end
@@ -134,8 +137,15 @@ module Caracal
             instance_variable_set("@cell_#{ m }", value.to_s)
           end
         end
-        
-        
+
+        #symbols
+        [:vertical_align].each do |m|
+          define_method "#{ m }" do |value|
+            instance_variable_set("@cell_#{ m }", value.to_s.to_sym)
+          end
+        end
+
+
         #=============== VALIDATION ===========================
         
         def valid?
@@ -149,7 +159,7 @@ module Caracal
         private
         
         def option_keys
-          [:background, :margins, :width]
+          [:background, :margins, :width, :vertical_align]
         end
         
       end
