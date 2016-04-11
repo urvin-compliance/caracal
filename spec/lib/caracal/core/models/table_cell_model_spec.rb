@@ -23,6 +23,7 @@ describe Caracal::Core::Models::TableCellModel do
     # constants
     describe 'constants' do
       it { expect(described_class::DEFAULT_CELL_BACKGROUND).to            eq 'ffffff' }
+      it { expect(described_class::DEFAULT_CELL_VERTICAL_ALIGN).to        eq :top }
       it { expect(described_class::DEFAULT_CELL_MARGINS).to               be_a(Caracal::Core::Models::MarginModel) }
       it { expect(described_class::DEFAULT_CELL_MARGINS.margin_top).to    eq 100 }
       it { expect(described_class::DEFAULT_CELL_MARGINS.margin_bottom).to eq 100 }
@@ -35,6 +36,7 @@ describe Caracal::Core::Models::TableCellModel do
       it { expect(subject.cell_background).to     eq 'cccccc' }
       it { expect(subject.cell_margins).to        be_a(Caracal::Core::Models::MarginModel) }
       it { expect(subject.cell_width).to          eq 2000 }
+      it { expect(subject.cell_vertical_align).to          eq :top }
     end
     
   end
@@ -94,6 +96,13 @@ describe Caracal::Core::Models::TableCellModel do
       before { subject.width(7500) }
       
       it { expect(subject.cell_width).to eq 7500 }
+    end
+
+    #.vertical_allign
+    describe '.vertical_align' do
+      before { subject.vertical_align(:center) }
+
+      it { expect(subject.cell_vertical_align).to eq :center }
     end
     
     
@@ -211,7 +220,7 @@ describe Caracal::Core::Models::TableCellModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)     { subject.send(:option_keys).sort }
-      let(:expected)   { [:background, :width, :margins].sort }
+      let(:expected)   { [:background, :width, :vertical_align, :margins].sort }
       
       it { expect(actual).to eq expected }
     end
