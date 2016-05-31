@@ -71,7 +71,7 @@ module Caracal
           end
         end
 
-        #symbols
+        # symbols
         [:vertical_align].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@text_#{ m }", value.to_s.to_sym)

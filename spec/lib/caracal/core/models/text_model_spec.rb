@@ -3,15 +3,15 @@ require 'spec_helper'
 describe Caracal::Core::Models::TextModel do
   subject do
     described_class.new do
-      content     'Lorem ipsum dolor....'
-      font        'Courier New'
-      color       '666666'
-      size        20
-      bold        false
-      italic      false
-      underline   true
-      bgcolor     'cccccc'
-      vertical_align     :subscript
+      content         'Lorem ipsum dolor....'
+      font            'Courier New'
+      color           '666666'
+      size            20
+      bold            false
+      italic          false
+      underline       true
+      bgcolor         'cccccc'
+      vertical_align  :subscript
     end
   end
 

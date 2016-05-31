@@ -1,3 +1,15 @@
+#### v1.0.5
+
+* Enhancements
+  * Added vertical alignment (@ykonovets).
+
+
+#### v1.0.4
+
+* Enhancements
+  * Changed tilt dependency to be less restrictive (@jdugan).
+
+
 #### v1.0.3
 
 * Enhancements

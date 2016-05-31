@@ -84,6 +84,7 @@ You may not know that .docx files are simply a zipped collection of XML document
 
 For each Caracal request, the following document structure will be created and zipped into the final output file:
 
+```
     example.docx
       |- _rels
       	|- .rels
@@ -105,6 +106,7 @@ For each Caracal request, the following document structure will be created and z
         |- settings.xml
         |- styles.xml
       |- [Content_Types].xml
+```
 
 
 ## File Descriptions
@@ -386,14 +388,15 @@ docx.p 'Sample text.'
 docx.p 'Sample text.', style: 'custom_style'
 
 docx.p 'Sample text.' do
-  style     'custom_style'    # sets the paragraph style. generally used at the exclusion of other attributes.
-  align     :left             # sets the alignment. accepts :left, :center, :right, and :both.
-  color     '333333'          # sets the font color.
-  size      32                # sets the font size. units in 1/2 points.
-  bold      true              # sets whether or not to render the text with a bold weight.
-  italic    false             # sets whether or not render the text in italic style.
-  underline false             # sets whether or not to underline the text.
-  bgcolor   'cccccc'          # sets the background color.
+  style          'custom_style'    # sets the paragraph style. generally used at the exclusion of other attributes.
+  align          :left             # sets the alignment. accepts :left, :center, :right, and :both.
+  color          '333333'          # sets the font color.
+  size           32                # sets the font size. units in 1/2 points.
+  bold           true              # sets whether or not to render the text with a bold weight.
+  italic         false             # sets whether or not render the text in italic style.
+  underline      false             # sets whether or not to underline the text.
+  bgcolor        'cccccc'          # sets the background color.
+  vertical_align 'superscript'     # sets the vertical alignment.
 end
 ```
 
@@ -673,6 +676,46 @@ end
 Caracal includes [Tilt](https://github.com/rtomayko/tilt) integration to facilitate its inclusion in other frameworks.
 
 Rails integration can be added via the [Caracal-Rails](https://github.com/trade-informatics/caracal-rails) gem.
+
+
+## Filing an Issue
+
+Caracal was written for and tested against Word 2010, 2013, and Office365.  It should also open in LibreOffice
+with high fidelity.
+
+### Older Versions
+If you are using a version of Word that predates 2010, Caracal may or may not work for you. (Probably it won't.)
+We don't ever plan to support versions before 2010, but if you choose to embark on that endeavor, we'd be
+happy to answer questions and provide what guidance we can. We just won't write any code in that direction.
+
+### Newer Versions
+
+For those using reasonably current versions of Word, please consider the following:
+
+- Before you file an issue, please run the example Caracal project [caracal-example](https://github.com/trade-informatics/caracal-example) in your development environment and
+check the output.  This project implements nearly every feature Caracal supports and renders the expected output
+correctly.  It can be thought of as a canonical implementation of the library.
+
+- If you don't see your issue in the example project's implementation of the same feature, chances are you
+made a mistake in your document's syntax or have an environment-specific, non-caracal problem.
+
+- If you do see the same behavior in the example project, you've probably uncovered a variance in the way
+your particular permutation of Windows/Word interprets the OOXML.
+
+### How to Work on a Problem
+
+Caracal is essentially an exercise in reverse engineering OOXML output. When developing features, we
+typically start by building the simplest Word document we can that includes the desired behavior.
+Then, we change the document extension to .zip, extract the archive, and inspect the resulting OOXML.
+Finally, we teach the corresponding renderer to output that OOXML.
+
+It's a tedious process, but it's not nearly as tedious as learning the entire OOXML specification.
+
+The downside is Word changes its expectations about OOXML format with each version, so it can be a bit
+of a balancing act to get the OOXML structured for acceptance by all supported versions.
+
+Ultimately, we'll probably need to implement version-specific renderers (i.e., a set of renderers
+for 2010/2013, a set for 2016, etc.).
 
 
 ## Contributing
