@@ -11,6 +11,7 @@ describe Caracal::Core::Models::TextModel do
       italic      false
       underline   true
       bgcolor     'cccccc'
+      vertical_align     :subscript
     end
   end
 
@@ -30,6 +31,7 @@ describe Caracal::Core::Models::TextModel do
       it { expect(subject.text_italic).to eq false }
       it { expect(subject.text_underline).to eq true }
       it { expect(subject.text_bgcolor).to eq 'cccccc' }
+      it { expect(subject.text_vertical_align).to eq :subscript }
     end
 
   end
@@ -45,7 +47,7 @@ describe Caracal::Core::Models::TextModel do
 
     # .run_attributes
     describe '.run_attributes' do
-      let(:expected) { { font: 'Courier New', color: '666666', size: 20, bold: false, italic: false, underline: true, bgcolor: 'cccccc' } }
+      let(:expected) { { font: 'Courier New', color: '666666', size: 20, bold: false, italic: false, underline: true, bgcolor: 'cccccc', vertical_align: :subscript } }
 
       it { expect(subject.run_attributes).to eq expected }
     end
@@ -99,6 +101,12 @@ describe Caracal::Core::Models::TextModel do
       it { expect(subject.text_font).to eq 'Palantino' }
     end
 
+    #symbols
+    describe '.vertical_align' do
+      before { subject.vertical_align(:superscript) }
+
+      it { expect(subject.text_vertical_align).to eq :superscript }
+    end
 
     #=============== VALIDATION ===========================
 
@@ -129,7 +137,7 @@ describe Caracal::Core::Models::TextModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:bgcolor, :bold, :color, :content, :font, :italic, :size, :underline].sort }
+      let(:expected) { [:bgcolor, :bold, :color, :content, :font, :italic, :size, :underline, :vertical_align].sort }
 
       it { expect(actual).to eq expected }
     end

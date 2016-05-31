@@ -23,6 +23,7 @@ module Caracal
         attr_reader :text_italic
         attr_reader :text_underline
         attr_reader :text_bgcolor
+        attr_reader :text_vertical_align
 
 
 
@@ -35,13 +36,14 @@ module Caracal
         # .run_attributes
         def run_attributes
           {
-            font:       text_font,
-            color:      text_color,
-            size:       text_size,
-            bold:       text_bold,
-            italic:     text_italic,
-            underline:  text_underline,
-            bgcolor:    text_bgcolor
+            font:           text_font,
+            color:          text_color,
+            size:           text_size,
+            bold:           text_bold,
+            italic:         text_italic,
+            underline:      text_underline,
+            bgcolor:        text_bgcolor,
+            vertical_align: text_vertical_align
           }
         end
 
@@ -69,6 +71,13 @@ module Caracal
           end
         end
 
+        #symbols
+        [:vertical_align].each do |m|
+          define_method "#{ m }" do |value|
+            instance_variable_set("@text_#{ m }", value.to_s.to_sym)
+          end
+        end
+
 
         #=============== VALIDATION ===========================
 
@@ -84,7 +93,7 @@ module Caracal
         private
 
         def option_keys
-          [:content, :font, :color, :size, :bold, :italic, :underline, :bgcolor]
+          [:content, :font, :color, :size, :bold, :italic, :underline, :bgcolor, :vertical_align]
         end
 
       end
