@@ -15,6 +15,8 @@ Or, said differently, if you use [Prawn](https://github.com/prawnpdf/prawn) for 
 Please see the [caracal-example](https://github.com/trade-informatics/caracal-example) repository for
 a working demonstration of the library's capabilities.
 
+This is a-macnamara's fork of the caracal library. I'm working on adding headers and non-br paragraphs to lists, etc.
+
 
 ## Teaser
 
