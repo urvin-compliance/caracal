@@ -628,7 +628,7 @@ end
 If your table contains more complex data (multiple paragraphs, images, lists, etc.), you will probably want to instantiate your `TableCellModel` instances directly.  With the exception of page breaks, table cells can contain anything the document can contain, including another table.
 
 ```ruby
-c1 = Caracal::Core::Models:TableCellModel.new do
+c1 = Caracal::Core::Models::TableCellModel.new do
   background 'cccccc'    # sets the background color. defaults to 'ffffff'.
   margins do
     top                  # sets the top margin. defaults to 0. units in twips.
