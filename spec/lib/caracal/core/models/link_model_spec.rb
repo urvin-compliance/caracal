@@ -3,15 +3,16 @@ require 'spec_helper'
 describe Caracal::Core::Models::LinkModel do
   subject do
     described_class.new do
-      content     'Link Text'
-      href        'http://www.google.com'
-      font        'Courier New'
-      color       '666666'
-      size        20
-      bold        false
-      italic      false
-      underline   true
-      bgcolor     'cccccc'
+      content         'Link Text'
+      href            'http://www.google.com'
+      font            'Courier New'
+      color           '666666'
+      size            20
+      bold            false
+      italic          false
+      underline       true
+      bgcolor         'cccccc'
+      vertical_align  :top
     end
   end
 
@@ -53,7 +54,7 @@ describe Caracal::Core::Models::LinkModel do
 
     # .run_attributes
     describe '.run_attributes' do
-      let(:expected) { { font: 'Courier New', color: '666666', size: 20, bold: false, italic: false, underline: true, bgcolor: 'cccccc' } }
+      let(:expected) { { font: 'Courier New', color: '666666', size: 20, bold: false, italic: false, underline: true, bgcolor: 'cccccc', vertical_align: :top } }
 
       it { expect(subject.run_attributes).to eq expected }
     end
@@ -142,7 +143,7 @@ describe Caracal::Core::Models::LinkModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:content, :href, :font, :color, :size, :bold, :italic, :underline, :bgcolor].sort }
+      let(:expected) { [:content, :href, :font, :color, :size, :bold, :italic, :underline, :bgcolor, :vertical_align].sort }
 
       it { expect(actual).to eq expected }
     end

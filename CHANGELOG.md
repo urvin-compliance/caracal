@@ -1,5 +1,11 @@
 #### v1.0.5
 
+* Bug Fixes
+  * Changed Paragraph and Table Cell Models slightly to allow syntax flexibility with respect to options (@jdugan).
+
+
+#### v1.0.5
+
 * Enhancements
   * Added vertical alignment (@ykonovets).
 
