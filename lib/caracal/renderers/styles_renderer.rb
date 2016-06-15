@@ -45,7 +45,7 @@ module Caracal
                   xml.send 'w:keepLines',    { 'w:val' => '0' }
                   xml.send 'w:widowControl', { 'w:val' => '1' }
                   xml.send 'w:spacing',      spacing_options(s, true)
-                  xml.send 'w:ind',          { 'w:left' => '0', 'w:firstLine' => '0', 'w:right' => '0' }
+                  xml.send 'w:ind',          indentation_options(s, true)
                   xml.send 'w:jc',           { 'w:val' => s.style_align.to_s }
                 end
               end
@@ -76,6 +76,7 @@ module Caracal
                   xml.send 'w:spacing',           spacing_options(s)                              unless spacing_options(s).nil?
                   xml.send 'w:contextualSpacing', { 'w:val' => '1' }
                   xml.send 'w:jc',                { 'w:val' => s.style_align.to_s }               unless s.style_align.nil?
+                  xml.send 'w:ind',       indentation_options(s)                                  unless indentation_options(s).nil?
                 end
                 xml.send 'w:rPr' do
                   xml.send 'w:rFonts',    font_options(s)                                         unless s.style_font.nil?
@@ -137,6 +138,20 @@ module Caracal
           options['w:before']   = top      unless top.nil?
           options['w:after']    = bottom   unless bottom.nil?
           options['w:line']     = line     unless line.nil?
+        end
+        options
+      end
+
+      def indentation_options(style, default=false)
+        left    = (default) ? style.style_indent_left.to_i  : style.style_indent_left
+        right   = (default) ? style.style_indent_right.to_i : style.style_indent_right
+        first   = (default) ? style.style_indent_first.to_i : style.style_indent_first
+        options = nil
+        if [left, right, first].compact.size > 0
+          options                  = {}
+          options['w:left']        = left    unless left.nil?
+          options['w:right']       = right   unless right.nil?
+          options['w:firstLine']   = first   unless first.nil?
         end
         options
       end
