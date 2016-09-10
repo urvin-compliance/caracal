@@ -256,13 +256,16 @@ docx.name    # => 'example_document.docx'
 ### Page Size
 
 Page dimensions can be set using the `page_size` method.  The method accepts two parameters for controlling the width and height of the document.
+It also accepts a third parameter for setting the page orientation.  If you want landscape orientation, you need to change both the page
+dimensions and the orientation explicitly.
 
 *Page size defaults to United States standard A4, portrait dimensions (8.5in x 11in).*
 
 ```ruby
 docx.page_size do
-  width   12240     # sets the page width. units in twips.
-  height  15840     # sets the page height. units in twips.
+  width       12240       # sets the page width. units in twips.
+  height      15840       # sets the page height. units in twips.
+  orientation :landscape  # sets the printer orientation. accepts :portrait and :landscape.
 end
 ```
 

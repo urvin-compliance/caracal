@@ -5,32 +5,33 @@ require 'caracal/errors'
 
 module Caracal
   module Core
-    
-    # This module encapsulates all the functionality related to setting the 
+
+    # This module encapsulates all the functionality related to setting the
     # document's size and margins.
     #
     module PageSettings
       def self.included(base)
         base.class_eval do
-          
+
           #-------------------------------------------------------------
           # Configuration
           #-------------------------------------------------------------
-    
+
           # accessors
           attr_reader :page_width
+          attr_reader :page_orientation
           attr_reader :page_height
           attr_reader :page_margin_top
           attr_reader :page_margin_bottom
           attr_reader :page_margin_left
           attr_reader :page_margin_right
-          
-          
+
+
           #-------------------------------------------------------------
           # Public Methods
           #-------------------------------------------------------------
-    
-          # This method controls the physical margins of the printed page. Defaults 
+
+          # This method controls the physical margins of the printed page. Defaults
           # to 1in on each side.
           #
           def page_margins(options={}, &block)
@@ -49,24 +50,25 @@ module Caracal
               raise Caracal::Errors::InvalidModelError, 'page_margins method requires non-zero :top, :bottom, :left, and :right options.'
             end
           end
-          
-          # This method controls the physical width and height of the printed page. Defaults 
+
+          # This method controls the physical width and height of the printed page. Defaults
           # to US standard A4 portrait size.
           #
           def page_size(options={}, &block)
             model = Caracal::Core::Models::PageSizeModel.new(options, &block)
-            
+
             if model.valid?
-              @page_width  = model.page_width
-              @page_height = model.page_height
+              @page_width       = model.page_width
+              @page_height      = model.page_height
+              @page_orientation = model.page_orientation
             else
               raise Caracal::Errors::InvalidModelError, 'page_size method requires non-zero :width and :height options.'
             end
           end
-          
+
         end
       end
     end
-    
+
   end
 end

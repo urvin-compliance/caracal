@@ -357,8 +357,9 @@ module Caracal
 
       def page_size_options
         {
-          'w:w' => document.page_width,
-          'w:h' => document.page_height
+          'w:w'       => document.page_width,
+          'w:h'       => document.page_height,
+          'w:orient'  => document.page_orientation 
         }
       end
 
