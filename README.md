@@ -331,19 +331,22 @@ Paragraph style classes can be defined using the `style` method.  The method acc
 
 ```ruby
 docx.style do
-  id        'Heading1'      # sets the internal identifier for the style.
-  name      'heading 1'     # sets the friendly name of the style.
-  font      'Palantino'     # sets the font family.
-  color     '333333'        # sets the text color. accepts hex RGB.
-  size      28              # sets the font size. units in half points.
-  bold      false           # sets the font weight.
-  italic    false           # sets the font style.
-  underline false           # sets whether or not to underline the text.
-  caps      false           # sets whether or not text should be rendered in all capital letters.
-  align     :left           # sets the alignment. accepts :left, :center, :right, and :both.
-  line      360             # sets the line height. units in twips.
-  top       100             # sets the spacing above the paragraph. units in twips.
-  bottom    0               # sets the spacing below the paragraph. units in twips.
+  id              'Heading1'  # sets the internal identifier for the style.
+  name            'heading 1' # sets the friendly name of the style.
+  font            'Palantino' # sets the font family.
+  color           '333333'    # sets the text color. accepts hex RGB.
+  size            28          # sets the font size. units in half points.
+  bold            false       # sets the font weight.
+  italic          false       # sets the font style.
+  underline       false       # sets whether or not to underline the text.
+  caps            false       # sets whether or not text should be rendered in all capital letters.
+  align           :left       # sets the alignment. accepts :left, :center, :right, and :both.
+  line            360         # sets the line height. units in twips.
+  top             100         # sets the spacing above the paragraph. units in twips.
+  bottom          0           # sets the spacing below the paragraph. units in twips.
+  indent_left     360         # sets the left indent. units in twips.
+  indent_right    360         # sets the rights indent. units in twips.
+  indent_first    720         # sets the first line indent. units in twips.
 end
 ```
 

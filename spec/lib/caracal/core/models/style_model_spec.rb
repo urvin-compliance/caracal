@@ -107,6 +107,21 @@ describe Caracal::Core::Models::StyleModel do
 
       it { expect(subject.style_top).to eq 100 }
     end
+    describe '.indent_left' do
+      before { subject.indent_left(1440) }
+
+      it { expect(subject.style_indent_left).to eq 1440 }
+    end
+    describe '.indent_right' do
+      before { subject.indent_right(720) }
+
+      it { expect(subject.style_indent_right).to eq 720 }
+    end
+    describe '.indent_right' do
+      before { subject.indent_first(567) }
+
+      it { expect(subject.style_indent_first).to eq 567 }
+    end
 
     # strings
     describe '.id' do
@@ -184,7 +199,7 @@ describe Caracal::Core::Models::StyleModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:bold, :italic, :underline, :caps, :top, :bottom, :size, :line, :id, :name, :color, :font, :align].sort }
+      let(:expected) { [:bold, :italic, :underline, :caps, :top, :bottom, :size, :line, :id, :name, :color, :font, :align, :indent_left, :indent_right, :indent_first].sort }
 
       it { expect(actual).to eq expected }
     end

@@ -45,6 +45,9 @@ module Caracal
         attr_reader :style_line
         attr_reader :style_base
         attr_reader :style_next
+        attr_reader :style_indent_left
+        attr_reader :style_indent_right
+        attr_reader :style_indent_first
 
         # initialization
         def initialize(options={}, &block)
@@ -84,7 +87,7 @@ module Caracal
         end
 
         # integers
-        [:bottom, :size, :line, :top].each do |m|
+        [:bottom, :size, :line, :top, :indent_left, :indent_right, :indent_first].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@style_#{ m }", value.to_i)
           end
@@ -126,7 +129,7 @@ module Caracal
         private
 
         def option_keys
-          [:bold, :italic, :underline, :caps, :top, :bottom, :size, :line, :id, :name, :color, :font, :align]
+          [:bold, :italic, :underline, :caps, :top, :bottom, :size, :line, :id, :name, :color, :font, :align, :indent_left, :indent_right, :indent_first]
         end
 
       end
