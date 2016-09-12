@@ -76,7 +76,7 @@ module Caracal
                   xml.send 'w:spacing',           spacing_options(s)                              unless spacing_options(s).nil?
                   xml.send 'w:contextualSpacing', { 'w:val' => '1' }
                   xml.send 'w:jc',                { 'w:val' => s.style_align.to_s }               unless s.style_align.nil?
-                  xml.send 'w:ind',       indentation_options(s)                                  unless indentation_options(s).nil?
+                  xml.send 'w:ind',               indentation_options(s)                          unless indentation_options(s).nil?
                 end
                 xml.send 'w:rPr' do
                   xml.send 'w:rFonts',    font_options(s)                                         unless s.style_font.nil?
@@ -126,22 +126,6 @@ module Caracal
         { 'w:cs' => name, 'w:hAnsi' => name, 'w:eastAsia' => name, 'w:ascii' => name }
       end
 
-      def spacing_options(style, default=false)
-        top     = (default) ? style.style_top.to_i    : style.style_top
-        bottom  = (default) ? style.style_bottom.to_i : style.style_bottom
-        line    = style.style_line
-
-        options = nil
-        if [top, bottom, line].compact.size > 0
-          options               = {}
-          options['w:lineRule'] = 'auto'
-          options['w:before']   = top      unless top.nil?
-          options['w:after']    = bottom   unless bottom.nil?
-          options['w:line']     = line     unless line.nil?
-        end
-        options
-      end
-
       def indentation_options(style, default=false)
         left    = (default) ? style.style_indent_left.to_i  : style.style_indent_left
         right   = (default) ? style.style_indent_right.to_i : style.style_indent_right
@@ -174,6 +158,22 @@ module Caracal
           'xmlns:lc'  => 'http://schemas.openxmlformats.org/drawingml/2006/lockedCanvas',
           'xmlns:dgm' => 'http://schemas.openxmlformats.org/drawingml/2006/diagram'
         }
+      end
+
+      def spacing_options(style, default=false)
+        top     = (default) ? style.style_top.to_i    : style.style_top
+        bottom  = (default) ? style.style_bottom.to_i : style.style_bottom
+        line    = style.style_line
+
+        options = nil
+        if [top, bottom, line].compact.size > 0
+          options               = {}
+          options['w:lineRule'] = 'auto'
+          options['w:before']   = top      unless top.nil?
+          options['w:after']    = bottom   unless bottom.nil?
+          options['w:line']     = line     unless line.nil?
+        end
+        options
       end
 
     end

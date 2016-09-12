@@ -1,8 +1,14 @@
+#### v1.0.8
+
+* Enhancements
+  * Added indentation controls to paragraph commands (@avolochnev).
+
+
 #### v1.0.7
 
 * Enhancements
   * Added an :orientation option to :page_size so print jobs work as expected (@jdugan h/t @swedishpotato).
-  
+
 
 #### v1.0.6
 
