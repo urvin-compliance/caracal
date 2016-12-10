@@ -185,44 +185,52 @@ module Caracal
         ls      = document.find_list_style(model.list_item_type, model.list_item_level)
         hanging = ls.style_left.to_i - ls.style_indent.to_i - 1
 
-        xml.send 'w:p', paragraph_options do
-          xml.send 'w:pPr' do
-            xml.send 'w:numPr' do
-              xml.send 'w:ilvl', { 'w:val' => model.list_item_level }
-              xml.send 'w:numId', { 'w:val' => list_num }
+        # count how many paragraphs we'll need
+        num_paragraphs = 1
+        last_is_linebreak = false
+        model.runs.each do |run|
+          if run.class == Caracal::Core::Models::LineBreakModel
+            if !last_is_linebreak
+              num_paragraphs = num_paragraphs + 1
+              last_is_linebreak = true
             end
-            xml.send 'w:ind', { 'w:left' => ls.style_left, 'w:hanging' => hanging }
-            xml.send 'w:contextualSpacing', { 'w:val' => '1' }
-            xml.send 'w:rPr' do
-              xml.send 'w:u', { 'w:val' => 'none' }
-            end
+          else
+            last_is_linebreak = false
           end
-          last_is_linebreak = false
-          model.runs.each_with_index do |run, index|
-            # detect two linebreaks in a row
-            if run.class == Caracal::Core::Models::LineBreakModel
-              if last_is_linebreak # two linebreaks in a row detected
-                xml.send 'w:r' do
-                  xml.send 'w:t', { 'xml:space' => 'preserve' }, "[[two linebreaks detected!]]"
+        end
+        
+        run_index = 0
+        last_is_linebreak = false
+        (1..num_paragraphs).each do # loop through each paragraph
+          xml.send 'w:p', paragraph_options do
+            xml.send 'w:pPr' do
+              xml.send 'w:numPr' do
+                xml.send 'w:ilvl', { 'w:val' => model.list_item_level }
+                xml.send 'w:numId', { 'w:val' => list_num }
+              end
+              xml.send 'w:ind', { 'w:left' => ls.style_left, 'w:hanging' => hanging }
+              xml.send 'w:contextualSpacing', { 'w:val' => '1' }
+              xml.send 'w:rPr' do
+                xml.send 'w:u', { 'w:val' => 'none' }
+              end
+            end
+            model.runs[run_index..(model.runs.length-1)].each_with_index do |run, index|
+              # detect two linebreaks in a row
+              if run.class == Caracal::Core::Models::LineBreakModel
+                if !last_is_linebreak # detect first linebreak in a possible series of linebreaks
+                  run_index = run_index + 1
+                  break # stop processing runs and move to the next paragraph
+                else
+                  last_is_linebreak = true
                 end
               else
-                last_is_linebreak = true
+                last_is_linebreak = false
               end
-            else
-              last_is_linebreak = false
-            end
             
-            # detect two linebreaks at the end of the list item
-            if index == model.runs.size - 1
-              if last_is_linebreak # two linebreaks in a row detected at the end of the listitem
-                xml.send 'w:r' do
-                  xml.send 'w:t', { 'xml:space' => 'preserve' }, "[[two linebreaks detected at the end of the list item!]]"
-                end
-              end
+              method = render_method_for_model(run)
+              send(method, xml, run)
+              run_index = run_index + 1
             end
-            
-            method = render_method_for_model(run)
-            send(method, xml, run)
           end
         end
       end
