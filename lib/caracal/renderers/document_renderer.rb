@@ -220,7 +220,6 @@ module Caracal
               end
             end # end xml.send 'w:pPr'
             model.runs[run_index..(model.runs.length-1)].each do |run|
-              # detect two linebreaks in a row
               if run.class == Caracal::Core::Models::LineBreakModel
                 if !last_is_linebreak # detect first linebreak in a possible series of linebreaks
                   last_is_linebreak = true
