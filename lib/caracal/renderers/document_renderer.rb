@@ -199,8 +199,9 @@ module Caracal
           end
           last_is_linebreak = false
           model.runs.each_with_index do |run, index|
+            # detect two linebreaks in a row
             if run.class == Caracal::Core::Models::LineBreakModel
-              if last_is_linebreak
+              if last_is_linebreak # two linebreaks in a row detected
                 xml.send 'w:r' do
                   xml.send 'w:t', { 'xml:space' => 'preserve' }, "[[two linebreaks detected!]]"
                 end
@@ -211,8 +212,9 @@ module Caracal
               last_is_linebreak = false
             end
             
+            # detect two linebreaks at the end of the list item
             if index == model.runs.size - 1
-              if last_is_linebreak
+              if last_is_linebreak # two linebreaks in a row detected at the end of the listitem
                 xml.send 'w:r' do
                   xml.send 'w:t', { 'xml:space' => 'preserve' }, "[[two linebreaks detected at the end of the list item!]]"
                 end
