@@ -201,20 +201,25 @@ module Caracal
         
         run_index = 0
         last_is_linebreak = false
+        first_paragraph = true
         (1..num_paragraphs).each do # loop through each paragraph
           xml.send 'w:p', paragraph_options do
             xml.send 'w:pPr' do
-              xml.send 'w:numPr' do
-                xml.send 'w:ilvl', { 'w:val' => model.list_item_level }
-                xml.send 'w:numId', { 'w:val' => list_num }
+              if first_paragraph
+                xml.send 'w:numPr' do
+                  xml.send 'w:ilvl', { 'w:val' => model.list_item_level }
+                  xml.send 'w:numId', { 'w:val' => list_num }
+                end
+                xml.send 'w:ind', { 'w:left' => ls.style_left, 'w:hanging' => hanging }
+              else
+                xml.send 'w:ind', { 'w:left' => ls.style_left }
               end
-              xml.send 'w:ind', { 'w:left' => ls.style_left, 'w:hanging' => hanging }
               xml.send 'w:contextualSpacing', { 'w:val' => '1' }
               xml.send 'w:rPr' do
                 xml.send 'w:u', { 'w:val' => 'none' }
               end
-            end
-            model.runs[run_index..(model.runs.length-1)].each_with_index do |run, index|
+            end # end xml.send 'w:pPr'
+            model.runs[run_index..(model.runs.length-1)].each do |run|
               # detect two linebreaks in a row
               if run.class == Caracal::Core::Models::LineBreakModel
                 if !last_is_linebreak # detect first linebreak in a possible series of linebreaks
@@ -230,8 +235,9 @@ module Caracal
               method = render_method_for_model(run)
               send(method, xml, run)
               run_index = run_index + 1
-            end
-          end
+            end # end for each model run
+          end # end xml.send 'w:p'
+          first_paragraph = false
         end
       end
 
