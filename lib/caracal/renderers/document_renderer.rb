@@ -198,7 +198,7 @@ module Caracal
             end
           end
           last_is_linebreak = false
-          model.runs.each do |run|
+          model.runs.each_with_index do |run, index|
             if run.class == Caracal::Core::Models::LineBreakModel
               if last_is_linebreak
                 xml.send 'w:r' do
@@ -210,15 +210,15 @@ module Caracal
             else
               last_is_linebreak = false
             end
-            if run.class == Caracal::Core::Models::ListItemModel
+            
+            if index == model.runs.size - 1
               if last_is_linebreak
-                # print warning that we detected an end-of-listitem thingy
                 xml.send 'w:r' do
-                  xml.send 'w:t', { 'xml:space' => 'preserve' }, "[[end of listitem detected after linebreaks!]]"
+                  xml.send 'w:t', { 'xml:space' => 'preserve' }, "[[two linebreaks detected at the end of the list item!]]"
                 end
-                last_is_linebreak = false
               end
             end
+            
             method = render_method_for_model(run)
             send(method, xml, run)
           end
