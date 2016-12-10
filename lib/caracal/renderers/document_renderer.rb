@@ -223,10 +223,9 @@ module Caracal
               # detect two linebreaks in a row
               if run.class == Caracal::Core::Models::LineBreakModel
                 if !last_is_linebreak # detect first linebreak in a possible series of linebreaks
+                  last_is_linebreak = true
                   run_index = run_index + 1
                   break # stop processing runs and move to the next paragraph
-                else
-                  last_is_linebreak = true
                 end
               else
                 last_is_linebreak = false
