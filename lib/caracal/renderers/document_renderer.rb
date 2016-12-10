@@ -198,6 +198,11 @@ module Caracal
             end
           end
           model.runs.each do |run|
+            if run.class == Caracal::Core::Models::LineBreakModel
+              xml.send 'w:r' do
+                xml.send 'w:t', { 'xml:space' => 'preserve' }, "linebreak detected!"
+              end
+            end
             method = render_method_for_model(run)
             send(method, xml, run)
           end
