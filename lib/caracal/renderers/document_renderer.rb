@@ -197,11 +197,18 @@ module Caracal
               xml.send 'w:u', { 'w:val' => 'none' }
             end
           end
+          last_is_linebreak = false
           model.runs.each do |run|
             if run.class == Caracal::Core::Models::LineBreakModel
-              xml.send 'w:r' do
-                xml.send 'w:t', { 'xml:space' => 'preserve' }, "linebreak detected!"
+              if last_is_linebreak
+                xml.send 'w:r' do
+                  xml.send 'w:t', { 'xml:space' => 'preserve' }, "two linebreaks detected!"
+                end
+              else
+                last_is_linebreak = true
               end
+            else
+              last_is_linebreak = false
             end
             method = render_method_for_model(run)
             send(method, xml, run)
