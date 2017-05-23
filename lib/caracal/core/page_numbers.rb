@@ -20,6 +20,7 @@ module Caracal
           const_set(:DEFAULT_PAGE_NUMBER_ALIGN,  :center)
           
           # accessors
+          attr_reader :page_number_text
           attr_reader :page_number_show
           attr_reader :page_number_align
           
@@ -37,6 +38,7 @@ module Caracal
             
             model = Caracal::Core::Models::PageNumberModel.new(options, &block)
             if model.valid?
+              @page_number_text  = model.page_number_text
               @page_number_show  = model.page_number_show
               @page_number_align = model.page_number_align
             else

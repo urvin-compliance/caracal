@@ -19,11 +19,13 @@ module Caracal
         const_set(:DEFAULT_PAGE_NUMBER_ALIGN, :center)
         
         # accessors
+        attr_reader :page_number_text
         attr_reader :page_number_align
         attr_reader :page_number_show
         
         # initialization
         def initialize(options={}, &block)
+          @page_number_text = nil
           @page_number_show  = DEFAULT_PAGE_NUMBER_SHOW
           @page_number_align = DEFAULT_PAGE_NUMBER_ALIGN
           
@@ -36,7 +38,11 @@ module Caracal
         #-------------------------------------------------------------
     
         #=============== SETTERS ==============================
-        
+
+        def text(value)
+          @page_number_text = value.to_s
+        end
+
         def align(value)
           @page_number_align = value.to_s.to_sym
         end
@@ -59,7 +65,7 @@ module Caracal
         private
         
         def option_keys
-          [:align, :show]
+          [:text, :align, :show]
         end
         
       end

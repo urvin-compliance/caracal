@@ -22,6 +22,17 @@ module Caracal
                 xml.send 'w:contextualSpacing', { 'w:val' => '0' }
                 xml.send 'w:jc', { 'w:val' => "#{ document.page_number_align }" }
               end
+              if document.page_number_text.present?
+                xml.send 'w:r', run_options do
+                  xml.send 'w:rPr' do
+                    xml.send 'w:rStyle', { 'w:val' => 'PageNumber' }
+                  end
+                  xml.send 'w:t', { 'xml:space' => 'preserve' } do
+                    # Ensure there is a space at the end to separate text from page number
+                    xml.text "#{document.page_number_text} "
+                  end
+                end
+              end
               xml.send 'w:fldSimple', { 'w:dirty' => '0', 'w:instr' => 'PAGE', 'w:fldLock' => '0' } do
                 xml.send 'w:r', run_options do
                   xml.send 'w:rPr'
