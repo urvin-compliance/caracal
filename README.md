@@ -301,12 +301,13 @@ docx.page     # starts a new page.
 
 ### Page Numbers
 
-Page numbers can be added to the footer via the `page_numbers` method.  The method accepts an optional parameter for controlling the alignment of the text.
+Page numbers can be added to the footer via the `page_numbers` method.  The method accepts optional parameters for controlling the label and alignment of the text.
 
 *Page numbers are turned off by default.*
 
 ```ruby
 docx.page_numbers true do
+  label 'Page'     # sets the text that will go to the left of the page number. Defaults to nil.
   align :right     # sets the alignment. accepts :left, :center, and :right.
 end
 ```

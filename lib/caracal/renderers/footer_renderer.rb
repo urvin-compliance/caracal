@@ -28,8 +28,8 @@ module Caracal
                     xml.send 'w:rStyle', { 'w:val' => 'PageNumber' }
                   end
                   xml.send 'w:t', { 'xml:space' => 'preserve' } do
-                    # Ensure there is a space at the end to separate text from page number
-                    xml.text "#{document.page_number_text} "
+                    # Ensure there is a space at the end to separate the label from the page number
+                    xml.text "#{document.page_number_label} "
                   end
                 end
               end
