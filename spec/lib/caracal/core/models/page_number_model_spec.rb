@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Caracal::Core::Models::PageNumberModel do
   subject do 
     described_class.new do
+      label 'Page'
       show  true
       align :right
     end
@@ -21,6 +22,7 @@ describe Caracal::Core::Models::PageNumberModel do
     
     # accessors
     describe 'accessors' do
+      it { expect(subject.page_number_label).to eq 'Page' }
       it { expect(subject.page_number_align).to eq :right }
       it { expect(subject.page_number_show).to eq true }
     end
@@ -35,7 +37,14 @@ describe Caracal::Core::Models::PageNumberModel do
   describe 'public method tests' do
     
     #=============== SETTERS ==============================
-    
+
+    # .text
+    describe '.label' do
+      before { subject.label('Page') }
+
+      it { expect(subject.page_number_label).to eq 'Page' }
+    end
+
     # .align
     describe '.align' do
       before { subject.align(:left) }
@@ -91,7 +100,7 @@ describe Caracal::Core::Models::PageNumberModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:align, :show].sort }
+      let(:expected) { [:label, :align, :show].sort }
       
       it { expect(actual).to eq expected }
     end
