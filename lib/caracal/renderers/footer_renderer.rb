@@ -6,12 +6,12 @@ require 'caracal/renderers/xml_renderer'
 module Caracal
   module Renderers
     class FooterRenderer < XmlRenderer
-      
+
       #-------------------------------------------------------------
       # Public Methods
       #-------------------------------------------------------------
-      
-      # This method produces the xml required for the `word/settings.xml` 
+
+      # This method produces the xml required for the `word/settings.xml`
       # sub-document.
       #
       def to_xml
@@ -22,14 +22,13 @@ module Caracal
                 xml.send 'w:contextualSpacing', { 'w:val' => '0' }
                 xml.send 'w:jc', { 'w:val' => "#{ document.page_number_align }" }
               end
-              if document.page_number_text.present?
+              if document.page_number_label.present?
                 xml.send 'w:r', run_options do
                   xml.send 'w:rPr' do
                     xml.send 'w:rStyle', { 'w:val' => 'PageNumber' }
                   end
                   xml.send 'w:t', { 'xml:space' => 'preserve' } do
-                    # Ensure there is a space at the end to separate the label from the page number
-                    xml.text "#{document.page_number_label} "
+                    xml.text "#{ document.page_number_label } "
                   end
                 end
               end
@@ -48,13 +47,13 @@ module Caracal
         end
         builder.to_xml(save_options)
       end
-      
-      
+
+
       #-------------------------------------------------------------
       # Private Methods
-      #------------------------------------------------------------- 
+      #-------------------------------------------------------------
       private
-      
+
       def root_options
         {
           'xmlns:mc'  => 'http://schemas.openxmlformats.org/markup-compatibility/2006',
@@ -74,7 +73,7 @@ module Caracal
           'xmlns:dgm' => 'http://schemas.openxmlformats.org/drawingml/2006/diagram'
         }
       end
-   
+
     end
   end
 end
