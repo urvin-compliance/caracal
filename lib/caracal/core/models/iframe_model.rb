@@ -89,8 +89,8 @@ module Caracal
         def file
           @file ||= begin
             if iframe_url.nil?
-              file = File.new('tmp_caracal', 'w+')
-              file.print iframe_data
+              file = Tempfile.new('iframe')
+              file.write iframe_data
               file.rewind
             else
               file = open(iframe_url)
