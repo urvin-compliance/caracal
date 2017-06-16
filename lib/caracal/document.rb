@@ -1,15 +1,18 @@
 require 'open-uri'
 require 'zip'
 
+require 'caracal/core/custom_properties'
 require 'caracal/core/file_name'
 require 'caracal/core/fonts'
+require 'caracal/core/iframes'
+require 'caracal/core/ignorables'
 require 'caracal/core/images'
 require 'caracal/core/list_styles'
 require 'caracal/core/lists'
+require 'caracal/core/namespaces'
 require 'caracal/core/page_breaks'
 require 'caracal/core/page_numbers'
 require 'caracal/core/page_settings'
-require 'caracal/core/custom_properties'
 require 'caracal/core/relationships'
 require 'caracal/core/rules'
 require 'caracal/core/styles'
@@ -38,16 +41,19 @@ module Caracal
     #-------------------------------------------------------------
 
     # mixins (order is important)
-    include Caracal::Core::FileName
     include Caracal::Core::CustomProperties
-
+    include Caracal::Core::FileName
+    include Caracal::Core::Ignorables
+    include Caracal::Core::Namespaces
     include Caracal::Core::Relationships
+
     include Caracal::Core::Fonts
     include Caracal::Core::PageSettings
     include Caracal::Core::PageNumbers
     include Caracal::Core::Styles
     include Caracal::Core::ListStyles
 
+    include Caracal::Core::IFrames
     include Caracal::Core::Images
     include Caracal::Core::Lists
     include Caracal::Core::PageBreaks
@@ -98,7 +104,7 @@ module Caracal
       page_margins top: 1440, bottom: 1440, left: 1440, right: 1440
       page_numbers
 
-      [:relationship, :font, :style, :list_style].each do |method|
+      [:font, :list_style, :namespace, :relationship, :style].each do |method|
         collection = self.class.send("default_#{ method }s")
         collection.each do |item|
           send(method, item)

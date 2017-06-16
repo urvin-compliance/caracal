@@ -18,8 +18,17 @@ require 'caracal/document'
 # Extra Setup
 #------------------------------------------------
 
-# Add functions to table cell model. we do this here to 
-# avoid a circular require between Caracal::Core::Tables 
+# Convenience method for finding root directory.
+#
+module Caracal
+  def self.root
+    File.dirname __dir__
+  end
+end
+
+
+# Add functions to table cell model. we do this here to
+# avoid a circular require between Caracal::Core::Tables
 # and Caracal::Core::Models::TableCellModel.
 #
 Caracal::Core::Models::TableCellModel.class_eval do

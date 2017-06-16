@@ -678,6 +678,23 @@ end
 ```
 
 
+## Experimental Features
+
+### IFrames
+
+You can include an external Word document into your working Caracal document by specifying a URL or by supplying the data directly.
+
+*It should be noted that the metaphor here is imperfect. Caracal fully includes the external file at the time of insertion. Further changes to the external file will not be reflected in your Caracal output.*
+
+```ruby
+# this example loads the file from the internet
+docx.iframe url: 'http://www.some-website.org/snippet.docx'
+
+# this example loads the data directly
+docx.iframe data: File.read('my/path/to/snippet.docx')
+
+```
+
 ## Template Rendering
 
 Caracal includes [Tilt](https://github.com/rtomayko/tilt) integration to facilitate its inclusion in other frameworks.
@@ -690,10 +707,12 @@ Rails integration can be added via the [Caracal-Rails](https://github.com/trade-
 Caracal was written for and tested against Word 2010, 2013, and Office365.  It should also open in LibreOffice
 with high fidelity.
 
+
 ### Older Versions
 If you are using a version of Word that predates 2010, Caracal may or may not work for you. (Probably it won't.)
 We don't ever plan to support versions before 2010, but if you choose to embark on that endeavor, we'd be
 happy to answer questions and provide what guidance we can. We just won't write any code in that direction.
+
 
 ### Newer Versions
 
@@ -708,6 +727,7 @@ made a mistake in your document's syntax or have an environment-specific, non-ca
 
 - If you do see the same behavior in the example project, you've probably uncovered a variance in the way
 your particular permutation of Windows/Word interprets the OOXML.
+
 
 ### How to Work on a Problem
 

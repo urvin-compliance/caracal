@@ -97,6 +97,40 @@ module Caracal
 
       #============= MODEL RENDERERS ===========================
 
+      def render_iframe(xml, model)
+        ::Zip::File.open(model.file) do |zip|
+          a_href     = 'http://schemas.openxmlformats.org/drawingml/2006/main'
+          pic_href   = 'http://schemas.openxmlformats.org/drawingml/2006/picture'
+          r_href     = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
+
+          entry      = zip.glob('word/document.xml').first
+          content    = entry.get_input_stream.read
+          doc_xml    = Nokogiri::XML(content)
+
+          fragment = doc_xml.xpath('//w:body').first.children
+          fragment.pop
+
+          model.relationships.each do |r_hash|
+            id    = r_hash.delete(:id)              # we can't update the fragment until
+            model = document.relationship(r_hash)   # the parent document assigns the embedded
+            index = model.relationship_id           # relationship an id.
+
+            r_node  = fragment.at_xpath("//a:blip[@r:embed='#{ id }']", { a: a_href, r: r_href })
+            if r_attr  = r_node.attributes['embed']
+              r_attr.value = "rId#{ index }"
+            end
+
+            p_parent = r_node.parent.parent
+            p_node   = p_parent.children[0].children[0]
+            if p_attr  = p_node.attributes['id']
+              p_attr.value = index.to_s
+            end
+          end
+
+          xml << fragment.to_s
+        end
+      end
+
       def render_image(xml, model)
         unless ds = document.default_style
           raise Caracal::Errors::NoDefaultStyleError 'Document must declare a default paragraph style.'
@@ -327,23 +361,32 @@ module Caracal
       #============= OPTIONS ===================================
 
       def root_options
-        {
-          'xmlns:mc'   => 'http://schemas.openxmlformats.org/markup-compatibility/2006',
-          'xmlns:o'    => 'urn:schemas-microsoft-com:office:office',
-          'xmlns:r'    => 'http://schemas.openxmlformats.org/officeDocument/2006/relationships',
-          'xmlns:m'    => 'http://schemas.openxmlformats.org/officeDocument/2006/math',
-          'xmlns:v'    => 'urn:schemas-microsoft-com:vml',
-          'xmlns:wp'   => 'http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing',
-          'xmlns:w10'  => 'urn:schemas-microsoft-com:office:word',
-          'xmlns:w'    => 'http://schemas.openxmlformats.org/wordprocessingml/2006/main',
-          'xmlns:wne'  => 'http://schemas.microsoft.com/office/word/2006/wordml',
-          'xmlns:sl'   => 'http://schemas.openxmlformats.org/schemaLibrary/2006/main',
-          'xmlns:a'    => 'http://schemas.openxmlformats.org/drawingml/2006/main',
-          'xmlns:pic'  => 'http://schemas.openxmlformats.org/drawingml/2006/picture',
-          'xmlns:c'    => 'http://schemas.openxmlformats.org/drawingml/2006/chart',
-          'xmlns:lc'   => 'http://schemas.openxmlformats.org/drawingml/2006/lockedCanvas',
-          'xmlns:dgm'  => 'http://schemas.openxmlformats.org/drawingml/2006/diagram'
-        }
+        opts = {}
+        document.namespaces.each do |model|
+          opts[model.namespace_prefix] = model.namespace_href
+        end
+        unless document.ignorables.empty?
+          v = document.ignorables.join(' ')
+          opts['mc:Ignorable'] = v
+        end
+        opts
+        # {
+        #   'xmlns:mc'   => 'http://schemas.openxmlformats.org/markup-compatibility/2006',
+        #   'xmlns:o'    => 'urn:schemas-microsoft-com:office:office',
+        #   'xmlns:r'    => 'http://schemas.openxmlformats.org/officeDocument/2006/relationships',
+        #   'xmlns:m'    => 'http://schemas.openxmlformats.org/officeDocument/2006/math',
+        #   'xmlns:v'    => 'urn:schemas-microsoft-com:vml',
+        #   'xmlns:wp'   => 'http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing',
+        #   'xmlns:w10'  => 'urn:schemas-microsoft-com:office:word',
+        #   'xmlns:w'    => 'http://schemas.openxmlformats.org/wordprocessingml/2006/main',
+        #   'xmlns:wne'  => 'http://schemas.microsoft.com/office/word/2006/wordml',
+        #   'xmlns:sl'   => 'http://schemas.openxmlformats.org/schemaLibrary/2006/main',
+        #   'xmlns:a'    => 'http://schemas.openxmlformats.org/drawingml/2006/main',
+        #   'xmlns:pic'  => 'http://schemas.openxmlformats.org/drawingml/2006/picture',
+        #   'xmlns:c'    => 'http://schemas.openxmlformats.org/drawingml/2006/chart',
+        #   'xmlns:lc'   => 'http://schemas.openxmlformats.org/drawingml/2006/lockedCanvas',
+        #   'xmlns:dgm'  => 'http://schemas.openxmlformats.org/drawingml/2006/diagram'
+        # }
       end
 
       def page_margin_options
@@ -359,7 +402,7 @@ module Caracal
         {
           'w:w'       => document.page_width,
           'w:h'       => document.page_height,
-          'w:orient'  => document.page_orientation 
+          'w:orient'  => document.page_orientation
         }
       end
 

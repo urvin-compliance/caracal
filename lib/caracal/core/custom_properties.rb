@@ -4,8 +4,8 @@ require 'caracal/errors'
 
 module Caracal
   module Core
-    
-    # This module encapsulates all the functionality related to setting the 
+
+    # This module encapsulates all the functionality related to setting the
     # document's custom properties.
     #
     module CustomProperties
@@ -26,14 +26,16 @@ module Caracal
             model
           end
 
+
           #============== GETTERS =============================
-          
+
           def custom_props
             @custom_props ||= []
           end
 
+
           #============== REGISTRATION ========================
-          
+
           def register_property(model)
             custom_props << model
             model
@@ -42,6 +44,6 @@ module Caracal
         end
       end
     end
-    
+
   end
 end
