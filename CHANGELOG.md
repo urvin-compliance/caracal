@@ -1,3 +1,9 @@
+#### v1.0.10
+
+* Enhancements
+  * Added experimental feature for iframes. (@ajdugan).
+
+
 #### v1.0.8
 
 * Enhancements
