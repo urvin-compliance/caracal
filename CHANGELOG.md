@@ -1,3 +1,9 @@
+#### v1.0.11
+
+* Bug Fixes
+  * Cleaned up experimental feature for iframes. (@ajdugan).
+
+
 #### v1.0.10
 
 * Enhancements
