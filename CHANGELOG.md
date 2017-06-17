@@ -1,13 +1,19 @@
+#### v1.0.12
+
+* Bug Fixes
+  * Removed unintended use of Active Support method in footer renderer. (@jdugan).
+
+
 #### v1.0.11
 
 * Bug Fixes
-  * Cleaned up experimental feature for iframes. (@ajdugan).
+  * Cleaned up experimental feature for iframes. (@jdugan).
 
 
 #### v1.0.10
 
 * Enhancements
-  * Added experimental feature for iframes. (@ajdugan).
+  * Added experimental feature for iframes. (@jdugan).
 
 
 #### v1.0.8

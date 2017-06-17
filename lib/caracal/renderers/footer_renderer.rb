@@ -22,7 +22,7 @@ module Caracal
                 xml.send 'w:contextualSpacing', { 'w:val' => '0' }
                 xml.send 'w:jc', { 'w:val' => "#{ document.page_number_align }" }
               end
-              if document.page_number_label.present?
+              unless document.page_number_label.nil?
                 xml.send 'w:r', run_options do
                   xml.send 'w:rPr' do
                     xml.send 'w:rStyle', { 'w:val' => 'PageNumber' }

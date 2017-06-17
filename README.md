@@ -692,8 +692,21 @@ docx.iframe url: 'http://www.some-website.org/snippet.docx'
 
 # this example loads the data directly
 docx.iframe data: File.read('my/path/to/snippet.docx')
-
 ```
+
+Caracal is pretty smart about including the external document, at least as it relates to images. As long as the external
+document only uses the feature set Caracal supports natively, you should be okay.
+
+But if the external document uses more advanced Word features, the `iframe` directive may or may not work. Again, a
+Word document is really just a dozen or so XML files zipped up with the extension `.docx`.  Most of the commands you issue in a Word document only add OOXML to one of these internal files. But some commands--like inserting an image--modify several of
+the internal files. So, when you include an external file, what Caracal is doing under the hood is grabbing the contents
+of the main internal XML file and copying that OOXML into the Caracal document's main internal file. Caracal is smart enough
+to look for any images in the external file and make the corresponding entries in its own internal files, but if other
+advanced features of Word require similar adjustments, Caracal won't know to do that.  Probably those advanced features
+will not operate as expected in the parent Caracal document.
+
+Again, this feature is considered experimental.  Use at your own risk/discretion.
+
 
 ## Template Rendering
 
