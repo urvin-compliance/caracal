@@ -16,11 +16,11 @@ module Caracal
       #
       def to_xml
         builder = ::Nokogiri::XML::Builder.with(declaration_xml) do |xml|
-          xml.send 'w:settings', root_options do
-            xml.send 'w:displayBackgroundShape', { 'w:val' => '1' }
-            xml.send 'w:defaultTabStop', { 'w:val' => '720' }
-            xml.send 'w:compat' do
-              xml.send 'w:compatSetting', { 'w:val' => '14', 'w:name' => 'compatibilityMode', 'w:uri' => 'http://schemas.microsoft.com/office/word' }
+          xml['w'].settings root_options do
+            xml['w'].displayBackgroundShape({ 'w:val' => '1' })
+            xml['w'].defaultTabStop({ 'w:val' => '720' })
+            xml['w'].compat do
+              xml['w'].compatSetting({ 'w:val' => '14', 'w:name' => 'compatibilityMode', 'w:uri' => 'http://schemas.microsoft.com/office/word' })
             end
           end
         end

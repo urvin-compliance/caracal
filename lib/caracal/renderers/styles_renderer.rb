@@ -17,46 +17,46 @@ module Caracal
       #
       def to_xml
         builder = ::Nokogiri::XML::Builder.with(declaration_xml) do |xml|
-          xml.send 'w:styles', root_options do
+          xml['w'].styles root_options do
 
             #============ DEFAULT STYLES ================================
 
             unless s = document.default_style
               raise Caracal::Errors::NoDefaultStyleError 'Document must declare a default paragraph style.'
             end
-            xml.send 'w:docDefaults' do
-              xml.send 'w:rPrDefault' do
-                xml.send 'w:rPr' do
-                  xml.send 'w:rFonts',    font_options(s)
-                  xml.send 'w:b',         { 'w:val' => (s.style_bold ? '1' : '0') }
-                  xml.send 'w:i',         { 'w:val' => (s.style_italic ? '1' : '0') }
-                  xml.send 'w:caps',      { 'w:val' => (s.style_caps ? '1' : '0') }
-                  xml.send 'w:smallCaps', { 'w:val' => '0' }
-                  xml.send 'w:strike',    { 'w:val' => '0' }
-                  xml.send 'w:color',     { 'w:val' => s.style_color }
-                  xml.send 'w:sz',        { 'w:val' => s.style_size }
-                  xml.send 'w:u',         { 'w:val' => (s.style_underline ? 'single' : 'none') }
-                  xml.send 'w:vertAlign', { 'w:val' => 'baseline' }
+            xml['w'].docDefaults do
+              xml['w'].rPrDefault do
+                xml['w'].rPr do
+                  xml['w'].rFonts font_options(s)
+                  xml['w'].b({ 'w:val' => (s.style_bold ? '1' : '0') })
+                  xml['w'].i({ 'w:val' => (s.style_italic ? '1' : '0') })
+                  xml['w'].caps({ 'w:val' => (s.style_caps ? '1' : '0') })
+                  xml['w'].smallCaps({ 'w:val' => '0' })
+                  xml['w'].strike({ 'w:val' => '0' })
+                  xml['w'].color({ 'w:val' => s.style_color })
+                  xml['w'].sz({ 'w:val' => s.style_size })
+                  xml['w'].u({ 'w:val' => (s.style_underline ? 'single' : 'none') })
+                  xml['w'].vertAlign({ 'w:val' => 'baseline' })
                 end
               end
-              xml.send 'w:pPrDefault' do
-                xml.send 'w:pPr' do
-                  xml.send 'w:keepNext',     { 'w:val' => '0' }
-                  xml.send 'w:keepLines',    { 'w:val' => '0' }
-                  xml.send 'w:widowControl', { 'w:val' => '1' }
-                  xml.send 'w:spacing',      spacing_options(s, true)
-                  xml.send 'w:ind',          indentation_options(s, true)
-                  xml.send 'w:jc',           { 'w:val' => s.style_align.to_s }
+              xml['w'].pPrDefault do
+                xml['w'].pPr do
+                  xml['w'].keepNext({ 'w:val' => '0' })
+                  xml['w'].keepLines({ 'w:val' => '0' })
+                  xml['w'].widowControl({ 'w:val' => '1' })
+                  xml['w'].spacing(spacing_options(s, true))
+                  xml['w'].ind(indentation_options(s, true))
+                  xml['w'].jc({ 'w:val' => s.style_align.to_s })
                 end
               end
             end
-            xml.send 'w:style', { 'w:styleId' => s.style_id, 'w:type' => 'paragraph', 'w:default' => '1' } do
-              xml.send 'w:name', { 'w:val' => s.style_name }
+            xml['w'].style({ 'w:styleId' => s.style_id, 'w:type' => 'paragraph', 'w:default' => '1' }) do
+              xml['w'].name({ 'w:val' => s.style_name })
             end
-            xml.send 'w:style', { 'w:styleId' => 'TableNormal', 'w:type' => 'table', 'w:default' => '1' } do
-              xml.send 'w:name', { 'w:val' => 'Table Normal'}
-              xml.send 'w:pPr' do
-                xml.send 'w:spacing', { 'w:lineRule' => 'auto', 'w:line' => (s.style_size * 20 * 1.15), 'w:before' => '0', 'w:after' => '0' }
+            xml['w'].style({ 'w:styleId' => 'TableNormal', 'w:type' => 'table', 'w:default' => '1' }) do
+              xml['w'].name({ 'w:val' => 'Table Normal'})
+              xml['w'].pPr do
+                xml['w'].spacing({ 'w:lineRule' => 'auto', 'w:line' => (s.style_size * 20 * 1.15), 'w:before' => '0', 'w:after' => '0' })
               end
             end
             default_id = s.style_id
@@ -65,47 +65,47 @@ module Caracal
             #============ PARAGRAPH STYLES ================================
 
             document.styles.reject { |s| s.style_id == default_id }.each do |s|
-              xml.send 'w:style', { 'w:styleId' => s.style_id, 'w:type' => 'paragraph' } do
-                xml.send 'w:name',    { 'w:val' => s.style_name }
-                xml.send 'w:basedOn', { 'w:val' => s.style_base }
-                xml.send 'w:next',    { 'w:val' => s.style_next }
-                xml.send 'w:pPr' do
-                  xml.send 'w:keepNext',          { 'w:val' => '0' }
-                  xml.send 'w:keepLines',         { 'w:val' => '0' }
-                  xml.send 'w:widowControl',      { 'w:val' => '1' }
-                  xml.send 'w:spacing',           spacing_options(s)                              unless spacing_options(s).nil?
-                  xml.send 'w:contextualSpacing', { 'w:val' => '1' }
-                  xml.send 'w:jc',                { 'w:val' => s.style_align.to_s }               unless s.style_align.nil?
-                  xml.send 'w:ind',               indentation_options(s)                          unless indentation_options(s).nil?
+              xml['w'].style({ 'w:styleId' => s.style_id, 'w:type' => 'paragraph' }) do
+                xml['w'].name({ 'w:val' => s.style_name })
+                xml['w'].basedOn({ 'w:val' => s.style_base })
+                xml['w'].next({ 'w:val' => s.style_next })
+                xml['w'].pPr do
+                  xml['w'].keepNext({ 'w:val' => '0' })
+                  xml['w'].keepLines({ 'w:val' => '0' })
+                  xml['w'].widowControl({ 'w:val' => '1' })
+                  xml['w'].spacing(spacing_options(s)) unless spacing_options(s).nil?
+                  xml['w'].contextualSpacing({ 'w:val' => '1' })
+                  xml['w'].jc({ 'w:val' => s.style_align.to_s }) unless s.style_align.nil?
+                  xml['w'].ind(indentation_options(s)) unless indentation_options(s).nil?
                 end
-                xml.send 'w:rPr' do
-                  xml.send 'w:rFonts',    font_options(s)                                         unless s.style_font.nil?
-                  xml.send 'w:b',         { 'w:val' => (s.style_bold ? '1' : '0') }               unless s.style_bold.nil?
-                  xml.send 'w:i',         { 'w:val' => (s.style_italic ? '1' : '0') }             unless s.style_italic.nil?
-                  xml.send 'w:caps',      { 'w:val' => (s.style_caps ? '1' : '0') }               unless s.style_caps.nil?
-                  xml.send 'w:color',     { 'w:val' => s.style_color }                            unless s.style_color.nil?
-                  xml.send 'w:sz',        { 'w:val' => s.style_size }                             unless s.style_size.nil?
-                  xml.send 'w:u',         { 'w:val' => (s.style_underline ? 'single' : 'none') }  unless s.style_underline.nil?
+                xml['w'].rPr do
+                  xml['w'].rFonts(font_options(s)) unless s.style_font.nil?
+                  xml['w'].b({ 'w:val' => (s.style_bold ? '1' : '0') } ) unless s.style_bold.nil?
+                  xml['w'].i({ 'w:val' => (s.style_italic ? '1' : '0') }) unless s.style_italic.nil?
+                  xml['w'].caps({ 'w:val' => (s.style_caps ? '1' : '0') }) unless s.style_caps.nil?
+                  xml['w'].color({ 'w:val' => s.style_color }) unless s.style_color.nil?
+                  xml['w'].sz({ 'w:val' => s.style_size }) unless s.style_size.nil?
+                  xml['w'].u({ 'w:val' => (s.style_underline ? 'single' : 'none') }) unless s.style_underline.nil?
                 end
               end
             end
 
             #============ TABLE STYLES ================================
 
-            xml.send 'w:style', { 'w:styleId' => 'DefaultTable', 'w:type' => 'table' } do
-              xml.send 'w:basedOn', { 'w:val' => 'TableNormal' }
-              xml.send 'w:tblPr' do
-                xml.send 'w:tblStyleRowBandSize', { 'w:val' => '1' }
-                xml.send 'w:tblStyleColBandSize', { 'w:val' => '1' }
+            xml['w'].style({ 'w:styleId' => 'DefaultTable', 'w:type' => 'table' }) do
+              xml['w'].basedOn({ 'w:val' => 'TableNormal' })
+              xml['w'].tblPr do
+                xml['w'].tblStyleRowBandSize({ 'w:val' => '1' })
+                xml['w'].tblStyleColBandSize({ 'w:val' => '1' })
               end
               %w(band1Horz band1Vert band2Horz band2Vert).each do |type|
-                xml.send 'w:tblStylePr', { 'w:type' => type }
+                xml['w'].tblStylePr({ 'w:type' => type })
               end
               %w(firstCol firstRow lastCol lastRow).each do |type|
-                xml.send 'w:tblStylePr', { 'w:type' => type }
+                xml['w'].tblStylePr({ 'w:type' => type })
               end
               %w(neCell nwCell seCell swCell).each do |type|
-                xml.send 'w:tblStylePr', { 'w:type' => type }
+                xml['w'].tblStylePr({ 'w:type' => type })
               end
             end
 

@@ -16,9 +16,9 @@ module Caracal
       #
       def to_xml
         builder = ::Nokogiri::XML::Builder.with(declaration_xml) do |xml|
-          xml.send 'w:fonts', root_options do
+          xml['w'].fonts root_options do
             document.fonts.each do |font|
-              xml.send 'w:font', { 'w:name' => font.font_name }
+              xml['w'].font({ 'w:name' => font.font_name })
             end
           end
         end
