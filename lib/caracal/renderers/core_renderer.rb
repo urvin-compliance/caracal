@@ -16,7 +16,7 @@ module Caracal
       #
       def to_xml
         builder = ::Nokogiri::XML::Builder.with(declaration_xml) do |xml|
-          xml.send 'cp:coreProperties', root_options do
+          xml['cp'].coreProperties root_options do
             xml['dc'].title document.name
           end
         end

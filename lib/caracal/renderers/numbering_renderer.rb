@@ -18,24 +18,24 @@ module Caracal
       #
       def to_xml
         builder = ::Nokogiri::XML::Builder.with(declaration_xml) do |xml|
-          xml.send 'w:numbering', root_options do
+          xml['w'].numbering root_options do
             
             # add abstract definitions
             document.toplevel_lists.each_with_index do |model, i|
-              xml.send 'w:abstractNum', { 'w:abstractNumId' => i + 1 } do
+              xml['w'].abstractNum({ 'w:abstractNumId' => i + 1 }) do
                 model.level_map.each do |(level, type)|
                   if s = document.find_list_style(type, level)
-                    xml.send 'w:lvl', { 'w:ilvl' => s.style_level } do
-                      xml.send 'w:start',      { 'w:val' => s.style_start }
-                      xml.send 'w:numFmt',     { 'w:val' => s.style_format }
-                      xml.send 'w:lvlRestart', { 'w:val' => s.style_restart }
-                      xml.send 'w:lvlText',    { 'w:val' => s.style_value }
-                      xml.send 'w:lvlJc',      { 'w:val' => s.style_align }
-                      xml.send 'w:pPr' do
-                        xml.send 'w:ind', { 'w:left' => s.style_left, 'w:firstLine' => s.style_indent }
+                    xml['w'].lvl({ 'w:ilvl' => s.style_level }) do
+                      xml['w'].start({ 'w:val' => s.style_start })
+                      xml['w'].numFmt({ 'w:val' => s.style_format })
+                      xml['w'].lvlRestart({ 'w:val' => s.style_restart })
+                      xml['w'].lvlText({ 'w:val' => s.style_value })
+                      xml['w'].lvlJc({ 'w:val' => s.style_align })
+                      xml['w'].pPr do
+                        xml['w'].ind({ 'w:left' => s.style_left, 'w:firstLine' => s.style_indent })
                       end
-                      xml.send 'w:rPr' do
-                        xml.send 'w:u', { 'w:val' => 'none' }
+                      xml['w'].rPr do
+                        xml['w'].u({ 'w:val' => 'none' })
                       end
                     end
                   end
@@ -45,8 +45,8 @@ module Caracal
             
             # bind individual tables to abstract definitions
             document.toplevel_lists.each_with_index do |model, i|
-              xml.send 'w:num', { 'w:numId' => i + 1 } do
-                xml.send 'w:abstractNumId', { 'w:val' => i + 1 }
+              xml['w'].num({ 'w:numId' => i + 1 }) do
+                xml['w'].abstractNumId({ 'w:val' => i + 1 })
               end
             end
           end
