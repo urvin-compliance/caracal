@@ -333,7 +333,7 @@ module Caracal
             xml['w'].tr do
               row.each do |tc|
                 xml['w'].tc do
-                  xml.tcPr do
+                  xml['w'].tcPr do
                     xml['w'].shd({ 'w:fill' => tc.cell_background })
                     xml['w'].vAlign({ 'w:val' => tc.cell_vertical_align })
                     xml['w'].tcMar do
