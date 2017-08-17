@@ -1,3 +1,9 @@
+#### v1.1.0
+
+* Enhancements
+  * Corrected how renderers output namespaced nodes to ensure jruby compliance. (HUGE thank you to @henrychung for researching and implementing this).
+
+
 #### v1.0.13
 
 * Bug Fixes
