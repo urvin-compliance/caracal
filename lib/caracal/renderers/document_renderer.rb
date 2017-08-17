@@ -220,22 +220,57 @@ module Caracal
         ls      = document.find_list_style(model.list_item_type, model.list_item_level)
         hanging = ls.style_left.to_i - ls.style_indent.to_i - 1
 
-        xml.send 'w:p', paragraph_options do
-          xml.send 'w:pPr' do
-            xml.send 'w:numPr' do
-              xml.send 'w:ilvl', { 'w:val' => model.list_item_level }
-              xml.send 'w:numId', { 'w:val' => list_num }
+        # count how many paragraphs we'll need
+        num_paragraphs = 1
+        last_is_linebreak = false
+        model.runs.each do |run|
+          if run.class == Caracal::Core::Models::LineBreakModel
+            if !last_is_linebreak
+              num_paragraphs = num_paragraphs + 1
+              last_is_linebreak = true
             end
-            xml.send 'w:ind', { 'w:left' => ls.style_left, 'w:hanging' => hanging }
-            xml.send 'w:contextualSpacing', { 'w:val' => '1' }
-            xml.send 'w:rPr' do
-              xml.send 'w:u', { 'w:val' => 'none' }
-            end
+          else
+            last_is_linebreak = false
           end
-          model.runs.each do |run|
-            method = render_method_for_model(run)
-            send(method, xml, run)
-          end
+        end
+        
+        run_index = 0
+        last_is_linebreak = false
+        first_paragraph = true
+        (1..num_paragraphs).each do # loop through each paragraph
+          xml.send 'w:p', paragraph_options do
+            xml.send 'w:pPr' do
+              if first_paragraph
+                xml.send 'w:numPr' do
+                  xml.send 'w:ilvl', { 'w:val' => model.list_item_level }
+                  xml.send 'w:numId', { 'w:val' => list_num }
+                end
+                xml.send 'w:ind', { 'w:left' => ls.style_left, 'w:hanging' => hanging }
+              else
+                xml.send 'w:ind', { 'w:left' => ls.style_left }
+              end
+              xml.send 'w:contextualSpacing', { 'w:val' => '1' }
+              xml.send 'w:rPr' do
+                xml.send 'w:u', { 'w:val' => 'none' }
+              end
+            end # end xml.send 'w:pPr'
+            model.runs[run_index..(model.runs.length-1)].each do |run|
+              if run.class == Caracal::Core::Models::LineBreakModel
+                if !last_is_linebreak # detect first linebreak in a possible series of linebreaks
+                  last_is_linebreak = true
+                  run_index = run_index + 1
+                  break # stop processing runs and move to the next paragraph
+                end
+              else
+                last_is_linebreak = false
+              end
+            
+              method = render_method_for_model(run)
+              send(method, xml, run)
+              run_index = run_index + 1
+            end # end for each model run
+          end # end xml.send 'w:p'
+          first_paragraph = false
         end
       end
 
