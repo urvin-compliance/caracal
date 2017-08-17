@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Caracal::VERSION
   spec.authors       = ['Trade Infomatics', 'John Dugan']
   spec.email         = ['jpdugan@gmail.com']
-  spec.summary       = %q{ Fast, professional MSWord writer for Ruby. }
-  spec.description   = %q{ Caracal is a pure Ruby MSWord generation library that produces professional quality Word documents using a simple, HTML-style DSL. }
+  spec.summary       = %q{ Fast, professional Microsoft Word (docx) writer for Ruby. }
+  spec.description   = %q{ Caracal is a pure Ruby Microsoft Word generation library that produces professional quality MSWord documents (docx) using a simple, HTML-style DSL. }
   spec.homepage      = 'https://github.com/trade-informatics/caracal'
   spec.license       = 'MIT'
 
