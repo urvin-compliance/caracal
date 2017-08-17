@@ -86,7 +86,7 @@ module Caracal
       docx   = new(f_name, &block)
       buffer = docx.render
 
-      File.open("./#{ docx.name }", 'w') { |f| f.write(buffer.string) }
+      File.open("./#{ docx.name }", 'wb') { |f| f.write(buffer.string) }
     end
 
 

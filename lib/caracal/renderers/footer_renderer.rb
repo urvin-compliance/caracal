@@ -16,30 +16,30 @@ module Caracal
       #
       def to_xml
         builder = ::Nokogiri::XML::Builder.with(declaration_xml) do |xml|
-          xml.send 'w:ftr', root_options do
-            xml.send 'w:p', paragraph_options do
-              xml.send 'w:pPr' do
-                xml.send 'w:contextualSpacing', { 'w:val' => '0' }
-                xml.send 'w:jc', { 'w:val' => "#{ document.page_number_align }" }
+          xml['w'].ftr root_options do
+            xml['w'].p paragraph_options do
+              xml['w'].pPr do
+                xml['w'].contextualSpacing({ 'w:val' => '0' })
+                xml['w'].jc({ 'w:val' => "#{ document.page_number_align }" })
               end
               unless document.page_number_label.nil?
-                xml.send 'w:r', run_options do
-                  xml.send 'w:rPr' do
-                    xml.send 'w:rStyle', { 'w:val' => 'PageNumber' }
+                xml['w'].r run_options do
+                  xml['w'].rPr do
+                    xml['w'].rStyle({ 'w:val' => 'PageNumber' })
                   end
-                  xml.send 'w:t', { 'xml:space' => 'preserve' } do
+                  xml['w'].t({ 'xml:space' => 'preserve' }) do
                     xml.text "#{ document.page_number_label } "
                   end
                 end
               end
-              xml.send 'w:fldSimple', { 'w:dirty' => '0', 'w:instr' => 'PAGE', 'w:fldLock' => '0' } do
-                xml.send 'w:r', run_options do
-                  xml.send 'w:rPr'
+              xml['w'].fldSimple({ 'w:dirty' => '0', 'w:instr' => 'PAGE', 'w:fldLock' => '0' }) do
+                xml['w'].r run_options do
+                  xml['w'].rPr
                 end
               end
-              xml.send 'w:r', run_options do
-                xml.send 'w:rPr' do
-                  xml.send 'w:rtl', { 'w:val' => '0' }
+              xml['w'].r run_options do
+                xml['w'].rPr do
+                  xml['w'].rtl({ 'w:val' => '0' })
                 end
               end
             end
