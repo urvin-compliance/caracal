@@ -1,3 +1,9 @@
+#### v1.0.13
+
+* Bug Fixes
+  * Corrected bug where lists were no longer multi-line. (@jdugan h/t @StochasticSpring).
+
+
 #### v1.0.12
 
 * Bug Fixes
