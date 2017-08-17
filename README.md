@@ -263,8 +263,8 @@ dimensions and the orientation explicitly.
 
 ```ruby
 docx.page_size do
-  width       12240       # sets the page width. units in twips.
-  height      15840       # sets the page height. units in twips.
+  width       15840       # sets the page width. units in twips.
+  height      12240       # sets the page height. units in twips.
   orientation :landscape  # sets the printer orientation. accepts :portrait and :landscape.
 end
 ```
