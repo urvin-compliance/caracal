@@ -22,10 +22,10 @@ module Caracal
                 xml['w'].contextualSpacing({ 'w:val' => '0' })
                 xml['w'].jc({ 'w:val' => "#{ document.header_align }" })
               end
-              unless document.page_number_label.nil?
+              unless document.header_text.nil?
                 xml['w'].r run_options do
                   xml['w'].rPr do
-                    xml['w'].rStyle({ 'w:val' => 'PageNumber' })
+                    xml['w'].rStyle({ 'w:val' => 'Header' })
                   end
                   xml['w'].t({ 'xml:space' => 'preserve' }) do
                     xml.text "#{ document.header_text } "
