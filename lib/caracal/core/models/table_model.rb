@@ -36,14 +36,16 @@ module Caracal
         attr_reader :table_border_right       # returns border model
         attr_reader :table_border_horizontal  # returns border model
         attr_reader :table_border_vertical    # returns border model
+        attr_reader :table_leading_paragraph
         
         # initialization
         def initialize(options={}, &block)
-          @table_align          = DEFAULT_TABLE_ALIGN
-          @table_border_color   = DEFAULT_TABLE_BORDER_COLOR
-          @table_border_line    = DEFAULT_TABLE_BORDER_LINE
-          @table_border_size    = DEFAULT_TABLE_BORDER_SIZE
-          @table_border_spacing = DEFAULT_TABLE_BORDER_SPACING
+          @table_align             = DEFAULT_TABLE_ALIGN
+          @table_border_color      = DEFAULT_TABLE_BORDER_COLOR
+          @table_border_line       = DEFAULT_TABLE_BORDER_LINE
+          @table_border_size       = DEFAULT_TABLE_BORDER_SIZE
+          @table_border_spacing    = DEFAULT_TABLE_BORDER_SPACING
+          @table_leading_paragraph = true
           
           super options, &block
         end
@@ -117,6 +119,9 @@ module Caracal
           end
         end
         
+        def leading_paragraph(value)
+          @table_leading_paragraph = !!value
+        end
         
         #=============== SETTERS ==============================
         
