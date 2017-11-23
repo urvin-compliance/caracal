@@ -17,17 +17,20 @@ module Caracal
         # constants
         const_set(:DEFAULT_PAGE_NUMBER_ALIGN, :center)
         const_set(:DEFAULT_PAGE_NUMBER_SHOW,  false)
+        const_set(:DEFAULT_PAGE_NUMBER_LABEL_SIZE,  20)
 
         # accessors
         attr_reader :page_number_align
         attr_reader :page_number_label
         attr_reader :page_number_show
+        attr_reader :page_number_label_size
 
         # initialization
         def initialize(options={}, &block)
           @page_number_align = DEFAULT_PAGE_NUMBER_ALIGN
           @page_number_label = nil
           @page_number_show  = DEFAULT_PAGE_NUMBER_SHOW
+          @page_number_label_size = 20
 
           super options, &block
         end
@@ -49,6 +52,10 @@ module Caracal
 
         def show(value)
           @page_number_show = !!value
+        end
+
+        def size(value)
+          @page_number_label_size = value.to_i
         end
 
 
