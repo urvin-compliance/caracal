@@ -19,6 +19,7 @@ describe Caracal::Core::Models::StyleModel do
 
     # constants
     describe 'constants' do
+      it { expect(described_class::DEFAULT_STYLE_TYPE).to eq 'paragraph' }
       it { expect(described_class::DEFAULT_STYLE_COLOR).to eq '333333' }
       it { expect(described_class::DEFAULT_STYLE_SIZE).to eq 20 }
       it { expect(described_class::DEFAULT_STYLE_BOLD).to eq false }
@@ -38,6 +39,7 @@ describe Caracal::Core::Models::StyleModel do
       it { expect(subject.style_default).to eq true }
       it { expect(subject.style_id).to eq 'Normal' }
       it { expect(subject.style_name).to eq 'normal' }
+      it { expect(subject.style_type).to eq 'paragraph' }
       it { expect(subject.style_color).to eq '333333' }
       it { expect(subject.style_font).to eq 'Arial' }
       it { expect(subject.style_size).to eq 20 }
@@ -152,6 +154,20 @@ describe Caracal::Core::Models::StyleModel do
       it { expect(subject.style_align).to eq :right }
     end
 
+    # custom
+    describe '.type' do
+      describe 'when valid' do
+        before { subject.type 'character'}
+
+        it { expect(subject.style_type).to eq 'character' }
+      end
+      describe 'when invalid' do
+        before { subject.type 'bogus'}
+
+        it { expect(subject.style_type).to eq 'paragraph' }
+      end
+    end
+
 
     #=================== STATE ===============================
 
@@ -199,7 +215,7 @@ describe Caracal::Core::Models::StyleModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:bold, :italic, :underline, :caps, :top, :bottom, :size, :line, :id, :name, :color, :font, :align, :indent_left, :indent_right, :indent_first].sort }
+      let(:expected) { [:type, :bold, :italic, :underline, :caps, :top, :bottom, :size, :line, :id, :name, :color, :font, :align, :indent_left, :indent_right, :indent_first].sort }
 
       it { expect(actual).to eq expected }
     end

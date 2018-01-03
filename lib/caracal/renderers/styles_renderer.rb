@@ -8,9 +8,9 @@ module Caracal
   module Renderers
     class StylesRenderer < XmlRenderer
 
-      #-------------------------------------------------------------
+      #----------------------------------------------------
       # Public Methods
-      #-------------------------------------------------------------
+      #----------------------------------------------------
 
       # This method produces the xml required for the `word/styles.xml`
       # sub-document.
@@ -19,7 +19,7 @@ module Caracal
         builder = ::Nokogiri::XML::Builder.with(declaration_xml) do |xml|
           xml['w'].styles root_options do
 
-            #============ DEFAULT STYLES ================================
+            #========== DEFAULT STYLES ====================
 
             unless s = document.default_style
               raise Caracal::Errors::NoDefaultStyleError 'Document must declare a default paragraph style.'
@@ -62,7 +62,7 @@ module Caracal
             default_id = s.style_id
 
 
-            #============ PARAGRAPH/CHARACTER STYLES ================================
+            #========== PARA/CHAR STYLES ==================
 
             document.styles.reject { |s| s.style_id == default_id }.each do |s|
               xml['w'].style({ 'w:styleId' => s.style_id, 'w:type' => s.style_type }) do
@@ -90,7 +90,7 @@ module Caracal
               end
             end
 
-            #============ TABLE STYLES ================================
+            #========== TABLE STYLES ======================
 
             xml['w'].style({ 'w:styleId' => 'DefaultTable', 'w:type' => 'table' }) do
               xml['w'].basedOn({ 'w:val' => 'TableNormal' })
@@ -116,9 +116,9 @@ module Caracal
 
 
 
-      #-------------------------------------------------------------
+      #----------------------------------------------------
       # Private Methods
-      #-------------------------------------------------------------
+      #----------------------------------------------------
       private
 
       def font_options(style)

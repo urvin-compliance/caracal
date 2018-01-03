@@ -10,11 +10,12 @@ module Caracal
       #
       class StyleModel < BaseModel
 
-        #-------------------------------------------------------------
+        #--------------------------------------------------
         # Configuration
-        #-------------------------------------------------------------
+        #--------------------------------------------------
 
         # constants
+        const_set(:DEFAULT_STYLE_TYPE,       'paragraph')
         const_set(:DEFAULT_STYLE_COLOR,      '333333')
         const_set(:DEFAULT_STYLE_SIZE,       20)
         const_set(:DEFAULT_STYLE_BOLD,       false)
@@ -53,7 +54,7 @@ module Caracal
         # initialization
         def initialize(options={}, &block)
           @style_default = false
-          @style_type    = 'paragraph'
+          @style_type    = DEFAULT_STYLE_TYPE
           @style_base    = DEFAULT_STYLE_BASE
           @style_next    = DEFAULT_STYLE_NEXT
 
@@ -75,11 +76,11 @@ module Caracal
         end
 
 
-        #-------------------------------------------------------------
-        # Public Instance Methods
-        #-------------------------------------------------------------
+        #--------------------------------------------------
+        # Public Methods
+        #--------------------------------------------------
 
-        #=============== SETTERS ==============================
+        #========== SETTERS ===============================
 
         # booleans
         [:bold, :italic, :underline, :caps].each do |m|
@@ -96,7 +97,7 @@ module Caracal
         end
 
         # strings
-        [:type, :id, :name, :color, :font].each do |m|
+        [:id, :type, :name, :color, :font].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@style_#{ m }", value.to_s)
           end
@@ -109,29 +110,52 @@ module Caracal
           end
         end
 
+        # custom
+        def type(value)
+          allowed     = ['character', 'paragraph']
+          given       = value.to_s.downcase.strip
+          @style_type = allowed.include?(given) ? given : DEFAULT_STYLE_TYPE
+        end
 
-        #=============== STATE ================================
+
+        #========== STATE =================================
 
         def matches?(str)
           style_id.downcase == str.to_s.downcase
         end
 
 
-        #=============== VALIDATION ===========================
+        #========== VALIDATION ============================
 
         def valid?
-          a = [:id, :name]
+          a = [:id, :name, :type]
           a.map { |m| send("style_#{ m }") }.compact.size == a.size
         end
 
 
-        #-------------------------------------------------------------
-        # Private Instance Methods
-        #-------------------------------------------------------------
+        #--------------------------------------------------
+        # Private Methods
+        #--------------------------------------------------
         private
 
         def option_keys
-          [:type, :bold, :italic, :underline, :caps, :top, :bottom, :size, :line, :id, :name, :color, :font, :align, :indent_left, :indent_right, :indent_first]
+          [ :type,
+            :bold,
+            :italic,
+            :underline,
+            :caps,
+            :top,
+            :bottom,
+            :size,
+            :line,
+            :id,
+            :name,
+            :color,
+            :font,
+            :align,
+            :indent_left,
+            :indent_right,
+            :indent_first ]
         end
 
       end

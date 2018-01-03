@@ -10,13 +10,13 @@ module Caracal
       #
       class TextModel < BaseModel
 
-        #-------------------------------------------------------------
+        #--------------------------------------------------
         # Configuration
-        #-------------------------------------------------------------
+        #--------------------------------------------------
 
         # accessors
-        attr_reader :text_style
         attr_reader :text_content
+        attr_reader :text_style
         attr_reader :text_font
         attr_reader :text_color
         attr_reader :text_size
@@ -28,11 +28,11 @@ module Caracal
 
 
 
-        #-------------------------------------------------------------
-        # Public Instance Methods
-        #-------------------------------------------------------------
+        #--------------------------------------------------
+        # Public Methods
+        #--------------------------------------------------
 
-        #=============== GETTERS ==============================
+        #========== GETTERS ===============================
 
         # .run_attributes
         def run_attributes
@@ -50,7 +50,7 @@ module Caracal
         end
 
 
-        #=============== SETTERS ==============================
+        #========== SETTERS ===============================
 
         # booleans
         [:bold, :italic, :underline].each do |m|
@@ -67,7 +67,7 @@ module Caracal
         end
 
         # strings
-        [:style, :bgcolor, :color, :content, :font].each do |m|
+        [:bgcolor, :color, :content, :font, :style].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@text_#{ m }", value.to_s)
           end
@@ -81,7 +81,7 @@ module Caracal
         end
 
 
-        #=============== VALIDATION ===========================
+        #========== VALIDATION ============================
 
         def valid?
           a = [:content]
@@ -89,13 +89,13 @@ module Caracal
         end
 
 
-        #-------------------------------------------------------------
-        # Private Instance Methods
-        #-------------------------------------------------------------
+        #--------------------------------------------------
+        # Private Methods
+        #--------------------------------------------------
         private
 
         def option_keys
-          [:style, :content, :font, :color, :size, :bold, :italic, :underline, :bgcolor, :vertical_align]
+          [:content, :style, :font, :color, :size, :bold, :italic, :underline, :bgcolor, :vertical_align]
         end
 
         def method_missing(method, *args, &block)
