@@ -333,6 +333,7 @@ Paragraph style classes can be defined using the `style` method.  The method acc
 docx.style do
   id              'Heading1'  # sets the internal identifier for the style.
   name            'heading 1' # sets the friendly name of the style.
+  type            'paragraph' # sets the style type. accepts `paragraph` or `character`
   font            'Palantino' # sets the font family.
   color           '333333'    # sets the text color. accepts hex RGB.
   size            28          # sets the font size. units in half points.
@@ -362,6 +363,11 @@ Caracal establishes a standard set of default styles for every document. Default
 * Heading5
 * Heading6
 
+Styles are declared as `paragraph` by default. If you need to adjust inline text styles repeatedly, you might
+benefit from defining a `character` style.  Paragraph styles affects all text runs within a paragraph; character styles
+are used to style individual runs within a larger text block.
+
+One-off inline text styling can also be accomplished by passing the `text` command override arguments (see below).
 
 
 ### Custom Properties
@@ -415,7 +421,7 @@ docx.p do
   text ' to something awesome', font: 'Courier New', color: '555555', size: 32, bold: true, italic: true, underline: true, bgcolor: 'cccccc'
   text '.'
   br
-  text 'This text follows a line break.'
+  text 'This text follows a line break and uses a character style instead of overrides.', style: 'MyCharStyle'
   page
 end
 ```
@@ -718,7 +724,7 @@ Rails integration can be added via the [Caracal-Rails](https://github.com/trade-
 
 Lexical scope is a pretty big challenge for Caracal and it often confuses new users. This [closed issue](https://github.com/trade-informatics/caracal/issues/71) covers the discussion both from the user and library persepctive.
 
-  
+
 ## Filing an Issue
 
 Caracal was written for and tested against Word 2010, 2013, and Office365.  It should also open in LibreOffice

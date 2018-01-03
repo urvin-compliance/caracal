@@ -47,7 +47,7 @@ describe Caracal::Core::Models::TextModel do
 
     # .run_attributes
     describe '.run_attributes' do
-      let(:expected) { { font: 'Courier New', color: '666666', size: 20, bold: false, italic: false, underline: true, bgcolor: 'cccccc', vertical_align: :subscript } }
+      let(:expected) { { style: nil, font: 'Courier New', color: '666666', size: 20, bold: false, italic: false, underline: true, bgcolor: 'cccccc', vertical_align: :subscript } }
 
       it { expect(subject.run_attributes).to eq expected }
     end
@@ -137,7 +137,7 @@ describe Caracal::Core::Models::TextModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:bgcolor, :bold, :color, :content, :font, :italic, :size, :underline, :vertical_align].sort }
+      let(:expected) { [:bgcolor, :bold, :color, :content, :font, :italic, :size, :style, :underline, :vertical_align].sort }
 
       it { expect(actual).to eq expected }
     end
