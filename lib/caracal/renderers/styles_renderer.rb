@@ -62,10 +62,10 @@ module Caracal
             default_id = s.style_id
 
 
-            #============ PARAGRAPH STYLES ================================
+            #============ PARAGRAPH/CHARACTER STYLES ================================
 
             document.styles.reject { |s| s.style_id == default_id }.each do |s|
-              xml['w'].style({ 'w:styleId' => s.style_id, 'w:type' => 'paragraph' }) do
+              xml['w'].style({ 'w:styleId' => s.style_id, 'w:type' => s.style_type }) do
                 xml['w'].name({ 'w:val' => s.style_name })
                 xml['w'].basedOn({ 'w:val' => s.style_base })
                 xml['w'].next({ 'w:val' => s.style_next })
