@@ -1,3 +1,14 @@
+#### v1.1.2
+
+* Enhancements
+  * Added font size options for page numbers. (@cfacello)
+
+#### v1.1.1
+
+* Enhancements
+  * Added character styles. (@xerespm)
+
+
 #### v1.1.0
 
 * Enhancements

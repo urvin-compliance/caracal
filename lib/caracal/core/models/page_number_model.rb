@@ -21,13 +21,17 @@ module Caracal
         # accessors
         attr_reader :page_number_align
         attr_reader :page_number_label
+        attr_reader :page_number_label_size
+        attr_reader :page_number_number_size
         attr_reader :page_number_show
 
         # initialization
         def initialize(options={}, &block)
-          @page_number_align = DEFAULT_PAGE_NUMBER_ALIGN
-          @page_number_label = nil
-          @page_number_show  = DEFAULT_PAGE_NUMBER_SHOW
+          @page_number_align        = DEFAULT_PAGE_NUMBER_ALIGN
+          @page_number_label        = nil
+          @page_number_label_size   = nil
+          @page_number_number_size  = nil
+          @page_number_show         = DEFAULT_PAGE_NUMBER_SHOW
 
           super options, &block
         end
@@ -47,8 +51,24 @@ module Caracal
           @page_number_label = value.to_s.strip   # renderer will enforce trailing space
         end
 
+        def label_size(value)
+          v = value.to_i
+          @page_number_label_size = (v == 0) ? nil : v
+        end
+
+        def number_size(value)
+          v = value.to_i
+          @page_number_number_size = (v == 0) ? nil : v
+        end
+
         def show(value)
           @page_number_show = !!value
+        end
+
+        def size(value)
+          v = value.to_i
+          @page_number_label_size  = (v == 0) ? nil : v
+          @page_number_number_size = (v == 0) ? nil : v
         end
 
 
@@ -65,7 +85,7 @@ module Caracal
         private
 
         def option_keys
-          [:align, :label, :show]
+          [:align, :label, :label_size, :number_size, :show]
         end
 
       end

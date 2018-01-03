@@ -26,16 +26,27 @@ module Caracal
                 xml['w'].r run_options do
                   xml['w'].rPr do
                     xml['w'].rStyle({ 'w:val' => 'PageNumber' })
+                    unless document.page_number_label_size.nil?
+                      xml['w'].sz({ 'w:val'  => document.page_number_label_size })
+                    end
                   end
                   xml['w'].t({ 'xml:space' => 'preserve' }) do
                     xml.text "#{ document.page_number_label } "
                   end
                 end
               end
-              xml['w'].fldSimple({ 'w:dirty' => '0', 'w:instr' => 'PAGE', 'w:fldLock' => '0' }) do
-                xml['w'].r run_options do
-                  xml['w'].rPr
+              xml['w'].r run_options do
+                xml['w'].rPr do
+                  unless document.page_number_number_size.nil?
+                    xml['w'].sz({ 'w:val'  => document.page_number_number_size })
+                    xml['w'].szCs({ 'w:val' => document.page_number_number_size })
+                  end
                 end
+                xml['w'].fldChar({ 'w:fldCharType' => 'begin' })
+                xml['w'].instrText({ 'xml:space' => 'preserve' }) do
+                  xml.text 'PAGE'
+                end
+                xml['w'].fldChar({ 'w:fldCharType' => 'end' })
               end
               xml['w'].r run_options do
                 xml['w'].rPr do
