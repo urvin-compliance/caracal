@@ -23,6 +23,7 @@ module Caracal
           attr_reader :page_number_align
           attr_reader :page_number_label
           attr_reader :page_number_show
+          attr_reader :page_number_label_size
 
 
           #-------------------------------------------------------------
@@ -41,6 +42,7 @@ module Caracal
               @page_number_align = model.page_number_align
               @page_number_label = model.page_number_label
               @page_number_show  = model.page_number_show
+              @page_number_label_size = model.page_number_label_size
             else
               raise Caracal::Errors::InvalidModelError, 'page_numbers :align parameter must be :left, :center, or :right'
             end
