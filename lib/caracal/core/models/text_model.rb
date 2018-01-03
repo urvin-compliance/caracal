@@ -15,6 +15,7 @@ module Caracal
         #-------------------------------------------------------------
 
         # accessors
+        attr_reader :text_style
         attr_reader :text_content
         attr_reader :text_font
         attr_reader :text_color
@@ -36,6 +37,7 @@ module Caracal
         # .run_attributes
         def run_attributes
           {
+            style:          text_style,
             font:           text_font,
             color:          text_color,
             size:           text_size,
@@ -65,7 +67,7 @@ module Caracal
         end
 
         # strings
-        [:bgcolor, :color, :content, :font].each do |m|
+        [:style, :bgcolor, :color, :content, :font].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@text_#{ m }", value.to_s)
           end
@@ -93,7 +95,7 @@ module Caracal
         private
 
         def option_keys
-          [:content, :font, :color, :size, :bold, :italic, :underline, :bgcolor, :vertical_align]
+          [:style, :content, :font, :color, :size, :bold, :italic, :underline, :bgcolor, :vertical_align]
         end
 
         def method_missing(method, *args, &block)
