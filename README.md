@@ -1,6 +1,5 @@
 # Caracal
 
-[![Build Status](http://img.shields.io/travis/trade-informatics/caracal.svg?style=flat)](https://travis-ci.org/trade-informatics/caracal)
 [![Gem Version](http://img.shields.io/gem/v/caracal.svg?style=flat)](https://rubygems.org/gems/caracal)
 
 
@@ -715,6 +714,11 @@ Caracal includes [Tilt](https://github.com/rtomayko/tilt) integration to facilit
 Rails integration can be added via the [Caracal-Rails](https://github.com/trade-informatics/caracal-rails) gem.
 
 
+## Using Variables
+
+Lexical scope is a pretty big challenge for Caracal and it often confuses new users. This [closed issue](https://github.com/trade-informatics/caracal/issues/71) covers the discussion both from the user and library persepctive.
+
+  
 ## Filing an Issue
 
 Caracal was written for and tested against Word 2010, 2013, and Office365.  It should also open in LibreOffice
