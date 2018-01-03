@@ -31,6 +31,7 @@ module Caracal
         # accessors
         attr_reader :style_default
         attr_reader :style_id
+        attr_reader :style_type
         attr_reader :style_name
         attr_reader :style_color
         attr_reader :style_font
@@ -52,6 +53,7 @@ module Caracal
         # initialization
         def initialize(options={}, &block)
           @style_default = false
+          @style_type    = 'paragraph'
           @style_base    = DEFAULT_STYLE_BASE
           @style_next    = DEFAULT_STYLE_NEXT
 
@@ -94,7 +96,7 @@ module Caracal
         end
 
         # strings
-        [:id, :name, :color, :font].each do |m|
+        [:type, :id, :name, :color, :font].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@style_#{ m }", value.to_s)
           end
@@ -129,7 +131,7 @@ module Caracal
         private
 
         def option_keys
-          [:bold, :italic, :underline, :caps, :top, :bottom, :size, :line, :id, :name, :color, :font, :align, :indent_left, :indent_right, :indent_first]
+          [:type, :bold, :italic, :underline, :caps, :top, :bottom, :size, :line, :id, :name, :color, :font, :align, :indent_left, :indent_right, :indent_first]
         end
 
       end
