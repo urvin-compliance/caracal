@@ -336,6 +336,9 @@ module Caracal
                   xml['w'].tcPr do
                     xml['w'].shd({ 'w:fill' => tc.cell_background })
                     xml['w'].vAlign({ 'w:val' => tc.cell_vertical_align })
+                    unless tc.cell_vertical_merge.nil?
+                      xml['w'].vMerge({ 'w:val' => tc.cell_vertical_merge })
+                    end
                     xml['w'].tcMar do
                       %w(top left bottom right).each do |d|
                         xml['w'].method_missing "#{ d }", { 'w:w' => tc.send("cell_margin_#{ d }").to_f, 'w:type' => 'dxa' }

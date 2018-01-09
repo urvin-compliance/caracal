@@ -19,18 +19,21 @@ module Caracal
         const_set(:DEFAULT_CELL_BACKGROUND,       'ffffff')
         const_set(:DEFAULT_CELL_MARGINS,          Caracal::Core::Models::MarginModel.new({ top: 100, bottom: 100, left: 100, right: 100 }))
         const_set(:DEFAULT_CELL_VERTICAL_ALIGN,   :top)
+        const_set(:DEFAULT_CELL_VERTICAL_MERGE,   nil)
 
         # accessors
         attr_reader :cell_background
         attr_reader :cell_width
         attr_reader :cell_margins
         attr_reader :cell_vertical_align
+        attr_reader :cell_vertical_merge
 
         # initialization
         def initialize(options={}, &block)
           @cell_background      = DEFAULT_CELL_BACKGROUND
           @cell_margins         = DEFAULT_CELL_MARGINS
           @cell_vertical_align  = DEFAULT_CELL_VERTICAL_ALIGN
+          @cell_vertical_merge  = DEFAULT_CELL_VERTICAL_MERGE
 
           if content = options.delete(:content)
             p content, options.dup, &block
@@ -133,6 +136,12 @@ module Caracal
 
         # strings
         [:background].each do |m|
+          define_method "#{ m }" do |value|
+            instance_variable_set("@cell_#{ m }", value.to_s)
+          end
+        end
+
+        [:vertical_merge].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@cell_#{ m }", value.to_s)
           end
