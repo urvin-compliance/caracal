@@ -95,7 +95,7 @@ module Caracal
         # end
         #
         def cell_style(models, options={})
-          [models].flatten.each do |m|
+          [models].flatten.compact.each do |m|
             m.apply_styles(options)
           end  
         end
