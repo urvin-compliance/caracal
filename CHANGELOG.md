@@ -1,7 +1,14 @@
+#### v1.2.0
+
+* Enhancements
+  * Added colspan and rowspan functionality to table styling feature. (@ViktorKopychko)
+
+
 #### v1.1.2
 
 * Enhancements
   * Added font size options for page numbers. (@cfacello)
+
 
 #### v1.1.1
 
