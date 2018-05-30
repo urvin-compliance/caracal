@@ -319,23 +319,42 @@ module Caracal
           end
           xml['w'].tblGrid do
             model.rows.first.each do |tc|
-              xml['w'].gridCol({ 'w:w' => tc.cell_width })
+              (tc.cell_colspan || 1).times do
+                xml['w'].gridCol({ 'w:w' => tc.cell_width })
+              end
             end
             xml['w'].tblGridChange({ 'w:id' => '0' }) do
               xml['w'].tblGrid do
                 model.rows.first.each do |tc|
-                  xml['w'].gridCol({ 'w:w' => tc.cell_width })
+                  (tc.cell_colspan || 1).times do
+                    xml['w'].gridCol({ 'w:w' => tc.cell_width })
+                  end
                 end
               end
             end
           end
+
+          rowspan_hash = {}
           model.rows.each do |row|
             xml['w'].tr do
-              row.each do |tc|
+              row.each_with_index do |tc, tc_index|
                 xml['w'].tc do
                   xml['w'].tcPr do
                     xml['w'].shd({ 'w:fill' => tc.cell_background })
                     xml['w'].vAlign({ 'w:val' => tc.cell_vertical_align })
+
+                    # applying rowspan
+                    if tc.cell_rowspan && tc.cell_rowspan > 0
+                      rowspan_hash[tc_index] = tc.cell_rowspan - 1
+                      xml['w'].vMerge({ 'w:val' => 'restart' })
+                    elsif rowspan_hash[tc_index] && rowspan_hash[tc_index] > 0
+                      xml['w'].vMerge({ 'w:val' => 'continue' })
+                      rowspan_hash[tc_index] -= 1
+                    end
+
+                    # applying colspan
+                    xml['w'].gridSpan({ 'w:val' => tc.cell_colspan }) if tc.cell_colspan
+
                     xml['w'].tcMar do
                       %w(top left bottom right).each do |d|
                         xml['w'].method_missing "#{ d }", { 'w:w' => tc.send("cell_margin_#{ d }").to_f, 'w:type' => 'dxa' }
@@ -349,6 +368,22 @@ module Caracal
                 end
               end
             end
+
+            # we need to adjust rowspan indexes as they depend on previous row colspans
+            adjusted_rowspan_hash = {}
+            rowspan_hash.each do |rowspan_cell_index, rowspan_value|
+              adjusted_rowspan_cell_index = rowspan_cell_index
+              row.each_with_index do |tc, tc_index|
+                if tc.cell_colspan && tc.cell_colspan >= 1
+                  if tc_index < rowspan_cell_index
+                    adjusted_rowspan_cell_index += tc.cell_colspan - 1
+                  end
+                end
+              end
+              adjusted_rowspan_hash[adjusted_rowspan_cell_index] = rowspan_value
+            end
+
+            rowspan_hash = adjusted_rowspan_hash
           end
         end
 

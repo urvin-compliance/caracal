@@ -639,6 +639,17 @@ docx.table [['Header 1','Header 2'],['Cell 1', 'Cell 2']], border_size: 4 do
 end
 ```
 
+It is possible to merge cells vertically and horizontally using the `rowspan` and `colspan` options in `cell_style` method e.g.
+
+```ruby
+docx.table [['11', '1213', '14'], ['21', '22', '23', '24']] do
+  cell_style rows[0][0], rowspan: 2 
+  cell_style rows[0][1], colspan: 2 
+  cell_style rows[0][2], rowspan: 2 
+end
+```
+
+*Note: content of cells 21 and 24 will disappear*
 
 ### Table Cells
 
