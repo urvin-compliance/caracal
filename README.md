@@ -643,9 +643,9 @@ It is possible to merge cells vertically and horizontally using the `rowspan` an
 
 ```ruby
 docx.table [['11', '1213', '14'], ['21', '22', '23', '24']] do
-  cell_style rows[0][0], rowspan: 2 
-  cell_style rows[0][1], colspan: 2 
-  cell_style rows[0][2], rowspan: 2 
+  cell_style rows[0][0], rowspan: 2
+  cell_style rows[0][1], colspan: 2
+  cell_style rows[0][2], rowspan: 2
 end
 ```
 
@@ -659,10 +659,10 @@ If your table contains more complex data (multiple paragraphs, images, lists, et
 c1 = Caracal::Core::Models::TableCellModel.new do
   background 'cccccc'    # sets the background color. defaults to 'ffffff'.
   margins do
-    top                  # sets the top margin. defaults to 0. units in twips.
-    bottom               # sets the bottom margin. defaults to 0. units in twips.
-    left                 # sets the left margin. defaults to 0. units in twips.
-    right                # sets the right margin. defaults to 0. units in twips.
+    top                  # sets the top margin. defaults to 100. units in twips.
+    bottom               # sets the bottom margin. defaults to 100. units in twips.
+    left                 # sets the left margin. defaults to 100. units in twips.
+    right                # sets the right margin. defaults to 100. units in twips.
   end
 
   p 'This is a sentence above an image.'
