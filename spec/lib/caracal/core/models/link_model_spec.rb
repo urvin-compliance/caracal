@@ -54,7 +54,7 @@ describe Caracal::Core::Models::LinkModel do
 
     # .run_attributes
     describe '.run_attributes' do
-      let(:expected) { { style: nil, font: 'Courier New', color: '666666', size: 20, bold: false, italic: false, underline: true, bgcolor: 'cccccc', vertical_align: :top } }
+      let(:expected) { { style: nil, font: 'Courier New', color: '666666', size: 20, bold: false, italic: false, underline: true, bgcolor: 'cccccc', highlight_color: nil, vertical_align: :top } }
 
       it { expect(subject.run_attributes).to eq expected }
     end
@@ -143,7 +143,7 @@ describe Caracal::Core::Models::LinkModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:content, :href, :style, :font, :color, :size, :bold, :italic, :underline, :bgcolor, :vertical_align].sort }
+      let(:expected) { [:content, :href, :style, :font, :color, :size, :bold, :highlight_color, :italic, :underline, :bgcolor, :vertical_align].sort }
 
       it { expect(actual).to eq expected }
     end
