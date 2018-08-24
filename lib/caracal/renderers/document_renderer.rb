@@ -98,6 +98,14 @@ module Caracal
 
       #============= MODEL RENDERERS ===========================
 
+      def render_bookmark(xml, model)
+        if (model.bookmark_start)
+          xml['w'].bookmarkStart({ 'w:id' => model.bookmark_id, 'w:name' => model.bookmark_name })
+        else 
+          xml['w'].bookmarkEnd({ 'w:id' => model.bookmark_id })
+        end
+      end
+
       def render_iframe(xml, model)
         ::Zip::File.open(model.file) do |zip|
           a_href     = 'http://schemas.openxmlformats.org/drawingml/2006/main'

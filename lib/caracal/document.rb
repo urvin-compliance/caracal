@@ -1,6 +1,7 @@
 require 'open-uri'
 require 'zip'
 
+require 'caracal/core/bookmarks'
 require 'caracal/core/custom_properties'
 require 'caracal/core/file_name'
 require 'caracal/core/fonts'
@@ -53,6 +54,7 @@ module Caracal
     include Caracal::Core::Styles
     include Caracal::Core::ListStyles
 
+    include Caracal::Core::Bookmarks
     include Caracal::Core::IFrames
     include Caracal::Core::Images
     include Caracal::Core::Lists

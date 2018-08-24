@@ -1,3 +1,4 @@
+require 'caracal/core/bookmarks'
 require 'caracal/core/models/base_model'
 require 'caracal/core/models/link_model'
 require 'caracal/core/models/text_model'
@@ -135,7 +136,15 @@ module Caracal
           model
         end
 
+        # .bookmark
+        def bookmark_start(*args, &block)
+          bookmark(true, 'Bookmark starting tags require an id and a name.', args, &block)
+        end
 
+        def bookmark_end(*args, &block)
+          bookmark(false, 'Bookmark ending tags require an id.', args, &block)
+        end
+        
         #=============== VALIDATION ===========================
 
         def valid?
@@ -152,6 +161,18 @@ module Caracal
           [:content, :style, :align, :color, :size, :bold, :italic, :underline, :bgcolor]
         end
 
+        def bookmark(start, message, args, &block)
+          options = Caracal::Utilities.extract_options!(args)
+          options.merge!({ start: start})
+          
+          model = Caracal::Core::Models::BookmarkModel.new(options, &block)
+          if model.valid?
+            runs << model
+          else
+            raise Caracal::Errors::InvalidModelError, message
+          end
+          model
+        end
       end
 
     end
