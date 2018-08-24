@@ -13,6 +13,7 @@ describe Caracal::Core::Models::LinkModel do
       underline       true
       bgcolor         'cccccc'
       vertical_align  :top
+      internal  false
     end
   end
 
@@ -39,6 +40,7 @@ describe Caracal::Core::Models::LinkModel do
       it { expect(subject.link_italic).to eq false }
       it { expect(subject.link_underline).to eq true }
       it { expect(subject.link_bgcolor).to eq 'cccccc' }
+      it { expect(subject.link_internal).to eq false }
     end
 
   end
@@ -77,6 +79,11 @@ describe Caracal::Core::Models::LinkModel do
       before { subject.underline(true) }
 
       it { expect(subject.link_underline).to eq true }
+    end
+    describe '.internal' do
+      before { subject.internal(true) }
+
+      it { expect(subject.link_internal).to eq true }
     end
 
     # integers
@@ -143,7 +150,7 @@ describe Caracal::Core::Models::LinkModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:content, :href, :style, :font, :color, :size, :bold, :highlight_color, :italic, :underline, :bgcolor, :vertical_align].sort }
+      let(:expected) { [:content, :href, :style, :font, :color, :size, :bold, :highlight_color, :italic, :underline, :bgcolor, :vertical_align, :internal].sort }
 
       it { expect(actual).to eq expected }
     end

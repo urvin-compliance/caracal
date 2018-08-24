@@ -21,6 +21,7 @@ module Caracal
         # readers (create aliases for superclass methods to conform
         # to expected naming convention.)
         attr_reader  :link_href
+        attr_reader  :link_internal
         alias_method :link_content,   :text_content
         alias_method :link_font,      :text_font
         alias_method :link_color,     :text_color
@@ -45,6 +46,13 @@ module Caracal
 
         #=============== SETTERS ==============================
 
+        # booleans
+        [:internal].each do |m|
+          define_method "#{ m }" do |value|
+            instance_variable_set("@link_#{ m }", !!value)
+          end
+        end
+
         # strings
         [:href].each do |m|
           define_method "#{ m }" do |value|
@@ -67,7 +75,7 @@ module Caracal
         private
 
         def option_keys
-          (super + [:href]).flatten
+          (super + [:internal, :href]).flatten
         end
 
       end

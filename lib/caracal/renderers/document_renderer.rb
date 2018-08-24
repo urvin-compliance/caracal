@@ -204,9 +204,14 @@ module Caracal
       end
 
       def render_link(xml, model)
-        rel = document.relationship({ target: model.link_href, type: :link })
+        if !model.link_internal
+          rel = document.relationship({ target: model.link_href, type: :link })
+          link_attribute = { 'r:id' => rel.formatted_id }
+        else
+          link_attribute = { 'w:anchor' => model.link_href }
+        end
 
-        xml['w'].hyperlink({ 'r:id' => rel.formatted_id }) do
+        xml['w'].hyperlink(link_attribute) do
           xml['w'].r run_options do
             render_run_attributes(xml, model, false)
             xml['w'].t({ 'xml:space' => 'preserve' }, model.link_content)
