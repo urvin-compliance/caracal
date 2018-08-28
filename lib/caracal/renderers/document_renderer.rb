@@ -82,6 +82,7 @@ module Caracal
                 xml['w'].i(         { 'w:val'  => (attrs[:italic] ? '1' : '0') })             unless attrs[:italic].nil?
                 xml['w'].u(         { 'w:val'  => (attrs[:underline] ? 'single' : 'none') })  unless attrs[:underline].nil?
                 xml['w'].shd(       { 'w:fill' => attrs[:bgcolor], 'w:val' => 'clear' })      unless attrs[:bgcolor].nil?
+                xml['w'].highlight( { 'w:val' => attrs[:highlight_color] })                   unless attrs[:highlight_color].nil?
                 xml['w'].vertAlign( { 'w:val' => attrs[:vertical_align] })                    unless attrs[:vertical_align].nil?
                 unless attrs[:font].nil?
                   f = attrs[:font]
@@ -96,6 +97,14 @@ module Caracal
 
 
       #============= MODEL RENDERERS ===========================
+
+      def render_bookmark(xml, model)
+        if model.start?
+          xml['w'].bookmarkStart({ 'w:id' => model.bookmark_id, 'w:name' => model.bookmark_name })
+        else
+          xml['w'].bookmarkEnd({ 'w:id' => model.bookmark_id })
+        end
+      end
 
       def render_iframe(xml, model)
         ::Zip::File.open(model.file) do |zip|
@@ -195,9 +204,14 @@ module Caracal
       end
 
       def render_link(xml, model)
-        rel = document.relationship({ target: model.link_href, type: :link })
+        if model.external?
+          rel = document.relationship({ target: model.link_href, type: :link })
+          hyperlink_options = { 'r:id' => rel.formatted_id }
+        else
+          hyperlink_options = { 'w:anchor' => model.link_href }
+        end
 
-        xml['w'].hyperlink({ 'r:id' => rel.formatted_id }) do
+        xml['w'].hyperlink(hyperlink_options) do
           xml['w'].r run_options do
             render_run_attributes(xml, model, false)
             xml['w'].t({ 'xml:space' => 'preserve' }, model.link_content)

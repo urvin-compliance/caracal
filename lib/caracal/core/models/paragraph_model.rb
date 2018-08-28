@@ -1,4 +1,5 @@
 require 'caracal/core/models/base_model'
+require 'caracal/core/models/bookmark_model'
 require 'caracal/core/models/link_model'
 require 'caracal/core/models/text_model'
 require 'caracal/errors'
@@ -13,9 +14,9 @@ module Caracal
       #
       class ParagraphModel < BaseModel
 
-        #-------------------------------------------------------------
+        #--------------------------------------------------
         # Configuration
-        #-------------------------------------------------------------
+        #--------------------------------------------------
 
         # readers
         attr_reader :paragraph_style
@@ -35,11 +36,11 @@ module Caracal
         end
 
 
-        #-------------------------------------------------------------
+        #--------------------------------------------------
         # Public Instance Methods
-        #-------------------------------------------------------------
+        #--------------------------------------------------
 
-        #=============== GETTERS ==============================
+        #========== GETTERS ===============================
 
         # .runs
         def runs
@@ -59,7 +60,7 @@ module Caracal
         end
 
 
-        #=============== SETTERS ==============================
+        #========== SETTERS ===============================
 
         # booleans
         [:bold, :italic, :underline].each do |m|
@@ -90,7 +91,33 @@ module Caracal
         end
 
 
-        #=============== SUB-METHODS ===========================
+        #========== SUB-METHODS ===========================
+
+        # .bookmarks
+        def bookmark_start(*args, &block)
+          options = Caracal::Utilities.extract_options!(args)
+          options.merge!({ start: true})
+
+          model = Caracal::Core::Models::BookmarkModel.new(options, &block)
+          if model.valid?
+            runs << model
+          else
+            raise Caracal::Errors::InvalidModelError, 'Bookmark starting tags require an id and a name.'
+          end
+          model
+        end
+        def bookmark_end(*args, &block)
+          options = Caracal::Utilities.extract_options!(args)
+          options.merge!({ start: false})
+
+          model = Caracal::Core::Models::BookmarkModel.new(options, &block)
+          if model.valid?
+            runs << model
+          else
+            raise Caracal::Errors::InvalidModelError, 'Bookmark ending tags require an id.'
+          end
+          model
+        end
 
         # .br
         def br
@@ -136,16 +163,16 @@ module Caracal
         end
 
 
-        #=============== VALIDATION ===========================
+        #========== VALIDATION ============================
 
         def valid?
           runs.size > 0
         end
 
 
-        #-------------------------------------------------------------
+        #--------------------------------------------------
         # Private Instance Methods
-        #-------------------------------------------------------------
+        #--------------------------------------------------
         private
 
         def option_keys

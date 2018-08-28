@@ -12,6 +12,7 @@ describe Caracal::Core::Models::TextModel do
       underline       true
       bgcolor         'cccccc'
       vertical_align  :subscript
+      highlight_color 'yellow'
     end
   end
 
@@ -31,6 +32,7 @@ describe Caracal::Core::Models::TextModel do
       it { expect(subject.text_italic).to eq false }
       it { expect(subject.text_underline).to eq true }
       it { expect(subject.text_bgcolor).to eq 'cccccc' }
+      it { expect(subject.text_highlight_color).to eq 'yellow' }
       it { expect(subject.text_vertical_align).to eq :subscript }
     end
 
@@ -47,7 +49,7 @@ describe Caracal::Core::Models::TextModel do
 
     # .run_attributes
     describe '.run_attributes' do
-      let(:expected) { { style: nil, font: 'Courier New', color: '666666', size: 20, bold: false, italic: false, underline: true, bgcolor: 'cccccc', vertical_align: :subscript } }
+      let(:expected) { { style: nil, font: 'Courier New', color: '666666', size: 20, bold: false, italic: false, underline: true, bgcolor: 'cccccc', highlight_color: 'yellow', vertical_align: :subscript } }
 
       it { expect(subject.run_attributes).to eq expected }
     end
@@ -81,9 +83,9 @@ describe Caracal::Core::Models::TextModel do
 
     # strings
     describe '.bgcolor' do
-      before { subject.color('dddddd') }
+      before { subject.bgcolor('dddddd') }
 
-      it { expect(subject.text_color).to eq 'dddddd' }
+      it { expect(subject.text_bgcolor).to eq 'dddddd' }
     end
     describe '.color' do
       before { subject.color('999999') }
@@ -99,6 +101,11 @@ describe Caracal::Core::Models::TextModel do
       before { subject.font('Palantino') }
 
       it { expect(subject.text_font).to eq 'Palantino' }
+    end
+    describe '.hightlight_color' do
+      before { subject.highlight_color('green') }
+
+      it { expect(subject.text_highlight_color).to eq 'green' }
     end
 
     #symbols
@@ -137,7 +144,7 @@ describe Caracal::Core::Models::TextModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:bgcolor, :bold, :color, :content, :font, :italic, :size, :style, :underline, :vertical_align].sort }
+      let(:expected) { [:bgcolor, :bold, :color, :content, :font, :highlight_color, :italic, :size, :style, :underline, :vertical_align].sort }
 
       it { expect(actual).to eq expected }
     end

@@ -24,6 +24,7 @@ module Caracal
         attr_reader :text_italic
         attr_reader :text_underline
         attr_reader :text_bgcolor
+        attr_reader :text_highlight_color
         attr_reader :text_vertical_align
 
 
@@ -37,15 +38,16 @@ module Caracal
         # .run_attributes
         def run_attributes
           {
-            style:          text_style,
-            font:           text_font,
-            color:          text_color,
-            size:           text_size,
-            bold:           text_bold,
-            italic:         text_italic,
-            underline:      text_underline,
-            bgcolor:        text_bgcolor,
-            vertical_align: text_vertical_align
+            style:            text_style,
+            font:             text_font,
+            color:            text_color,
+            size:             text_size,
+            bold:             text_bold,
+            italic:           text_italic,
+            underline:        text_underline,
+            bgcolor:          text_bgcolor,
+            highlight_color:  text_highlight_color,
+            vertical_align:   text_vertical_align
           }
         end
 
@@ -67,7 +69,7 @@ module Caracal
         end
 
         # strings
-        [:bgcolor, :color, :content, :font, :style].each do |m|
+        [:bgcolor, :color, :content, :font, :highlight_color, :style].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@text_#{ m }", value.to_s)
           end
@@ -95,7 +97,7 @@ module Caracal
         private
 
         def option_keys
-          [:content, :style, :font, :color, :size, :bold, :italic, :underline, :bgcolor, :vertical_align]
+          [:content, :style, :font, :color, :size, :bold, :italic, :underline, :bgcolor, :highlight_color, :vertical_align]
         end
 
         def method_missing(method, *args, &block)

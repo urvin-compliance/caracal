@@ -405,15 +405,16 @@ docx.p 'Sample text.'
 docx.p 'Sample text.', style: 'custom_style'
 
 docx.p 'Sample text.' do
-  style          'custom_style'    # sets the paragraph style. generally used at the exclusion of other attributes.
-  align          :left             # sets the alignment. accepts :left, :center, :right, and :both.
-  color          '333333'          # sets the font color.
-  size           32                # sets the font size. units in 1/2 points.
-  bold           true              # sets whether or not to render the text with a bold weight.
-  italic         false             # sets whether or not render the text in italic style.
-  underline      false             # sets whether or not to underline the text.
-  bgcolor        'cccccc'          # sets the background color.
-  vertical_align 'superscript'     # sets the vertical alignment.
+  style           'custom_style'    # sets the paragraph style. generally used at the exclusion of other attributes.
+  align           :left             # sets the alignment. accepts :left, :center, :right, and :both.
+  color           '333333'          # sets the font color.
+  size            32                # sets the font size. units in 1/2 points.
+  bold            true              # sets whether or not to render the text with a bold weight.
+  italic          false             # sets whether or not render the text in italic style.
+  underline       false             # sets whether or not to underline the text.
+  bgcolor         'cccccc'          # sets the background color.
+  highlight_color 'yellow'          # sets the highlight color. only accepts [OOXML enumerations](http://www.datypic.com/sc/ooxml/t-w_ST_HighlightColor.html).
+  vertical_align  'superscript'     # sets the vertical alignment.
 end
 ```
 
@@ -436,21 +437,40 @@ end
 
 Links can be added inside paragraphs using the `link` method.  The method accepts several optional parameters for controlling the style and behavior of the rule.
 
-*At present, all links are assumed to be external.*
-
 ```ruby
 p do
   link 'Example Text', 'https://wwww.example.com' do
-    font       'Courier New'  # sets the font name to use. defaults to nil.
-    color       '0000ff'      # sets the color of the text. defaults to 1155cc.
-    size        24            # sets the font size. units in half-points. defaults to nil.
-    bold        false         # sets whether or not the text will be bold. defaults to false.
-    italic      false         # sets whether or not the text will be italic. defaults to false.
-    underline   true          # sets whether or not the text will be underlined. defaults to true.
-    bgcolor     'cccccc'      # sets the background color.
+    internal        false             # sets whether or not the link references an external url. defaults to false.
+    font            'Courier New'     # sets the font name to use. defaults to nil.
+    color           '0000ff'          # sets the color of the text. defaults to 1155cc.
+    size            24                # sets the font size. units in half-points. defaults to nil.
+    bold            false             # sets whether or not the text will be bold. defaults to false.
+    italic          false             # sets whether or not the text will be italic. defaults to false.
+    underline       true              # sets whether or not the text will be underlined. defaults to true.
+    bgcolor         'cccccc'          # sets the background color.
+    highlight_color 'yellow'          # sets the highlight color. only accepts [OOXML enumerations](http://www.datypic.com/sc/ooxml/t-w_ST_HighlightColor.html).
   end
 end
 ```
+
+
+### Bookmarks
+
+Bookmarks can be added directly to the document or inside paragraph blocks using the `bookmark_start` and `bookmark_end` methods.
+
+```ruby
+dox.bookmark_start do
+  id    '1'
+  name  'Section 1'
+end
+docx.h2 'Section Heading'
+docx.bookmark_end do
+  id    '1'             # only :id is required to close a bookmark
+end
+docx.p  'Section description and other amazing facts.'
+```
+
+Bookmarks work in conjunction with internal links.  Please see above.
 
 
 ### Headings

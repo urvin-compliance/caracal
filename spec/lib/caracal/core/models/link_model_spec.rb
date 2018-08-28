@@ -3,16 +3,18 @@ require 'spec_helper'
 describe Caracal::Core::Models::LinkModel do
   subject do
     described_class.new do
-      content         'Link Text'
-      href            'http://www.google.com'
-      font            'Courier New'
-      color           '666666'
-      size            20
-      bold            false
-      italic          false
-      underline       true
-      bgcolor         'cccccc'
-      vertical_align  :top
+      content           'Link Text'
+      href              'http://www.google.com'
+      internal          false
+      font              'Courier New'
+      color             '666666'
+      size              20
+      bold              false
+      italic            false
+      underline         true
+      bgcolor           'cccccc'
+      highlight_color   'yellow'
+      vertical_align    :top
     end
   end
 
@@ -32,6 +34,7 @@ describe Caracal::Core::Models::LinkModel do
     describe 'accessors' do
       it { expect(subject.link_content).to eq 'Link Text' }
       it { expect(subject.link_href).to eq 'http://www.google.com' }
+      it { expect(subject.link_internal).to eq false }
       it { expect(subject.link_font).to eq 'Courier New' }
       it { expect(subject.link_color).to eq '666666' }
       it { expect(subject.link_size).to eq 20 }
@@ -39,6 +42,8 @@ describe Caracal::Core::Models::LinkModel do
       it { expect(subject.link_italic).to eq false }
       it { expect(subject.link_underline).to eq true }
       it { expect(subject.link_bgcolor).to eq 'cccccc' }
+      it { expect(subject.link_highlight_color).to eq 'yellow' }
+      it { expect(subject.link_vertical_align).to eq :top }
     end
 
   end
@@ -54,7 +59,7 @@ describe Caracal::Core::Models::LinkModel do
 
     # .run_attributes
     describe '.run_attributes' do
-      let(:expected) { { style: nil, font: 'Courier New', color: '666666', size: 20, bold: false, italic: false, underline: true, bgcolor: 'cccccc', vertical_align: :top } }
+      let(:expected) { { style: nil, font: 'Courier New', color: '666666', size: 20, bold: false, italic: false, underline: true, bgcolor: 'cccccc', highlight_color: 'yellow', vertical_align: :top } }
 
       it { expect(subject.run_attributes).to eq expected }
     end
@@ -67,6 +72,11 @@ describe Caracal::Core::Models::LinkModel do
       before { subject.bold(true) }
 
       it { expect(subject.link_bold).to eq true }
+    end
+    describe '.internal' do
+      before { subject.internal(true) }
+
+      it { expect(subject.link_internal).to eq true }
     end
     describe '.italic' do
       before { subject.italic(true) }
@@ -102,15 +112,31 @@ describe Caracal::Core::Models::LinkModel do
 
       it { expect(subject.link_content).to eq 'Something Else' }
     end
+    describe '.font' do
+      before { subject.font('Palantino') }
+
+      it { expect(subject.link_font).to eq 'Palantino' }
+    end
     describe '.href' do
       before { subject.href('http://www.google.com') }
 
       it { expect(subject.link_href).to eq 'http://www.google.com' }
     end
-    describe '.font' do
-      before { subject.font('Palantino') }
 
-      it { expect(subject.link_font).to eq 'Palantino' }
+
+    #=============== STATE HELPERS ========================
+
+    describe '.external?' do
+      describe 'when internal is true' do
+        before { subject.internal(true) }
+
+        it { expect(subject.external?).to eq false }
+      end
+      describe 'when internal is false' do
+        before { subject.internal(false) }
+
+        it { expect(subject.external?).to eq true }
+      end
     end
 
 
@@ -143,7 +169,7 @@ describe Caracal::Core::Models::LinkModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:content, :href, :style, :font, :color, :size, :bold, :italic, :underline, :bgcolor, :vertical_align].sort }
+      let(:expected) { [:content, :href, :internal, :style, :font, :color, :size, :bold, :highlight_color, :italic, :underline, :bgcolor, :vertical_align].sort }
 
       it { expect(actual).to eq expected }
     end
