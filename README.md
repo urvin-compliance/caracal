@@ -413,7 +413,7 @@ docx.p 'Sample text.' do
   italic          false             # sets whether or not render the text in italic style.
   underline       false             # sets whether or not to underline the text.
   bgcolor         'cccccc'          # sets the background color.
-  highlight_color 'yellow'          # sets the highlight color. only accepts [OOXML enumerations](http://www.datypic.com/sc/ooxml/t-w_ST_HighlightColor.html).
+  highlight_color 'yellow'          # sets the highlight color. only accepts OOXML enumerations. see http://www.datypic.com/sc/ooxml/t-w_ST_HighlightColor.html.
   vertical_align  'superscript'     # sets the vertical alignment.
 end
 ```
@@ -448,7 +448,7 @@ p do
     italic          false             # sets whether or not the text will be italic. defaults to false.
     underline       true              # sets whether or not the text will be underlined. defaults to true.
     bgcolor         'cccccc'          # sets the background color.
-    highlight_color 'yellow'          # sets the highlight color. only accepts [OOXML enumerations](http://www.datypic.com/sc/ooxml/t-w_ST_HighlightColor.html).
+    highlight_color 'yellow'          # sets the highlight color. only accepts OOXML enumerations. see http://www.datypic.com/sc/ooxml/t-w_ST_HighlightColor.html.
   end
 end
 ```
@@ -456,18 +456,26 @@ end
 
 ### Bookmarks
 
-Bookmarks can be added directly to the document or inside paragraph blocks using the `bookmark_start` and `bookmark_end` methods.
+Bookmarks can be added directly to the document or inside paragraph blocks using the `bookmark_start` and `bookmark_end`
+methods. Bookmarks can be inserted at the document-level to describe section headings, etc. or inside
+of a paragraph block for fine-grained linking.
 
 ```ruby
-dox.bookmark_start do
-  id    '1'
-  name  'Section 1'
-end
+# document-level bookmark
+dox.bookmark_start id: 's1', name: 'section1'
 docx.h2 'Section Heading'
-docx.bookmark_end do
-  id    '1'             # only :id is required to close a bookmark
+docx.bookmark_end id: 's1'
+docx.p  'Section content.'
+
+# pargraph-level bookmark
+docx.h2 'Section Heading'
+docx.p do
+  text 'Pretend this paragraph has a lot of text and we want to bookmark '
+  bookmark_start id: 'p1', name: 'phrase1'
+  text 'a single phrase'
+  bookmark_end id: 'p1'
+  text ' inside the larger block.'
 end
-docx.p  'Section description and other amazing facts.'
 ```
 
 Bookmarks work in conjunction with internal links.  Please see above.

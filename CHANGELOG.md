@@ -1,3 +1,9 @@
+#### v1.3.0
+
+* Enhancements
+  * Added proper text highlighting. Colors are limited so we left :bgcolor option. (@rmarone)
+  * Added bookmarks and internal links. (@rmarone)
+
 #### v1.2.0
 
 * Enhancements
