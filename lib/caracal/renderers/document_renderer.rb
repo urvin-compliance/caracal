@@ -99,9 +99,9 @@ module Caracal
       #============= MODEL RENDERERS ===========================
 
       def render_bookmark(xml, model)
-        if (model.bookmark_start)
+        if model.start?
           xml['w'].bookmarkStart({ 'w:id' => model.bookmark_id, 'w:name' => model.bookmark_name })
-        else 
+        else
           xml['w'].bookmarkEnd({ 'w:id' => model.bookmark_id })
         end
       end
@@ -204,14 +204,14 @@ module Caracal
       end
 
       def render_link(xml, model)
-        if !model.link_internal
+        if model.external?
           rel = document.relationship({ target: model.link_href, type: :link })
-          link_attribute = { 'r:id' => rel.formatted_id }
+          hyperlink_options = { 'r:id' => rel.formatted_id }
         else
-          link_attribute = { 'w:anchor' => model.link_href }
+          hyperlink_options = { 'w:anchor' => model.link_href }
         end
 
-        xml['w'].hyperlink(link_attribute) do
+        xml['w'].hyperlink(hyperlink_options) do
           xml['w'].r run_options do
             render_run_attributes(xml, model, false)
             xml['w'].t({ 'xml:space' => 'preserve' }, model.link_content)

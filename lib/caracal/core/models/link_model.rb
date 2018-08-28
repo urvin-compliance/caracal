@@ -10,9 +10,9 @@ module Caracal
       #
       class LinkModel < TextModel
 
-        #-------------------------------------------------------------
+        #--------------------------------------------------
         # Configuration
-        #-------------------------------------------------------------
+        #--------------------------------------------------
 
         # constants
         const_set(:DEFAULT_LINK_COLOR,      '1155cc')
@@ -22,14 +22,16 @@ module Caracal
         # to expected naming convention.)
         attr_reader  :link_href
         attr_reader  :link_internal
-        alias_method :link_content,   :text_content
-        alias_method :link_font,      :text_font
-        alias_method :link_color,     :text_color
-        alias_method :link_size,      :text_size
-        alias_method :link_bold,      :text_bold
-        alias_method :link_italic,    :text_italic
-        alias_method :link_underline, :text_underline
-        alias_method :link_bgcolor,   :text_bgcolor
+        alias_method :link_content,         :text_content
+        alias_method :link_font,            :text_font
+        alias_method :link_color,           :text_color
+        alias_method :link_size,            :text_size
+        alias_method :link_bold,            :text_bold
+        alias_method :link_italic,          :text_italic
+        alias_method :link_underline,       :text_underline
+        alias_method :link_bgcolor,         :text_bgcolor
+        alias_method :link_highlight_color, :text_highlight_color
+        alias_method :link_vertical_align,  :text_vertical_align
 
         # initialization
         def initialize(options={}, &block)
@@ -40,11 +42,11 @@ module Caracal
         end
 
 
-        #-------------------------------------------------------------
+        #--------------------------------------------------
         # Public Instance Methods
-        #-------------------------------------------------------------
+        #--------------------------------------------------
 
-        #=============== SETTERS ==============================
+        #========== SETTERS ===============================
 
         # booleans
         [:internal].each do |m|
@@ -61,7 +63,14 @@ module Caracal
         end
 
 
-        #=============== VALIDATION ===========================
+        #========== STATE HELPERS =========================
+
+        def external?
+          !link_internal
+        end
+
+
+        #========== VALIDATION ============================
 
         def valid?
           a = [:content, :href]
@@ -69,9 +78,9 @@ module Caracal
         end
 
 
-        #-------------------------------------------------------------
+        #--------------------------------------------------
         # Private Instance Methods
-        #-------------------------------------------------------------
+        #--------------------------------------------------
         private
 
         def option_keys

@@ -92,11 +92,6 @@ describe Caracal::Core::Models::TextModel do
 
       it { expect(subject.text_color).to eq '999999' }
     end
-    describe '.hightlight_color' do
-      before { subject.highlight_color('green') }
-
-      it { expect(subject.text_highlight_color).to eq 'green' }
-    end
     describe '.content' do
       before { subject.content('Something Else') }
 
@@ -106,6 +101,11 @@ describe Caracal::Core::Models::TextModel do
       before { subject.font('Palantino') }
 
       it { expect(subject.text_font).to eq 'Palantino' }
+    end
+    describe '.hightlight_color' do
+      before { subject.highlight_color('green') }
+
+      it { expect(subject.text_highlight_color).to eq 'green' }
     end
 
     #symbols

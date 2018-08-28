@@ -52,13 +52,20 @@ module Caracal
           end
         end
 
+
+        #========== STATE HELPERS =========================
+
+        def start?
+          !!bookmark_start
+        end
+
+
         #========== VALIDATION ============================
 
         def valid?
-          a = [:id]
-          if send("bookmark_start")
-            a << :name
-          end
+          a  = [:id]
+          a << :name  if start?
+
           a.map { |m| send("bookmark_#{ m }") }.compact.size == a.size
         end
 
