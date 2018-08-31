@@ -1,5 +1,6 @@
 require 'caracal/core/models/base_model'
 require 'caracal/core/models/margin_model'
+require 'caracal/core/models/paragraph_model'
 
 
 module Caracal
@@ -39,6 +40,11 @@ module Caracal
           end
 
           super options, &block
+
+          p_klass = Caracal::Core::Models::ParagraphModel     # the final tag in a table cell
+          unless contents.last.is_a? p_klass                  # *must* be a paragraph for OOXML
+            contents << p_klass.new(content: '')              # to not throw an error.
+          end
         end
 
 

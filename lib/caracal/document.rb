@@ -37,9 +37,9 @@ require 'caracal/renderers/styles_renderer'
 module Caracal
   class Document
 
-    #-------------------------------------------------------------
+    #------------------------------------------------------
     # Configuration
-    #-------------------------------------------------------------
+    #------------------------------------------------------
 
     # mixins (order is important)
     include Caracal::Core::CustomProperties
@@ -64,11 +64,11 @@ module Caracal
     include Caracal::Core::Text
 
 
-    #-------------------------------------------------------------
+    #------------------------------------------------------
     # Public Class Methods
-    #-------------------------------------------------------------
+    #------------------------------------------------------
 
-    #============ OUTPUT ====================================
+    #============ OUTPUT ==================================
 
     # This method renders a new Word document and returns it as a
     # a string.
@@ -86,16 +86,17 @@ module Caracal
     #
     def self.save(f_name = nil, &block)
       docx   = new(f_name, &block)
-      buffer = docx.render
-
-      File.open("./#{ docx.name }", 'wb') { |f| f.write(buffer.string) }
+      docx.save
+      # buffer = docx.render
+      #
+      # File.open(docx.path, 'wb') { |f| f.write(buffer.string) }
     end
 
 
 
-    #-------------------------------------------------------------
+    #------------------------------------------------------
     # Public Instance Methods
-    #-------------------------------------------------------------
+    #------------------------------------------------------
 
     # This method instantiates a new word document.
     #
@@ -119,7 +120,7 @@ module Caracal
     end
 
 
-    #============ GETTERS ===================================
+    #============ GETTERS =================================
 
     # This method returns an array of models which constitute the
     # set of instructions for producing the document content.
@@ -129,7 +130,7 @@ module Caracal
     end
 
 
-    #============ RENDERING =================================
+    #============ RENDERING ===============================
 
     # This method renders the word document instance into
     # a string buffer. Order is important!
@@ -153,13 +154,21 @@ module Caracal
     end
 
 
+    #============ SAVING ==================================
 
-    #-------------------------------------------------------------
+    def save
+      buffer = render
+
+      File.open(path, 'wb') { |f| f.write(buffer.string) }
+    end
+
+
+    #------------------------------------------------------
     # Private Instance Methods
-    #-------------------------------------------------------------
+    #------------------------------------------------------
     private
 
-    #============ RENDERERS =====================================
+    #============ RENDERERS ===============================
 
     def render_app(zip)
       content = ::Caracal::Renderers::AppRenderer.render(self)
