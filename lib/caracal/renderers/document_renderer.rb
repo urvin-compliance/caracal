@@ -401,9 +401,11 @@ module Caracal
           end
         end
 
-        # don't know why this is needed, but it prevents a
-        # rendering error.
-        render_paragraph(xml, Caracal::Core::Models::ParagraphModel.new)
+        if model.table_leading_paragraph
+          # don't know why this is needed, but it prevents a
+          # rendering error.
+          render_paragraph(xml, Caracal::Core::Models::ParagraphModel.new)
+        end
       end
 
 

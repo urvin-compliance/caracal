@@ -27,6 +27,9 @@ module Caracal
             end
             
             if model.valid?
+              if (previous = contents.last).is_a?(Caracal::Core::Models::TableModel)
+                previous.leading_paragraph(false)
+              end
               contents << model
             else
               raise Caracal::Errors::InvalidModelError, 'Table must be provided data for at least one cell.'
