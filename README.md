@@ -628,6 +628,10 @@ the simplest solution to both problems.*
 
 ### Tables
 
+```
+Release v1.4.0 deprecated the behaviour of automatically adding an empty paragraph tag after every table. If you are upgrading from an older version of the library, you will need to control such spacing in your own code.
+```
+
 Tables can be added using the `table` method.  The method accepts several optional paramters to control the layout and style of the table cells.
 
 The `table` command accepts data in the form of a two-dimensional arrays. This corresponds to rows and column cells within those rows.  Each array item can be a string, a Hash of options, a Proc (which will be passed as a block), or a `TableCellModel`.  The command will normalize all array contents into a two-dimensional array of `TableCellModel` instances.
