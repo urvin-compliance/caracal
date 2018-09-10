@@ -26,6 +26,7 @@ describe Caracal::Core::Models::TableModel do
       it { expect(described_class::DEFAULT_TABLE_BORDER_LINE).to    eq :single }
       it { expect(described_class::DEFAULT_TABLE_BORDER_SIZE).to    eq 0 }
       it { expect(described_class::DEFAULT_TABLE_BORDER_SPACING).to eq 0 }
+      it { expect(described_class::DEFAULT_TABLE_REPEAT_HEADER).to  eq 0 }
     end
     
     # accessors
@@ -36,6 +37,7 @@ describe Caracal::Core::Models::TableModel do
       it { expect(subject.table_border_line).to    eq :double }
       it { expect(subject.table_border_size).to    eq 8 }
       it { expect(subject.table_border_spacing).to eq 4 }
+      it { expect(subject.table_repeat_header).to  eq 0 }
     end
     
   end
@@ -179,6 +181,13 @@ describe Caracal::Core::Models::TableModel do
       it { expect(subject.table_width).to eq 7500 }
     end
     
+    # .repeat_header
+    describe '.repeat_header' do
+      before { subject.repeat_header(2) }
+      
+      it { expect(subject.table_repeat_header).to eq 2 }
+    end
+    
     
     
     
@@ -212,7 +221,8 @@ describe Caracal::Core::Models::TableModel do
       let(:expected1)  { [:data, :align, :width] }
       let(:expected2)  { [:border_color, :border_line, :border_size, :border_spacing] }
       let(:expected3)  { [:border_top, :border_bottom, :border_left, :border_right, :border_horizontal, :border_vertical] }
-      let(:expected)   { (expected1 + expected2 + expected3).sort }
+      let(:expected4)  { [:repeat_header] }
+      let(:expected)   { (expected1 + expected2 + expected3 + expected4).sort }
       
       it { expect(actual).to eq expected }
     end
