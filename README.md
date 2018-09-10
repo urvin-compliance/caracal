@@ -642,6 +642,7 @@ docx.table [['Header 1','Header 2'],['Cell 1', 'Cell 2']] do
   border_line    :single    # sets the border style. defaults to :single. see OOXML docs for details.
   border_size    4          # sets the border width. defaults to 0. units in twips.
   border_spacing 4          # sets the spacing around the border. defaults to 0. units in twips.
+  repeat_header 1			# sets the number of header rows that is repeated on each page. defaults to 0.
 end
 ```
 
