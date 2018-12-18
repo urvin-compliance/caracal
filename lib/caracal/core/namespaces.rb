@@ -68,7 +68,7 @@ module Caracal
           #============== REGISTRATION ========================
 
           def register_namespace(model)
-            unless ns = find_namespace(model.namespace_prefix)
+            unless (ns = find_namespace(model.namespace_prefix))
               namespaces << model
               ns = model
             end
@@ -76,7 +76,7 @@ module Caracal
           end
 
           def unregister_namespace(prefix)
-            if ns = find_namespace(prefix)
+            if (ns = find_namespace(prefix))
               namespaces.delete(ns)
             end
           end
