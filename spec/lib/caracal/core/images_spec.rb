@@ -21,5 +21,5 @@ describe Caracal::Core::Images do
     end
     
   end
-  
+
 end
