@@ -17,6 +17,7 @@ module Caracal
         # constants
         const_set(:DEFAULT_PAGE_NUMBER_ALIGN, :center)
         const_set(:DEFAULT_PAGE_NUMBER_SHOW,  false)
+        const_set(:DEFAULT_PAGE_NUMBER_LOCATION, :footer)
 
         # accessors
         attr_reader :page_number_align
@@ -24,6 +25,7 @@ module Caracal
         attr_reader :page_number_label_size
         attr_reader :page_number_number_size
         attr_reader :page_number_show
+        attr_reader :page_number_location
 
         # initialization
         def initialize(options={}, &block)
@@ -32,6 +34,7 @@ module Caracal
           @page_number_label_size   = nil
           @page_number_number_size  = nil
           @page_number_show         = DEFAULT_PAGE_NUMBER_SHOW
+          @page_number_location     = DEFAULT_PAGE_NUMBER_LOCATION
 
           super options, &block
         end
@@ -71,11 +74,15 @@ module Caracal
           @page_number_number_size = (v == 0) ? nil : v
         end
 
+        def location(value)
+          @page_number_location = value.to_s.to_sym
+        end
+
 
         #=============== VALIDATION ===========================
 
         def valid?
-          (!page_number_show || [:left, :center, :right].include?(page_number_align))
+          (!page_number_show || ([:left, :center, :right].include?(page_number_align) && [:footer, :header, :both].include?(page_number_location) ))
         end
 
 
@@ -85,7 +92,7 @@ module Caracal
         private
 
         def option_keys
-          [:align, :label, :label_size, :number_size, :show]
+          [:align, :label, :label_size, :number_size, :show, :location]
         end
 
       end

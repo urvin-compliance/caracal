@@ -25,6 +25,7 @@ module Caracal
           attr_reader :page_number_label_size
           attr_reader :page_number_number_size
           attr_reader :page_number_show
+          attr_reader :page_number_location
 
 
           #-------------------------------------------------------------
@@ -45,8 +46,9 @@ module Caracal
               @page_number_label_size   = model.page_number_label_size
               @page_number_number_size  = model.page_number_number_size
               @page_number_show         = model.page_number_show
+              @page_number_location     = model.page_number_location
             else
-              raise Caracal::Errors::InvalidModelError, 'page_numbers :align parameter must be :left, :center, or :right'
+              raise Caracal::Errors::InvalidModelError, 'page_numbers :align parameter must be :left, :center, or :right. :location parameter must be :footer, :header or :both'
             end
           end
 
