@@ -36,6 +36,7 @@ module Caracal
         attr_reader :table_border_right       # returns border model
         attr_reader :table_border_horizontal  # returns border model
         attr_reader :table_border_vertical    # returns border model
+        attr_reader :table_column_widths
         
         # initialization
         def initialize(options={}, &block)
@@ -148,6 +149,11 @@ module Caracal
             instance_variable_set("@table_#{ m }", value.to_s.to_sym)
           end
         end
+
+        # column widths
+        def column_widths(value)
+          @table_column_widths = value.map(&:to_i) if value.is_a?(Array)
+        end
         
         # .data
         def data(value)
@@ -196,6 +202,7 @@ module Caracal
           k << [:data, :align, :width]
           k << [:border_color, :border_line, :border_size, :border_spacing]
           k << [:border_bottom, :border_left, :border_right, :border_top, :border_horizontal, :border_vertical]
+          k << [:column_widths]
           k.flatten
         end
         
