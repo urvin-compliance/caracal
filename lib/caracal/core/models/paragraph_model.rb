@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'caracal/core/models/base_model'
 require 'caracal/core/models/bookmark_model'
 require 'caracal/core/models/link_model'

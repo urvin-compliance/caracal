@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'nokogiri'
 
 require 'caracal/renderers/xml_renderer'
