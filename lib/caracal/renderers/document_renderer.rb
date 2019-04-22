@@ -75,6 +75,7 @@ module Caracal
           else
             xml['w'].rPr do
               unless attrs.empty?
+                xml['w'].noProof                                                              if attrs[:no_proof]
                 xml['w'].rStyle(    { 'w:val'  => attrs[:style] })                            unless attrs[:style].nil?
                 xml['w'].color(     { 'w:val'  => attrs[:color] })                            unless attrs[:color].nil?
                 xml['w'].sz(        { 'w:val'  => attrs[:size]  })                            unless attrs[:size].nil?
@@ -300,6 +301,15 @@ module Caracal
         xml['w'].r run_options do
           render_run_attributes(xml, model, false)
           xml['w'].t({ 'xml:space' => 'preserve' }, model.text_content)
+        end
+      end
+
+      def render_mailmerge(xml, model)
+        xml['w'].fldSimple({ 'w:instr' => " MERGEFIELD #{model.mail_merge_content} \\* MERGEFORMAT "}) do
+          xml['w'].r do
+            render_run_attributes(xml, model, false)
+            xml['w'].t({ 'xml:space' => 'preserve' }, "«#{model.mail_merge_content}»")
+          end
         end
       end
 
