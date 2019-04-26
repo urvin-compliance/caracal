@@ -349,9 +349,13 @@ module Caracal
           end
 
           rowspan_hash = {}
-          model.rows.each do |row|
+          model.table_rows.each do |row|
             xml['w'].tr do
-              row.each_with_index do |tc, tc_index|
+              xml['w'].trPr do
+                xml['w'].cantSplit if row.row_keep_together
+                xml['w'].trHeight({ "w:val" => row.row_height, "w:hRule" => row.row_height_calculation })
+              end
+              row.cells.each_with_index do |tc, tc_index|
                 xml['w'].tc do
                   xml['w'].tcPr do
                     xml['w'].shd({ 'w:fill' => tc.cell_background })
