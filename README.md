@@ -658,7 +658,36 @@ docx.table data, border_size: 4 do
 end
 ```
 
-Table cells can be styles using the `cell_style` method inside the table's block.  The method will attempt to apply any specified options against the collection of `TableModelCell` instances provided in the first argument.  Any improper options will fail silently.
+Table rows can be styled using the `row_style` method inside the table's block.  The method will attempt to apply any specified options against the collection of `TableModelRow` instances provided in the first argument.  Any improper options will fail silently.
+
+*As a convenience, the table provides the methods `table_rows` to facilitate building the first argument.*
+
+The example will style the first row to have fixed height, and all other rows to have a minimum height and avoid to break between pages (unless the row cannot fit in a single page).
+
+```ruby
+data = [
+  ['Header 1','Header 2'],
+  ['Cell 1', 'Cell 2'],
+  ['Cell 3', 'Cell 4'],
+  ['Cell 5', 'Cell 6'],
+  ['this should be in another page', ' some long text'*50]
+]
+docx.table data, border_size: 4 do
+  row_style table_rows.drop(1),
+            height: 2500,                  # height value of the row, in twips, maybe not used depending on height_calculation chosen
+            height_calculation: :at_least, # define how height will be calculated, default :auto
+            keep_together: true            # if true, will avoid breaking the row between pages, default false
+
+  row_style table_rows[0], height: 500, height_calculation: :exact
+end
+```
+height_calculation possible values are
+  * :auto, ignores height value, and calculate height based on cells content height
+  * :at_least, uses the biggest value between row height value and cells content height, acts like a minimum value for row height
+  * :exact, set the height to the exact value determined by row height, ignores cell content height, clipping cell content if bigger than row height
+
+
+Table cells can be styled using the `cell_style` method inside the table's block.  The method will attempt to apply any specified options against the collection of `TableModelCell` instances provided in the first argument.  Any improper options will fail silently.
 
 *As a convenience, the table provides the methods `rows`, `cols`, and `cells` to facilitate building the first argument.*
 
