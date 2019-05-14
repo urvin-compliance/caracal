@@ -351,7 +351,8 @@ module Caracal
           rowspan_hash = {}
           model.rows.each do |row|
             xml['w'].tr do
-              row.each_with_index do |tc, tc_index|
+              tc_index = 0
+              row.each do |tc|
                 xml['w'].tc do
                   xml['w'].tcPr do
                     xml['w'].shd({ 'w:fill' => tc.cell_background })
@@ -380,24 +381,11 @@ module Caracal
                     send(method, xml, m)
                   end
                 end
+
+                # adjust tc_index for next cell taking into account current cell's colspan
+                tc_index += (tc.cell_colspan && tc.cell_colspan > 0) ? tc.cell_colspan : 1
               end
             end
-
-            # we need to adjust rowspan indexes as they depend on previous row colspans
-            adjusted_rowspan_hash = {}
-            rowspan_hash.each do |rowspan_cell_index, rowspan_value|
-              adjusted_rowspan_cell_index = rowspan_cell_index
-              row.each_with_index do |tc, tc_index|
-                if tc.cell_colspan && tc.cell_colspan >= 1
-                  if tc_index < rowspan_cell_index
-                    adjusted_rowspan_cell_index += tc.cell_colspan - 1
-                  end
-                end
-              end
-              adjusted_rowspan_hash[adjusted_rowspan_cell_index] = rowspan_value
-            end
-
-            rowspan_hash = adjusted_rowspan_hash
           end
         end
       end
