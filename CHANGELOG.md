@@ -1,10 +1,16 @@
+#### v1.4.1
+
+* Bug Fixes
+  * Corrected rowspan logic to handle all cases. (@martinsp)
+
+
 #### v1.4.0
 
 * Enhancements
   * Changed `file_name` method to accept absolute and relative paths. (@jdugan)
   * Added instance save method so documents can be created via commands instead of blocks, if desired. (@jdugan)
   * Removed extra paragraph tag inserted after tables; added logic to ensure final tag of table cells is always a paragraph. (@jdugan)
-  
+
 
 #### v1.3.0
 
