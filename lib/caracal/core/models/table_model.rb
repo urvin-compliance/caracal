@@ -60,7 +60,7 @@ module Caracal
         end
         
         def cols
-          rows.reduce([]) do |array, row|
+          @cols ||= rows.reduce([]) do |array, row|
             row.each_with_index do |cell, index|
               array[index]  = []    if array[index].nil?
               array[index] << cell
