@@ -137,6 +137,15 @@ describe Caracal::Core::Models::ParagraphModel do
       it { expect(subject.runs.size).to eq length + 1 }
     end
 
+    # .mail_merge
+    describe '.mail_merge' do
+      let!(:length) { subject.runs.length }
+
+      before { subject.mail_merge '=test' }
+
+      it { expect(subject.runs.size).to eq length + 1 }
+    end
+
     # .bookmark
     describe '.bookmark_start' do
       let!(:length) { subject.runs.length }

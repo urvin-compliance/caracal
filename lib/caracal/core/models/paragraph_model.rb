@@ -1,7 +1,10 @@
+# encoding: UTF-8
+
 require 'caracal/core/models/base_model'
 require 'caracal/core/models/bookmark_model'
 require 'caracal/core/models/link_model'
 require 'caracal/core/models/text_model'
+require 'caracal/core/models/mail_merge_model'
 require 'caracal/errors'
 
 
@@ -31,7 +34,17 @@ module Caracal
         # initialization
         def initialize(options={}, &block)
           content = options.delete(:content) { "" }
-          text content, options.dup, &block
+
+          # Determine if this is actually a mail merge field
+          if content.start_with?('«') && content.end_with?('»')
+            fields = content.scan(/«(.*)»/)
+            if fields.count > 0
+              mail_merge fields.last.first, options.dup, &block
+            end
+          else
+            text content, options.dup, &block
+          end
+
           super options, &block
         end
 
@@ -162,6 +175,19 @@ module Caracal
           model
         end
 
+        # .mail_merge
+        def mail_merge(*args, &block)
+          options = Caracal::Utilities.extract_options!(args)
+          options.merge!({ content: args.first }) if args.first
+
+          model = Caracal::Core::Models::MailMergeModel.new(options, &block)
+          if model.valid?
+            runs << model
+          else
+            raise Caracal::Errors::InvalidModelError, ':text method must receive a string for the display text.'
+          end
+          model
+        end
 
         #========== VALIDATION ============================
 
