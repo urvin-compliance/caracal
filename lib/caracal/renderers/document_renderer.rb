@@ -32,7 +32,10 @@ module Caracal
 
               xml['w'].sectPr do
                 if document.page_number_show
-                  if rel = document.find_relationship('footer1.xml')
+                  if (rel = document.find_relationship('header1.xml'))
+                    xml['w'].headerReference({ 'r:id' => rel.formatted_id, 'w:type' => 'default' })
+                  end
+                  if (rel = document.find_relationship('footer1.xml'))
                     xml['w'].footerReference({ 'r:id' => rel.formatted_id, 'w:type' => 'default' })
                   end
                 end
@@ -125,13 +128,13 @@ module Caracal
             index = model.relationship_id           # relationship an id.
 
             r_node  = fragment.at_xpath("//a:blip[@r:embed='#{ id }']", { a: a_href, r: r_href })
-            if r_attr  = r_node.attributes['embed']
+            if (r_attr = r_node.attributes['embed'])
               r_attr.value = "rId#{ index }"
             end
 
             p_parent = r_node.parent.parent
             p_node   = p_parent.children[0].children[0]
-            if p_attr  = p_node.attributes['id']
+            if (p_attr = p_node.attributes['id'])
               p_attr.value = index.to_s
             end
           end
@@ -141,7 +144,7 @@ module Caracal
       end
 
       def render_image(xml, model)
-        unless ds = document.default_style
+        unless (ds = document.default_style)
           raise Caracal::Errors::NoDefaultStyleError 'Document must declare a default paragraph style.'
         end
 

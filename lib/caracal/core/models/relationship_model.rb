@@ -17,6 +17,7 @@ module Caracal
         # constants
         TYPE_MAP = {
           font:       'http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable', 
+          header:     'http://schemas.openxmlformats.org/officeDocument/2006/relationships/header',
           footer:     'http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer',
           image:      'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image',
           link:       'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink',

@@ -32,7 +32,7 @@ module Caracal
       # This method instantiates a new verison of this renderer.
       #
       def initialize(doc)
-        unless doc.is_a?(Caracal::Document)
+        unless doc.is_a?(Caracal::Document) or doc.is_a?(Caracal::Header)
           raise NoDocumentError, 'renderers must receive a reference to a valid Caracal document object.'
         end
 
