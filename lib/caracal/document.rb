@@ -1,5 +1,5 @@
 require 'open-uri'
-require 'zip'
+require 'zip_tricks'
 
 require 'caracal/core/bookmarks'
 require 'caracal/core/custom_properties'
@@ -74,6 +74,8 @@ module Caracal
     # a string.
     #
     def self.render(f_name = nil, &block)
+      # This method probably does not need a filename to save to,
+      # as it never produces a file
       docx   = new(f_name, &block)
       buffer = docx.render
 
@@ -84,14 +86,19 @@ module Caracal
     # This method renders a new Word document and saves it to the
     # file system.
     #
-    def self.save(f_name = nil, &block)
-      docx   = new(f_name, &block)
+    def self.save(to_file_path, &block)
+      docx   = new(to_file_path, &block)
       docx.save
-      # buffer = docx.render
-      #
-      # File.open(docx.path, 'wb') { |f| f.write(buffer.string) }
     end
 
+    # This method renders a new Word document and writes it to
+    # the given `writable`. The writable can be an Array, String,
+    # IO or anything that responds to `<<`
+    #
+    def self.render_to(writable, &block)
+      docx   = new(_to_file_path = nil, &block)
+      docx.render_to(writable)
+    end
 
 
     #------------------------------------------------------
@@ -133,10 +140,19 @@ module Caracal
     #============ RENDERING ===============================
 
     # This method renders the word document instance into
-    # a string buffer. Order is important!
-    #
+    # a string buffer.
     def render
-      buffer = ::Zip::OutputStream.write_buffer do |zip|
+      StringIO.new.tap do |buf|
+        render_to(buf)
+      end
+    end
+
+    # This method renders the word document instance into
+    # the given `writable`. The writable can be an Array, String,
+    # IO or anything that responds to `<<`
+    #
+    def render_to(writable)
+      ZipTricks::Streamer.open(writable) do |zip|
         render_package_relationships(zip)
         render_content_types(zip)
         render_app(zip)
@@ -157,9 +173,7 @@ module Caracal
     #============ SAVING ==================================
 
     def save
-      buffer = render
-
-      File.open(path, 'wb') { |f| f.write(buffer.string) }
+      File.open(path, 'wb') { |f| render_to(f) }
     end
 
 
@@ -173,50 +187,43 @@ module Caracal
     def render_app(zip)
       content = ::Caracal::Renderers::AppRenderer.render(self)
 
-      zip.put_next_entry('docProps/app.xml')
-      zip.write(content)
+      zip.write_deflated_file('docProps/app.xml') {|out| out << content }
     end
 
     def render_content_types(zip)
       content = ::Caracal::Renderers::ContentTypesRenderer.render(self)
 
-      zip.put_next_entry('[Content_Types].xml')
-      zip.write(content)
+      zip.write_deflated_file('[Content_Types].xml') {|out| out << content }
     end
 
     def render_core(zip)
       content = ::Caracal::Renderers::CoreRenderer.render(self)
 
-      zip.put_next_entry('docProps/core.xml')
-      zip.write(content)
+      zip.write_deflated_file('docProps/core.xml') {|out| out << content }
     end
 
     def render_custom(zip)
       content = ::Caracal::Renderers::CustomRenderer.render(self)
 
-      zip.put_next_entry('docProps/custom.xml')
-      zip.write(content)
+      zip.write_deflated_file('docProps/custom.xml') {|out| out << content }
     end
 
     def render_document(zip)
       content = ::Caracal::Renderers::DocumentRenderer.render(self)
 
-      zip.put_next_entry('word/document.xml')
-      zip.write(content)
+      zip.write_deflated_file('word/document.xml') {|out| out << content }
     end
 
     def render_fonts(zip)
       content = ::Caracal::Renderers::FontsRenderer.render(self)
 
-      zip.put_next_entry('word/fontTable.xml')
-      zip.write(content)
+      zip.write_deflated_file('word/fontTable.xml') {|out| out << content }
     end
 
     def render_footer(zip)
       content = ::Caracal::Renderers::FooterRenderer.render(self)
 
-      zip.put_next_entry('word/footer1.xml')
-      zip.write(content)
+      zip.write_deflated_file('word/footer1.xml') {|out| out << content }
     end
 
     def render_media(zip)
@@ -228,44 +235,38 @@ module Caracal
           content = open(rel.relationship_target).read
         end
 
-        zip.put_next_entry("word/#{ rel.formatted_target }")
-        zip.write(content)
+        zip.write_deflated_file("word/#{ rel.formatted_target }") {|out| out << content }
       end
     end
 
     def render_numbering(zip)
       content = ::Caracal::Renderers::NumberingRenderer.render(self)
 
-      zip.put_next_entry('word/numbering.xml')
-      zip.write(content)
+      zip.write_deflated_file('word/numbering.xml') {|out| out << content }
     end
 
     def render_package_relationships(zip)
       content = ::Caracal::Renderers::PackageRelationshipsRenderer.render(self)
 
-      zip.put_next_entry('_rels/.rels')
-      zip.write(content)
+      zip.write_deflated_file('_rels/.rels') {|out| out << content }
     end
 
     def render_relationships(zip)
       content = ::Caracal::Renderers::RelationshipsRenderer.render(self)
 
-      zip.put_next_entry('word/_rels/document.xml.rels')
-      zip.write(content)
+      zip.write_deflated_file('word/_rels/document.xml.rels') {|out| out << content }
     end
 
     def render_settings(zip)
       content = ::Caracal::Renderers::SettingsRenderer.render(self)
 
-      zip.put_next_entry('word/settings.xml')
-      zip.write(content)
+      zip.write_deflated_file('word/settings.xml') {|out| out << content }
     end
 
     def render_styles(zip)
       content = ::Caracal::Renderers::StylesRenderer.render(self)
 
-      zip.put_next_entry('word/styles.xml')
-      zip.write(content)
+      zip.write_deflated_file('word/styles.xml') {|out| out << content }
     end
 
   end
