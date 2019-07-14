@@ -107,13 +107,13 @@ module Caracal
       end
 
       def render_iframe(xml, model)
-        ::Zip::File.open(model.file) do |zip|
+        Caracal::Core::ZipReader.open(model.file) do |zip|
           a_href     = 'http://schemas.openxmlformats.org/drawingml/2006/main'
           pic_href   = 'http://schemas.openxmlformats.org/drawingml/2006/picture'
           r_href     = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
 
-          entry      = zip.glob('word/document.xml').first
-          content    = entry.get_input_stream.read
+
+          content    = zip.read_full('word/document.xml')
           doc_xml    = Nokogiri::XML(content)
 
           fragment = doc_xml.xpath('//w:body').first.children

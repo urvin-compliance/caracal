@@ -1,5 +1,6 @@
 require 'caracal/core/models/base_model'
-
+require 'caracal/core/zip_reader'
+require 'tempfile'
 module Caracal
   module Core
     module Models
@@ -32,15 +33,13 @@ module Caracal
         #=============== PROCESSING =======================
 
         def preprocess!
-          ::Zip::File.open(file) do |zip|
+          Caracal::Core::ZipReader.open(file) do |zip|
             # locate relationships xml
-            entry      = zip.glob('word/_rels/document.xml.rels').first
-            content    = entry.get_input_stream.read
+            content    = zip.read_full('word/_rels/document.xml.rels')
             rel_xml    = Nokogiri::XML(content)
 
             # locate document xml
-            entry      = zip.glob('word/document.xml').first
-            content    = entry.get_input_stream.read
+            content    = zip.read_full('word/document.xml')
             doc_xml    = Nokogiri::XML(content)
 
             # master nodesets
@@ -74,7 +73,7 @@ module Caracal
               p_node  = node.children[0].children[0]
               p_id    = p_node.attributes['id'].to_s.to_i
               p_name  = p_node.attributes['name'].to_s
-              p_data  = zip.glob(r_media).first.get_input_stream.read
+              p_data  = zip.read_full(r_media)
 
               # register relationship
               array << { id: r_id, type: 'image', target: p_name, data: p_data }
