@@ -72,7 +72,7 @@ module Caracal
         end
         
         def relationship_target
-          image_url || image_data
+          image_data || image_url
         end
         
         
@@ -115,7 +115,7 @@ module Caracal
         private
         
         def option_keys
-          [:url, :width, :height, :align, :top, :bottom, :left, :right]
+          [:url, :width, :height, :align, :top, :bottom, :left, :right, :data]
         end
         
         def pixels_to_emus(value, ppi)
