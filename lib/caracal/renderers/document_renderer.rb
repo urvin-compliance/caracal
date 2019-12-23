@@ -219,6 +219,20 @@ module Caracal
         end
       end
 
+      def render_field(xml, model)
+        xml['w'].fldChar({ 'w:fldCharType' => 'begin' })
+        xml['w'].r do
+          xml['w'].rPr do
+            render_run_attributes(xml, model, false)
+          end
+          xml['w'].instrText({ 'xml:space' => 'preserve' }) do
+            xml.text model.formatted_type
+          end
+        end
+        xml['w'].fldChar({ 'w:fldCharType' => 'separate' })
+        xml['w'].fldChar({ 'w:fldCharType' => 'end' })
+      end
+
       def render_list(xml, model)
         if model.list_level == 0
           document.toplevel_lists << model

@@ -432,6 +432,16 @@ docx.p do
 end
 ```
 
+PAGE and NUMPAGES fields can be added to runs using the `field` method
+
+```ruby
+docx.p do
+  text 'Pages '
+  field :page
+  text ' to ' 
+  field :numpages
+```
+
 
 ### Links
 
