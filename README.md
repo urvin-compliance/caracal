@@ -302,7 +302,7 @@ docx.page     # starts a new page.
 
 Page numbers can be added to the footer via the `page_numbers` method.  The method accepts optional parameters for controlling the alignment, label and size of the text.
 
-*Page numbers are turned off by default, but they supercede the `.footer` when turned on.*
+*Page numbers are turned off by default.*
 
 ```ruby
 docx.page_numbers true do
@@ -316,17 +316,16 @@ end
 
 The `size` option and the `label_size` and `number_size` options are mutually exclusive.
 
-
 ### Footer
 
 A footer appearing on every page can be added via the `footer` method. Its block takes a footer object that supports text and table methods.
 
-*This is superceded by `page_numbers`, but can be used instead to provide a more complext page number footer.*
+_This is superceded by `page_numbers`, but can be used instead to provide a more complex page number footer._
 
 ```ruby
 docx.footer do |footer|
   footer.p do
-    text 'Pages ' 
+    text 'Pages '
     field :page
     text ' of '
     field :numpages
@@ -334,6 +333,15 @@ docx.footer do |footer|
 end
 ```
 
+### Header
+
+A header appearing on every page can be added via the `header` method. Its block takes a header object that supports text and table methods.
+
+```ruby
+docx.header do |header|
+  header.p 'hello there'
+end
+```
 
 ### Fonts
 
@@ -456,10 +464,9 @@ PAGE and NUMPAGES fields can be added to runs using the `field` method
 docx.p do
   text 'Pages '
   field :page
-  text ' to ' 
+  text ' to '
   field :numpages
 ```
-
 
 ### Links
 
