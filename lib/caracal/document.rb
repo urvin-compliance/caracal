@@ -4,6 +4,7 @@ require 'caracal/core/bookmarks'
 require 'caracal/core/custom_properties'
 require 'caracal/core/file_name'
 require 'caracal/core/fonts'
+require 'caracal/core/footer'
 require 'caracal/core/iframes'
 require 'caracal/core/ignorables'
 require 'caracal/core/images'
@@ -62,6 +63,8 @@ module Caracal
     include Caracal::Core::Tables
     include Caracal::Core::Text
 
+    include Caracal::Core::Footer
+
 
     #------------------------------------------------------
     # Public Class Methods
@@ -90,8 +93,6 @@ module Caracal
       #
       # File.open(docx.path, 'wb') { |f| f.write(buffer.string) }
     end
-
-
 
     #------------------------------------------------------
     # Public Instance Methods
@@ -126,6 +127,14 @@ module Caracal
     #
     def contents
       @contents ||= []
+    end
+
+    def footer_content
+      @footer_content
+    end
+
+    def header_content
+      @header_content
     end
 
 
