@@ -15,7 +15,7 @@ describe Caracal::Core::Relationships do
 
     # .default_relationships
     describe '.default_relationships' do
-      let(:expected) { [:font, :footer, :numbering, :setting, :style] }
+      let(:expected) { [:font, :footer, :header, :numbering, :setting, :style] }
       let(:actual)   { subject.class.default_relationships.map { |r| r[:type] } }
 
       it { expect(actual).to eq expected }
@@ -105,7 +105,7 @@ describe Caracal::Core::Relationships do
         it { expect(subject.relationships.size).to eq default_length }
       end
       describe 'when not registered' do
-        before do 
+        before do
           subject.register_relationship(m1)
           subject.unregister_relationship(m2.relationship_target)
         end

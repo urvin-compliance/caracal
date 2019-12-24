@@ -11,7 +11,7 @@ module Caracal
       # Public Methods
       #-------------------------------------------------------------
 
-      # This method produces the xml required for the `word/settings.xml`
+      # This method produces the xml required for the `word/footer1.xml`
       # sub-document.
       #
       def to_xml
