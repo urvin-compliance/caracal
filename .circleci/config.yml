@@ -1,0 +1,31 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/caracal
+    docker:
+      - image: circleci/ruby:2.5.7
+    steps:
+      - checkout
+
+      - run:
+          name: Configure Bundler
+          command: |
+            gem install bundler -v "~> 1.3"
+
+      - type: cache-restore
+        name: Restore bundle cache
+        key: caracal-{{ checksum "Gemfile.lock" }}
+
+      - run: bundle install --path vendor/bundle
+
+      - type: cache-save
+        name: Save bundle cache
+        key: caracal-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+
+      - run: bundle exec rake
+
+      - store_artifacts:
+          path: ~/caracal/log
+          destination: logs
