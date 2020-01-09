@@ -632,7 +632,7 @@ the simplest solution to both problems.*
 Release v1.4.0 deprecated the behaviour of automatically adding an empty paragraph tag after every table. If you are upgrading from an older version of the library, you will need to control such spacing in your own code.
 ```
 
-Tables can be added using the `table` method.  The method accepts several optional paramters to control the layout and style of the table cells.
+Tables can be added using the `table` method.  The method accepts several optional parameters to control the layout and style of the table cells.
 
 The `table` command accepts data in the form of a two-dimensional arrays. This corresponds to rows and column cells within those rows.  Each array item can be a string, a Hash of options, a Proc (which will be passed as a block), or a `TableCellModel`.  The command will normalize all array contents into a two-dimensional array of `TableCellModel` instances.
 
@@ -682,6 +682,15 @@ end
 ```
 
 *Note: content of cells 21 and 24 will disappear*
+
+Table rows can be marked as header rows using the `header_rows` method which takes a number indicating how many rows from the top of the table should be marked as such. This has the effect of repeating these rows after each page break.
+
+```ruby
+docx.table [['Header 1', 'Header 2'],['Cell 1', 'Cell 2']] do
+  header_rows 1
+end
+```
+
 
 ### Table Cells
 
