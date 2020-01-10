@@ -316,6 +316,32 @@ end
 
 The `size` option and the `label_size` and `number_size` options are mutually exclusive.
 
+### Footer
+
+A footer appearing on every page can be added via the `footer` method. Its block takes a footer object that supports text and table methods.
+
+_This is superceded by `page_numbers`, but can be used instead to provide a more complex page number footer._
+
+```ruby
+docx.footer do |footer|
+  footer.p do
+    text 'Pages '
+    field :page
+    text ' of '
+    field :numpages
+  end
+end
+```
+
+### Header
+
+A header appearing on every page can be added via the `header` method. Its block takes a header object that supports text and table methods.
+
+```ruby
+docx.header do |header|
+  header.p 'hello there'
+end
+```
 
 ### Fonts
 
@@ -432,6 +458,15 @@ docx.p do
 end
 ```
 
+PAGE and NUMPAGES fields can be added to runs using the `field` method
+
+```ruby
+docx.p do
+  text 'Pages '
+  field :page
+  text ' to '
+  field :numpages
+```
 
 ### Links
 

@@ -2,6 +2,7 @@ require 'caracal/core/models/base_model'
 require 'caracal/core/models/bookmark_model'
 require 'caracal/core/models/link_model'
 require 'caracal/core/models/text_model'
+require 'caracal/core/models/field_model'
 require 'caracal/errors'
 
 
@@ -123,6 +124,20 @@ module Caracal
         def br
           model = Caracal::Core::Models::LineBreakModel.new()
           runs << model
+          model
+        end
+
+        # .page_num
+        def field(*args, &block)
+          options = Caracal::Utilities.extract_options!(args)
+          options = options.merge({ type: args[0] })
+
+          model = Caracal::Core::Models::FieldModel.new(options, &block)
+          if model.valid?
+            runs << model
+          else
+            raise Caracal::Errors::InvalidModelError, ':page_num method must receive a string for the display text.'
+          end
           model
         end
 
