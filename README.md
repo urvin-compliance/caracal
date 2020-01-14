@@ -683,6 +683,23 @@ end
 
 *Note: content of cells 21 and 24 will disappear*
 
+Row can be marked as can't split rows that re-position themselves at the top of the next if they would have otherwise split across a page break.
+
+```
+docx.table [['11', '22'], ['14', '25'], ['64', '23']] do
+  cant_split rows[1]
+end
+```
+
+or
+
+```
+docx.table [['11', '22'], ['14', '25'], ['64', '23']] do
+  cant_split rows[1...-1]
+end
+```
+
+
 ### Table Cells
 
 If your table contains more complex data (multiple paragraphs, images, lists, etc.), you will probably want to instantiate your `TableCellModel` instances directly.  With the exception of page breaks, table cells can contain anything the document can contain, including another table.
