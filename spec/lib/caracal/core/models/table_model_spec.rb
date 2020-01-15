@@ -72,6 +72,24 @@ describe Caracal::Core::Models::TableModel do
       describe '.cells' do
         it { expect(subject.cells[0]).to eq 'top left' }   
       end
+
+      # .cant_split and cant_split?
+      describe '.cant_split and .cant_split?' do
+        it { expect(subject.cant_split?(0)).to eq(false) }
+
+        describe "when first row can't split" do 
+          before { subject.cant_split subject.rows[0] }
+
+          it { expect(subject.cant_split?(0)).to eq(true) }
+        end 
+
+        describe 'when no rows can be split' do
+          before { subject.cant_split subject.rows }
+
+          it { expect(subject.cant_split?(0)).to eq(true) }
+          it { expect(subject.cant_split?(1)).to eq(true) } 
+        end  
+      end
     end    
     
     

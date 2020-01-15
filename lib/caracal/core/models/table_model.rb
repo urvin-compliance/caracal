@@ -22,6 +22,7 @@ module Caracal
         const_set(:DEFAULT_TABLE_BORDER_LINE,       :single)
         const_set(:DEFAULT_TABLE_BORDER_SIZE,       0)          # units in 1/8 points
         const_set(:DEFAULT_TABLE_BORDER_SPACING,    0)          
+        const_set(:DEFAULT_TABLE_CANT_SPLIT_ROWS,   {})
         
         # accessors
         attr_reader :table_align
@@ -44,6 +45,7 @@ module Caracal
           @table_border_line    = DEFAULT_TABLE_BORDER_LINE
           @table_border_size    = DEFAULT_TABLE_BORDER_SIZE
           @table_border_spacing = DEFAULT_TABLE_BORDER_SPACING
+          @table_rows_cant_split = {}
           
           super options, &block
         end
@@ -99,8 +101,33 @@ module Caracal
             m.apply_styles(options)
           end  
         end
+
+        # This method allows a user to specify one or more
+        # rows that should be rendered with the
+        # <w:cant_split /> property
+        #
+        # For example
+        #
+        # docx.table data do |t|
+        #   t.cant_split r.rows[0...-1]
+        # end
+        #
+        # would cause all rows in the table to be rendered
+        # with the <w:cant_split /> property.
+        def cant_split(models, options={})
+          models = rows.include?(models) ? [models] : models
+          models.each do |r|
+            @table_rows_cant_split[rows.index(r)] = true
+          end
+        end  
         
-        
+        # This method returns true or false depending on 
+        # if a row has been marked as a can't split row
+        # via the cant_split method.  
+        def cant_split?(row_index)
+          !!@table_rows_cant_split[row_index]
+        end        
+
         #=============== GETTERS ==============================
         
         # border attrs
