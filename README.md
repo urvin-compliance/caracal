@@ -415,6 +415,7 @@ docx.p 'Sample text.' do
   bgcolor         'cccccc'          # sets the background color.
   highlight_color 'yellow'          # sets the highlight color. only accepts OOXML enumerations. see http://www.datypic.com/sc/ooxml/t-w_ST_HighlightColor.html.
   vertical_align  'superscript'     # sets the vertical alignment.
+  keep_next       false             # sets whether or not to keep this paragraph with the next paragraph when separated by page break.
 end
 ```
 

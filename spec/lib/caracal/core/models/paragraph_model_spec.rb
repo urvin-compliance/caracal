@@ -11,6 +11,7 @@ describe Caracal::Core::Models::ParagraphModel do
       italic      false
       underline   true
       bgcolor     'cccccc'
+      keep_next   true
     end
   end
 
@@ -31,6 +32,7 @@ describe Caracal::Core::Models::ParagraphModel do
       it { expect(subject.paragraph_italic).to eq false }
       it { expect(subject.paragraph_underline).to eq true }
       it { expect(subject.paragraph_bgcolor).to eq 'cccccc' }
+      it { expect(subject.paragraph_keep_next).to eq true }
     end
 
   end
@@ -69,6 +71,11 @@ describe Caracal::Core::Models::ParagraphModel do
       before { subject.italic(true) }
 
       it { expect(subject.paragraph_italic).to eq true }
+    end
+    describe '.keep_next' do
+      before { subject.keep_next(true) }
+
+      it { expect(subject.paragraph_keep_next).to eq true }
     end
     describe '.underline' do
       before { subject.underline(true) }
