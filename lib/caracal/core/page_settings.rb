@@ -1,5 +1,6 @@
 require 'caracal/core/models/margin_model'
 require 'caracal/core/models/page_size_model'
+require 'caracal/core/models/page_cols_model'
 require 'caracal/errors'
 
 
@@ -65,6 +66,16 @@ module Caracal
               @page_orientation = model.page_orientation
             else
               raise Caracal::Errors::InvalidModelError, 'page_size method requires non-zero :width and :height options.'
+            end
+          end
+
+          # This method controls the column structure of the page.
+          def page_cols(options={}, &block)
+            model = Caracal::Core::Models::PageColsModel.new(options, &block)
+
+            if model.valid?
+              @page_cols_num       = model.page_cols_num
+              @page_cols_space     = model.page_cols_space
             end
           end
 
