@@ -49,7 +49,7 @@ module Caracal
         #=============== VALIDATION ==============================
 
         def valid?
-          dims = [page_width, page_height]
+          dims = [page_cols_num, page_cols_space]
           dims.all? { |d| d > 0 }
         end
 
