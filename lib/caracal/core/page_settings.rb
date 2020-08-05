@@ -25,6 +25,8 @@ module Caracal
           attr_reader :page_margin_bottom
           attr_reader :page_margin_left
           attr_reader :page_margin_right
+          attr_reader :page_cols_num
+          attr_reader :page_cols_space
 
 
           #-------------------------------------------------------------

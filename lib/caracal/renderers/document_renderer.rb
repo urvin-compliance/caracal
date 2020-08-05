@@ -422,6 +422,14 @@ module Caracal
         }
       end
 
+      def page_cols_options
+        {
+            'w:num'       => document.page_cols_num,
+            'w:space'       => document.page_cols_space,
+            'w:equalWidth'  => "on",
+        }
+      end
+
     end
   end
 end
