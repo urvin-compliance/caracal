@@ -38,6 +38,7 @@ module Caracal
                 end
                 xml['w'].pgSz page_size_options
                 xml['w'].pgMar page_margin_options
+                xml['w'].cols page_cols_options
               end
 
             end
