@@ -38,6 +38,7 @@ module Caracal
                 end
                 xml['w'].pgSz page_size_options
                 xml['w'].pgMar page_margin_options
+                xml['w'].cols page_cols_options
               end
 
             end
@@ -419,6 +420,14 @@ module Caracal
           'w:w'       => document.page_width,
           'w:h'       => document.page_height,
           'w:orient'  => document.page_orientation
+        }
+      end
+
+      def page_cols_options
+        {
+            'w:num'       => document.page_cols_num,
+            'w:space'       => document.page_cols_space,
+            'w:equalWidth'  => "on",
         }
       end
 
