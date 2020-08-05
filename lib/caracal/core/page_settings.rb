@@ -76,6 +76,8 @@ module Caracal
             if model.valid?
               @page_cols_num       = model.page_cols_num
               @page_cols_space     = model.page_cols_space
+            else
+              raise Caracal::Errors::InvalidModelError, 'page_cols method requires non-zero :cols_num and :cols_space options.'
             end
           end
 
