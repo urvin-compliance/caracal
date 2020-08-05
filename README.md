@@ -252,7 +252,8 @@ docx.name    # => 'example_document.docx'
 *The default file name is caracal.docx.*
 
 
-### Page Size
+### Page Settings
+##### Page Size
 
 Page dimensions can be set using the `page_size` method.  The method accepts two parameters for controlling the width and height of the document.
 It also accepts a third parameter for setting the page orientation.  If you want landscape orientation, you need to change both the page
@@ -271,7 +272,7 @@ end
 Both the `width` and `height` attributes require positive integer values.
 
 
-### Page Margins
+##### Page Margins
 
 Page margins can be set using the `page_margins` method.  The method accepts four parameters for controlling the margins of the document.
 
@@ -289,7 +290,7 @@ end
 All attributes require positive integer values. Additionally, the combined size of the margins on either axis cannot exceed the page size on that axis (e.g., the sum of the `left` and `right` values must be less than the `page_width`).
 
 
-### Page Breaks
+##### Page Breaks
 
 Page breaks can be added via the `page` method.  The method accepts no parameters.
 
@@ -298,7 +299,7 @@ docx.page     # starts a new page.
 ```
 
 
-### Page Numbers
+##### Page Numbers
 
 Page numbers can be added to the footer via the `page_numbers` method.  The method accepts optional parameters for controlling the alignment, label and size of the text.
 
@@ -316,6 +317,16 @@ end
 
 The `size` option and the `label_size` and `number_size` options are mutually exclusive.
 
+##### Page Coloumns 
+
+Page Coloumns can be set via the `page_cols` method. The method accepts paramters for the number of coloumns and the space for the coloumns.
+
+```ruby
+docx.page_cols do
+  cols 2      # sets the number of coloumns. Default is 1.
+  space 708   # sets the space each coloumn needs. Default is 15840 (see Page Size).
+end
+```
 
 ### Fonts
 
