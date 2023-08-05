@@ -1,0 +1,27 @@
+name: Publish RubyGem
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.1 # Set your desired Ruby version here
+
+      - name: Install Bundler
+        run: gem install bundler
+
+      - name: Build and publish gem
+        run: |
+          bundle install
+          gem build gem_name.gemspec # Replace 'gem_name' with your gem's name
+          gem push gem_name-*.gem  # Replace 'gem_name' with your gem's name
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
