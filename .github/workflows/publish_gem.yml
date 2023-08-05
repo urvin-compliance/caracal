@@ -24,6 +24,6 @@ jobs:
       - name: Build and publish gem
         run: |
           gem build caracal.gemspec
-          gem push caracal-*.gem
+          gem push --key github --host https://rubygems.pkg.github.com/the-curve-consulting caracal-*.gem
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
