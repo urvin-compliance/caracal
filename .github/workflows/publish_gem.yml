@@ -19,7 +19,7 @@ jobs:
 
       - name: Tests
         run: |
-          rspec
+          bundle exec rspec
 
       - name: Build and publish gem
         run: |
