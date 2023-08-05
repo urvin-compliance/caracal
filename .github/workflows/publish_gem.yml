@@ -23,7 +23,18 @@ jobs:
 
       - name: Build and publish gem
         run: |
-          gem build caracal.gemspec
-          gem push caracal-*.gem
+          cat << EOF > ~/.gem/credentials
+          ---
+          :github: Bearer ${GITHUB_TOKEN}
+          :rubygems_api_key: ${RUBYGEMS_API_KEY}
+          EOF
+
+          chmod 0600 ~/.gem/credentials
+
+          echo "Running gem release task..."
+          release_command="${RELEASE_COMMAND:-rake release}"
+          $release_command
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUBYGEMS_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
+          RELEASE_COMMAND: rake release
