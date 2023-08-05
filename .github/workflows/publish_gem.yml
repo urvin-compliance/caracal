@@ -32,9 +32,8 @@ jobs:
 
           chmod 0600 ~/.gem/credentials
 
-          echo "Running gem release task..."
-          release_command="${RELEASE_COMMAND:-rake release}"
-          $release_command
+          find . -name '*.gemspec' -maxdepth 1 -exec gem build {} \;
+          find . -name '*.gem' -maxdepth 1 -print0 | xargs -0 gem push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RUBYGEMS_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
