@@ -1,9 +1,9 @@
 name: Publish RubyGem
 
 on:
-  release:
-    types:
-      - released
+  push:
+    branches:
+    - master
 
 jobs:
   build:
@@ -16,11 +16,3 @@ jobs:
         with:
           ruby-version: '3.2'
           bundler-cache: true
-
-      - name: Build and publish gem
-        run: |
-          bundle install
-          gem build caracal.gemspec
-          gem push caracal-*.gem
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
