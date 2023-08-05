@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'rubyzip',  ['>= 1.1.0', '< 3.0']
   spec.add_dependency 'tilt',     '>= 1.4'
 
-  spec.add_development_dependency 'bundler',  '~> 1.3'
+  spec.add_development_dependency 'bundler',  '~> 2.4'
   spec.add_development_dependency 'rake',     '~> 10.0'
   spec.add_development_dependency 'rspec',    '~> 3.0'
 end

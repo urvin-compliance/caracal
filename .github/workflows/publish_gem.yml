@@ -17,9 +17,12 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: true
 
+      - name: Tests
+        run: |
+          rspec
+
       - name: Build and publish gem
         run: |
-          bundle install
           gem build caracal.gemspec
           gem push caracal-*.gem
         env:
