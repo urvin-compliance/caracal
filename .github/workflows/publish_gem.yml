@@ -23,6 +23,7 @@ jobs:
 
       - name: Build and publish gem
         run: |
+          mkdir -p ~/.gem
           cat << EOF > ~/.gem/credentials
           ---
           :github: Bearer ${GITHUB_TOKEN}
