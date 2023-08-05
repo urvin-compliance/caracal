@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'caracal/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'caracal'
+  spec.name          = 'caracal_the_curve'
   spec.version       = Caracal::VERSION
   spec.authors       = ['Trade Infomatics', 'John Dugan']
   spec.email         = ['jpdugan@gmail.com']

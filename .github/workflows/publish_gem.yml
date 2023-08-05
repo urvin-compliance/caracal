@@ -23,16 +23,7 @@ jobs:
 
       - name: Build and publish gem
         run: |
-          echo "Setting up access to GitHub Package Registry"
-          mkdir -p ~/.gem
-          touch ~/.gem/credentials
-          chmod 600 ~/.gem/credentials
-          echo ":github: Bearer ${GITHUB_TOKEN}" >> ~/.gem/credentials
-
-          echo "Building the gem"
-          find . -name '*.gemspec' -maxdepth 1 -exec gem build {} \;
-          echo "Pushing the built gem to GitHub Package Registry"
-          find . -name '*.gem' -maxdepth 1 -print0 | xargs -0 gem push --key github --host "https://rubygems.pkg.github.com/${OWNER}"
+          gem build caracal.gemspec
+          gem push caracal-*.gem
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OWNER: the-curve-consulting
