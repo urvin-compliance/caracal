@@ -1,3 +1,8 @@
+#### v1.5
+
+* Enhancements
+  * Upgraded rubyzip and bundler
+
 #### v1.4.1
 
 * Bug Fixes
