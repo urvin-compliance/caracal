@@ -32,7 +32,7 @@ module Caracal
                       end
                     end
                     xml['w'].t({ 'xml:space' => 'preserve' }) do
-                      xml.text "#{ document.page_number_label }  \\* MERGEFORMAT"
+                      xml.text "#{ document.page_number_label } "
                     end
                   end
                 end
@@ -45,7 +45,7 @@ module Caracal
                   end
                   xml['w'].fldChar({ 'w:fldCharType' => 'begin' })
                   xml['w'].instrText({ 'xml:space' => 'preserve' }) do
-                    xml.text 'PAGE \* MERGEFORMAT'
+                    xml.text 'PAGE'
                   end
                   xml['w'].fldChar({ 'w:fldCharType' => 'end' })
                 end
