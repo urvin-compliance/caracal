@@ -137,6 +137,23 @@ describe Caracal::Core::Models::ParagraphModel do
       it { expect(subject.runs.size).to eq length + 1 }
     end
 
+    # .field
+    describe '.field' do
+      let!(:length) { subject.runs.length }
+
+      context ':page' do
+        before { subject.field :page }
+
+        it { expect(subject.runs.size).to eq length + 1 }
+      end
+
+      context ':numpages' do
+        before { subject.field :numpages }
+
+        it { expect(subject.runs.size).to eq length + 1 }
+      end
+    end
+
     # .bookmark
     describe '.bookmark_start' do
       let!(:length) { subject.runs.length }
@@ -149,7 +166,7 @@ describe Caracal::Core::Models::ParagraphModel do
     describe '.bookmark_end' do
       let!(:length) { subject.runs.length }
 
-      before { subject.bookmark_end {id:'1'}}
+      before { subject.bookmark_end(id:'1')}
 
       it { expect(subject.runs.size).to eq length + 1 }
     end
