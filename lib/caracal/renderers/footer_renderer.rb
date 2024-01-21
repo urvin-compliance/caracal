@@ -56,7 +56,7 @@ module Caracal
                 end
               end
             end
-          elsif document.footer_content.present? && document.footer_content.valid?
+          elsif document.footer_content&.present? && document.footer_content&.valid?
             xml['w'].ftr root_options do
 
               #============= CONTENTS ===================================
