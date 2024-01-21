@@ -32,7 +32,7 @@ module Caracal
                       end
                     end
                     xml['w'].t({ 'xml:space' => 'preserve' }) do
-                      xml.text "#{ document.page_number_label } "
+                      xml.text "#{ document.page_number_label }  \\* MERGEFORMAT"
                     end
                   end
                 end
@@ -45,7 +45,7 @@ module Caracal
                   end
                   xml['w'].fldChar({ 'w:fldCharType' => 'begin' })
                   xml['w'].instrText({ 'xml:space' => 'preserve' }) do
-                    xml.text 'PAGE'
+                    xml.text 'PAGE \* MERGEFORMAT'
                   end
                   xml['w'].fldChar({ 'w:fldCharType' => 'end' })
                 end
@@ -56,7 +56,7 @@ module Caracal
                 end
               end
             end
-          elsif document.footer_content&.present? && document.footer_content&.valid?
+          elsif document.footer_content&.valid?
             xml['w'].ftr root_options do
 
               #============= CONTENTS ===================================

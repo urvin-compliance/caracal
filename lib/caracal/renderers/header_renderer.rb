@@ -16,7 +16,7 @@ module Caracal
       #
       def to_xml
         builder = ::Nokogiri::XML::Builder.with(declaration_xml) do |xml|
-          if document.header_content.present? && document.header_content.valid?
+          if document.header_content&.valid?
             xml['w'].hdr root_options do
 
               #============= CONTENTS ===================================
