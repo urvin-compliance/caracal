@@ -16,11 +16,10 @@ module Caracal
       #
       def to_xml
         builder = ::Nokogiri::XML::Builder.with(declaration_xml) do |xml|
-          if document.header_content&.valid?
-            xml['w'].hdr root_options do
+          xml['w'].hdr root_options do
 
               #============= CONTENTS ===================================
-
+            if document.header_content&.valid?
               document.header_content.contents.each do |model|
                 method = render_method_for_model(model)
                 send(method, xml, model)

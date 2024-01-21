@@ -56,14 +56,15 @@ module Caracal
                 end
               end
             end
-          elsif document.footer_content&.valid?
+          else
             xml['w'].ftr root_options do
 
               #============= CONTENTS ===================================
-
-              document.footer_content.contents.each do |model|
-                method = render_method_for_model(model)
-                send(method, xml, model)
+              if document.footer_content&.valid?
+                document.footer_content.contents.each do |model|
+                  method = render_method_for_model(model)
+                  send(method, xml, model)
+                end
               end
             end
           end
