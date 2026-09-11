@@ -20,11 +20,16 @@ module Caracal
             model = Caracal::Core::Models::IFrameModel.new(options, &block)
             if model.valid?
               model.preprocess!
-              model.namespaces.each do |(prefix, href)|
-                namespace({ prefix: prefix, href: href })
-              end
-              model.ignorables.each do |prefix|
-                ignorable(prefix)
+
+              # table cells can't hold namespaces; the document
+              # collects those when it renders.
+              if respond_to?(:namespace)
+                model.namespaces.each do |(prefix, href)|
+                  namespace({ prefix: prefix, href: href })
+                end
+                model.ignorables.each do |prefix|
+                  ignorable(prefix)
+                end
               end
 
               contents << model

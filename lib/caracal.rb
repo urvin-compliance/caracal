@@ -32,6 +32,7 @@ end
 # and Caracal::Core::Models::TableCellModel.
 #
 Caracal::Core::Models::TableCellModel.class_eval do
+  include Caracal::Core::IFrames
   include Caracal::Core::Images
   include Caracal::Core::Lists
   include Caracal::Core::Rules

@@ -24,7 +24,17 @@ module Caracal
           setting:    'http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings',
           style:      'http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles'
         }
-        
+
+        IMAGE_SIGNATURES = {
+          "\x89PNG\r\n\x1A\n".b  => 'png',
+          "\xFF\xD8\xFF".b       => 'jpeg',
+          'GIF8'.b               => 'gif',
+          'BM'.b                 => 'bmp',
+          "II*\x00".b            => 'tiff',
+          "MM\x00*".b            => 'tiff'
+        }
+        IMAGE_EXTENSIONS = %w(png jpeg jpg gif bmp tif tiff svg)
+
         # accessors
         attr_reader :relationship_id
         attr_reader :relationship_key
@@ -46,14 +56,27 @@ module Caracal
         
         def formatted_target
           if relationship_type == :image
-            ext = relationship_target.to_s.split('.').last
-            ext = ext.split('?').first
-            "media/image#{ relationship_id }.#{ ext }"
+            "media/image#{ relationship_id }.#{ image_extension }"
           else
             relationship_target
           end
         end
-        
+
+        # Prefers the type detected from the image bytes, then the
+        # extension of the target's path (ignoring any query string),
+        # and falls back to png so the part name is always valid.
+        #
+        def image_extension
+          data = relationship_data.to_s.b
+          if (match = IMAGE_SIGNATURES.find { |sig, _| data.start_with?(sig) })
+            return match.last
+          end
+
+          path = relationship_target.to_s.split(/[?#]/).first.to_s
+          ext  = File.extname(path).delete('.').downcase
+          IMAGE_EXTENSIONS.include?(ext) ? ext : 'png'
+        end
+
         def formatted_type
           TYPE_MAP.fetch(relationship_type)
         end
