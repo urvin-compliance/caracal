@@ -27,6 +27,7 @@ module Caracal
             [
               { target: 'fontTable.xml',  type: :font      },
               { target: 'footer1.xml',    type: :footer    },
+              { target: 'header1.xml',    type: :header    },
               { target: 'numbering.xml',  type: :numbering },
               { target: 'settings.xml',   type: :setting   },
               { target: 'styles.xml',     type: :style     }

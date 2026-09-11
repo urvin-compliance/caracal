@@ -31,10 +31,11 @@ module Caracal
               #============= PAGE SETTINGS ==============================
 
               xml['w'].sectPr do
-                if document.page_number_show
-                  if rel = document.find_relationship('footer1.xml')
-                    xml['w'].footerReference({ 'r:id' => rel.formatted_id, 'w:type' => 'default' })
-                  end
+                if rel = document.find_relationship('footer1.xml')
+                  xml['w'].footerReference({ 'r:id' => rel.formatted_id, 'w:type' => 'default' })
+                end
+                if rel = document.find_relationship('header1.xml')
+                  xml['w'].headerReference({ 'r:id' => rel.formatted_id, 'w:type' => 'default' })
                 end
                 xml['w'].pgSz page_size_options
                 xml['w'].pgMar page_margin_options
@@ -217,6 +218,20 @@ module Caracal
             xml['w'].t({ 'xml:space' => 'preserve' }, model.link_content)
           end
         end
+      end
+
+      def render_field(xml, model)
+        xml['w'].fldChar({ 'w:fldCharType' => 'begin' })
+        xml['w'].r do
+          xml['w'].rPr do
+            render_run_attributes(xml, model, false)
+          end
+          xml['w'].instrText({ 'xml:space' => 'preserve' }) do
+            xml.text model.formatted_type
+          end
+        end
+        xml['w'].fldChar({ 'w:fldCharType' => 'separate' })
+        xml['w'].fldChar({ 'w:fldCharType' => 'end' })
       end
 
       def render_list(xml, model)
