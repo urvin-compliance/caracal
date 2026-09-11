@@ -136,6 +136,8 @@ module Caracal
     # a string buffer. Order is important!
     #
     def render
+      register_nested_iframes(contents)
+
       buffer = ::Zip::OutputStream.write_buffer do |zip|
         render_package_relationships(zip)
         render_content_types(zip)
@@ -167,6 +169,28 @@ module Caracal
     # Private Instance Methods
     #------------------------------------------------------
     private
+
+    #============ PREPROCESSING ===========================
+
+    # Iframes inside table cells can't register their namespaces
+    # on the document when they're created, so collect them here.
+    #
+    def register_nested_iframes(models)
+      models.each do |model|
+        case model
+        when Caracal::Core::Models::IFrameModel
+          model.namespaces.each do |(prefix, href)|
+            namespace({ prefix: prefix, href: href })
+          end
+          model.ignorables.each do |prefix|
+            ignorable(prefix)
+          end
+        when Caracal::Core::Models::TableModel
+          model.cells.each { |cell| register_nested_iframes(cell.contents) }
+        end
+      end
+    end
+
 
     #============ RENDERERS ===============================
 

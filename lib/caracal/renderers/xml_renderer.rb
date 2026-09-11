@@ -71,6 +71,14 @@ module Caracal
         { 'w:rsidR' => '00000000', 'w:rsidRPr' => '00000000', 'w:rsidDel' => '00000000' }
       end
 
+      # This method removes control characters that XML 1.0 doesn't
+      # allow. A single one makes Word reject the whole document.
+      #
+      def xml_safe(value)
+        str = value.to_s
+        str.valid_encoding? ? str.gsub(/[\x00-\x08\x0B\x0C\x0E-\x1F]/, '') : str
+      end
+
       # These save options force Nokogiri to remove indentation and
       # line feeds from the output.
       #
