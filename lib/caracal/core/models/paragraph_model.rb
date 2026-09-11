@@ -27,6 +27,7 @@ module Caracal
         attr_reader :paragraph_italic
         attr_reader :paragraph_underline
         attr_reader :paragraph_bgcolor
+        attr_reader :paragraph_keep_next
 
         # initialization
         def initialize(options={}, &block)
@@ -63,7 +64,7 @@ module Caracal
         #========== SETTERS ===============================
 
         # booleans
-        [:bold, :italic, :underline].each do |m|
+        [:bold, :italic, :keep_next, :underline].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@paragraph_#{ m }", !!value)
           end
