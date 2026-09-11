@@ -394,6 +394,7 @@ module Caracal
 
       def render_table_row_properties(xml, model, index)
         xml['w'].trPr do
+          xml['w'].cantSplit if model.cant_split?(index)
           xml['w'].tblHeader if index < model.table_header_rows
         end
       end

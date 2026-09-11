@@ -692,6 +692,22 @@ docx.table [['Header 1', 'Header 2'],['Cell 1', 'Cell 2']] do
 end
 ```
 
+Row can be marked as can't split rows that re-position themselves at the top of the next if they would have otherwise split across a page break.
+
+```
+docx.table [['11', '22'], ['14', '25'], ['64', '23']] do
+  cant_split rows[1]
+end
+```
+
+or
+
+```
+docx.table [['11', '22'], ['14', '25'], ['64', '23']] do
+  cant_split rows[1...-1]
+end
+```
+
 
 ### Table Cells
 
