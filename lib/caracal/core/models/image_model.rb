@@ -115,7 +115,7 @@ module Caracal
         private
         
         def option_keys
-          [:url, :width, :height, :align, :top, :bottom, :left, :right]
+          [:url, :data, :width, :height, :align, :top, :bottom, :left, :right]
         end
         
         def pixels_to_emus(value, ppi)

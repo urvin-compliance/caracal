@@ -4,7 +4,7 @@ module Caracal
   module Core
     module Models
 
-      # This class handles block options passed to the img method.
+      # This class handles block options passed to the iframe method.
       #
       class IFrameModel < BaseModel
 
