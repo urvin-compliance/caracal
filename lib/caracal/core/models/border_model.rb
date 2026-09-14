@@ -18,7 +18,7 @@ module Caracal
         const_set(:DEFAULT_BORDER_COLOR,    'auto')
         const_set(:DEFAULT_BORDER_LINE,     :single) 
         const_set(:DEFAULT_BORDER_SIZE,     4)        # 0.5pt in 1/8 points
-        const_set(:DEFAULT_BORDER_SPACING,  1)        # 0.125pt in 1/8 points
+        const_set(:DEFAULT_BORDER_SPACING,  1)        # 1pt. w:space is measured in points, not 1/8 points.
         const_set(:DEFAULT_BORDER_TYPE,     :top)
         
         # accessors

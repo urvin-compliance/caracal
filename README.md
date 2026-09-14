@@ -506,7 +506,7 @@ docx.hr do
   color   '333333'   # sets the color of the line. defaults to auto.
   line    :double    # sets the line style (single or double). defaults to single.
   size    8          # sets the thickness of the line. units in 1/8 points. defaults to 4.
-  spacing 4          # sets the spacing around the line. units in 1/8 points. defaults to 1.
+  spacing 4          # sets the space between the line and the surrounding text. units in points. defaults to 1.
 end
 ```
 
@@ -641,8 +641,8 @@ The `table` command accepts data in the form of a two-dimensional arrays. This c
 docx.table [['Header 1','Header 2'],['Cell 1', 'Cell 2']] do
   border_color   '666666'   # sets the border color. defaults to 'auto'.
   border_line    :single    # sets the border style. defaults to :single. see OOXML docs for details.
-  border_size    4          # sets the border width. defaults to 0. units in twips.
-  border_spacing 4          # sets the spacing around the border. defaults to 0. units in twips.
+  border_size    4          # sets the border width. defaults to 0. units in 1/8 points.
+  border_spacing 4          # sets the space between the border and the cell text. defaults to 0. units in points.
   column_widths  [2400, 1200]
                             # sets an explicit width for each column in the table grid. units in twips.
                             # defaults to the widths of the cells in the first row.
