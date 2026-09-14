@@ -643,6 +643,18 @@ docx.table [['Header 1','Header 2'],['Cell 1', 'Cell 2']] do
   border_line    :single    # sets the border style. defaults to :single. see OOXML docs for details.
   border_size    4          # sets the border width. defaults to 0. units in twips.
   border_spacing 4          # sets the spacing around the border. defaults to 0. units in twips.
+  column_widths  [2400, 1200]
+                            # sets an explicit width for each column in the table grid. units in twips.
+                            # defaults to the widths of the cells in the first row.
+end
+```
+
+By default, the table grid is built from the cells in the first row. When that row contains a cell with a `colspan`, the grid can't be derived from it correctly and every column ends up the same width. `column_widths` sets the grid explicitly instead, taking one width per column.
+
+```ruby
+docx.table [['Spans two columns'], ['Cell 1', 'Cell 2']] do
+  cell_style rows[0][0], colspan: 2
+  column_widths [2400, 1200]
 end
 ```
 
