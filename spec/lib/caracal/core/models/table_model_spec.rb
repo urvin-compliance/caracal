@@ -227,7 +227,7 @@ describe Caracal::Core::Models::TableModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)     { subject.send(:option_keys).sort }
-      let(:expected1)  { [:data, :align, :width] }
+      let(:expected1)  { [:data, :align, :width, :column_widths] }
       let(:expected2)  { [:border_color, :border_line, :border_size, :border_spacing] }
       let(:expected3)  { [:border_top, :border_bottom, :border_left, :border_right, :border_horizontal, :border_vertical] }
       let(:expected)   { (expected1 + expected2 + expected3).sort }
