@@ -85,6 +85,36 @@ describe Caracal::Document do
 
 
   #-------------------------------------------------------------
+  # Table column widths
+  #-------------------------------------------------------------
+
+  describe 'table grid column widths' do
+    let(:data) do
+      [
+        [{ content: 'First', width: 2400 }, { content: 'Second', width: 1200 }],
+        [{ content: 'Third', width: 1800 }, { content: 'Fourth', width: 1800 }]
+      ]
+    end
+
+    it 'uses explicit column widths when set' do
+      docx = described_class.new('test.docx')
+      docx.table(data) { column_widths [1000, 2600] }
+
+      xml = strict_xml(parts(docx)['word/document.xml'])
+      expect(xml.xpath('//w:tbl/w:tblGrid/w:gridCol/@w:w', W_NS).map(&:value)).to eq %w(1000 2600)
+    end
+
+    it 'falls back to the first row widths otherwise' do
+      docx = described_class.new('test.docx')
+      docx.table(data)
+
+      xml = strict_xml(parts(docx)['word/document.xml'])
+      expect(xml.xpath('//w:tbl/w:tblGrid/w:gridCol/@w:w', W_NS).map(&:value)).to eq %w(2400 1200)
+    end
+  end
+
+
+  #-------------------------------------------------------------
   # Iframes
   #-------------------------------------------------------------
 

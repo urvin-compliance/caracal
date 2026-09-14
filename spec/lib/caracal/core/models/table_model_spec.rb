@@ -196,6 +196,13 @@ describe Caracal::Core::Models::TableModel do
       
       it { expect(subject.table_width).to eq 7500 }
     end
+
+    # .column_widths
+    describe '.column_widths' do
+      before { subject.column_widths([2400, '1200']) }
+
+      it { expect(subject.table_column_widths).to eq [2400, 1200] }
+    end
     
     
     
