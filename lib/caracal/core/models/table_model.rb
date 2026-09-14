@@ -39,7 +39,8 @@ module Caracal
         attr_reader :table_border_horizontal  # returns border model
         attr_reader :table_border_vertical    # returns border model
         attr_reader :table_header_rows
-        
+        attr_reader :table_column_widths
+
         # initialization
         def initialize(options={}, &block)
           @table_align          = DEFAULT_TABLE_ALIGN
@@ -122,14 +123,14 @@ module Caracal
           models.each do |r|
             @table_rows_cant_split[rows.index(r)] = true
           end
-        end  
+        end
         
-        # This method returns true or false depending on 
+        # This method returns true or false depending on
         # if a row has been marked as a can't split row
-        # via the cant_split method.  
+        # via the cant_split method.
         def cant_split?(row_index)
           !!@table_rows_cant_split[row_index]
-        end        
+        end
 
         #=============== GETTERS ==============================
         
@@ -178,7 +179,12 @@ module Caracal
             instance_variable_set("@table_#{ m }", value.to_s.to_sym)
           end
         end
-        
+
+        # column widths
+        def column_widths(value)
+          @table_column_widths = value.map(&:to_i) if value.is_a?(Array)
+        end
+
         # .data
         def data(value)
           begin
@@ -226,6 +232,7 @@ module Caracal
           k << [:data, :align, :width]
           k << [:border_color, :border_line, :border_size, :border_spacing]
           k << [:border_bottom, :border_left, :border_right, :border_top, :border_horizontal, :border_vertical]
+          k << [:column_widths]
           k.flatten
         end
         

@@ -196,6 +196,13 @@ describe Caracal::Core::Models::TableModel do
       
       it { expect(subject.table_width).to eq 7500 }
     end
+
+    # .column_widths
+    describe '.column_widths' do
+      before { subject.column_widths([2400, '1200']) }
+
+      it { expect(subject.table_column_widths).to eq [2400, 1200] }
+    end
     
     
     
@@ -227,7 +234,7 @@ describe Caracal::Core::Models::TableModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)     { subject.send(:option_keys).sort }
-      let(:expected1)  { [:data, :align, :width] }
+      let(:expected1)  { [:data, :align, :width, :column_widths] }
       let(:expected2)  { [:border_color, :border_line, :border_size, :border_spacing] }
       let(:expected3)  { [:border_top, :border_bottom, :border_left, :border_right, :border_horizontal, :border_vertical] }
       let(:expected)   { (expected1 + expected2 + expected3).sort }
