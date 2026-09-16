@@ -1,3 +1,24 @@
+#### v1.5.0
+
+* Enhancements
+  * Added the `keep_next` paragraph property, which keeps a paragraph on the same page as the one following it. (@benjaminketron)
+  * Added the `header_rows` table method, which repeats the leading rows of a table after each page break. (@benjaminketron)
+  * Added the `cant_split` and `cant_split?` table methods, which keep a row from splitting across a page break. (@benjaminketron)
+  * Added the `column_widths` table method, which sets the table grid explicitly instead of deriving it from the first row. (@martinsp)
+  * Widened the rubyzip dependency to `>= 1.1.6, < 4.0`, allowing rubyzip 3.x. (@acwertman)
+  * Added continuous integration across Ruby 3.1-4.0 and both supported rubyzip lines. (@dlauer)
+  * Declared `required_ruby_version >= 3.1`. (@dlauer)
+  * Documented the trust contract for image and iframe sources in a new Security section. (@dlauer)
+
+* Bug Fixes
+  * Images and iframes are no longer loaded through `Kernel#open`, which executed a target beginning with `|` as a shell command, stopped fetching URLs entirely on Ruby 3.0 and later, and read in text mode on Windows, corrupting image data. Both are now read in binary, with `URI.open` for http(s) targets and `File.binread` for local paths. (@LItterBoy-GB, @dlauer)
+  * Removed control characters that XML does not permit from text, links, table cells, page number labels and custom properties. A single such character made Word reject the entire document. (@dlauer)
+  * Image part names and content types are now derived from the image data when it is supplied, rather than from the URL. This fixes presigned URLs, extensionless URLs and images carried in embedded documents. Registered content types for bmp, tiff and svg. (@dlauer)
+  * `iframe` now works inside table cells. (@catmando, @dlauer)
+  * Raised the rubyzip floor past versions whose `write_buffer` required an argument, which raised `ArgumentError` on save. (@acwertman)
+  * Corrected the documented units for table border and rule spacing, which are points rather than twips or eighths of a point. (@dlauer)
+
+
 #### v1.4.1
 
 * Bug Fixes
