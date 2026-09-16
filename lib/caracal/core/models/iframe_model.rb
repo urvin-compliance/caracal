@@ -89,11 +89,11 @@ module Caracal
 
         def file
           @file ||= begin
-            content = iframe_url.nil? ? iframe_data : ::Caracal::Utilities.read_resource(iframe_url)
+            content = iframe_url.to_s.empty? ? iframe_data : ::Caracal::Utilities.read_resource(iframe_url)
             file    = Tempfile.new(['iframe', '.docx'])
             file.binmode
             file.write content
-            file.rewind
+            file.close    # flushes the write; rubyzip reopens by path
             file
           end
         end

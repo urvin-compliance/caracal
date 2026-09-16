@@ -189,6 +189,14 @@ describe Caracal::Document do
       expect(xml.at_xpath('//w:tc//w:t[.="Text from the iframe"]', W_NS)).not_to be_nil
     end
 
+    it 'uses the data when the url is explicitly nil' do
+      docx = described_class.new('test.docx')
+      docx.iframe url: nil, data: snippet
+
+      xml = strict_xml(parts(docx)['word/document.xml'])
+      expect(xml.at_xpath('//w:body/w:p/w:r/w:t[.="Text from the iframe"]', W_NS)).not_to be_nil
+    end
+
     it 'renders an iframe fetched from a URL' do
       url  = 'https://www.example.com/snippet.docx'
       data = snippet
