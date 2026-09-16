@@ -1,3 +1,4 @@
+require 'tempfile'
 require 'caracal/core/models/base_model'
 
 module Caracal
@@ -88,13 +89,11 @@ module Caracal
 
         def file
           @file ||= begin
-            if iframe_url.nil?
-              file = Tempfile.new('iframe')
-              file.write iframe_data
-              file.rewind
-            else
-              file = open(iframe_url)
-            end
+            content = iframe_url.to_s.empty? ? iframe_data : ::Caracal::Utilities.read_resource(iframe_url)
+            file    = Tempfile.new(['iframe', '.docx'])
+            file.binmode
+            file.write content
+            file.close    # flushes the write; rubyzip reopens by path
             file
           end
         end

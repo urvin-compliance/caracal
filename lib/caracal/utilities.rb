@@ -1,3 +1,5 @@
+require 'open-uri'
+
 # We're using this strategy borrowed from ActiveSupport to
 # make command syntax a little more flexible. In a perfect 
 # world we'd just use the double splat feature of Ruby, but 
@@ -18,6 +20,19 @@ module Caracal
         {}
       end
     end
-    
+
+    # Reads binary content from an http(s) URL or a local file path.
+    # Avoids Kernel#open, which no longer fetches URLs on Ruby 3+,
+    # reads in text mode on Windows, and runs a leading "|" as a
+    # shell command.
+    def self.read_resource(location)
+      location = location.to_s
+      if location =~ /\Ahttps?:\/\//i
+        URI.open(location, 'rb', &:read)
+      else
+        File.binread(location)
+      end
+    end
+
   end
 end
