@@ -19,19 +19,10 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'nokogiri', '~> 1.6'
-  # Relaxed from ~> 1.1 by PTAG Inc.
-  #
-  # rubyzip < 3.4.0 carries CVE-2026-85396 (path traversal, High), and the
-  # original cap made the fixed version unreachable for any app that also
-  # depends on caracal.
-  #
-  # Caracal touches only three rubyzip call sites -- Zip::OutputStream
-  # .write_buffer (document.rb) and Zip::File.open (document_renderer.rb,
-  # iframe_model.rb) -- all of which are present and unchanged in rubyzip 3.x.
-  spec.add_dependency 'rubyzip',  '>= 1.1', '< 4.0'
+  spec.add_dependency 'rubyzip',  '>= 1.1.6', '< 4.0'
   spec.add_dependency 'tilt',     '>= 1.4'
 
-  spec.add_development_dependency 'bundler',  '~> 1.3'
-  spec.add_development_dependency 'rake',     '~> 10.0'
+  spec.add_development_dependency 'bundler',  '>= 1.3'
+  spec.add_development_dependency 'rake',     '>= 10.0'
   spec.add_development_dependency 'rspec',    '~> 3.0'
 end
