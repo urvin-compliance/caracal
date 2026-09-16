@@ -1,4 +1,4 @@
-Copyright (c) 2014 Trade Informatics, Inc.
+Copyright (c) 2014 Urvin LLC
 
 MIT License
 

@@ -892,6 +892,6 @@ A tip of the hat to the wonderful PDF generation library [Prawn](https://github.
 
 ## License
 
-Copyright (c) 2014 Trade Informatics, Inc
+Copyright (c) 2014 Urvin LLC
 
 [MIT License](https://github.com/trade-informatics/caracal/blob/master/LICENSE.txt)

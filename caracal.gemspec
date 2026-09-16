@@ -6,7 +6,7 @@ require 'caracal/version'
 Gem::Specification.new do |spec|
   spec.name          = 'caracal'
   spec.version       = Caracal::VERSION
-  spec.authors       = ['Trade Infomatics', 'John Dugan']
+  spec.authors       = ['Urvin LLC', 'John Dugan', 'Dave Lauer']
   spec.email         = ['jpdugan@gmail.com']
   spec.summary       = %q{ Fast, professional Microsoft Word (docx) writer for Ruby. }
   spec.description   = %q{ Caracal is a pure Ruby Microsoft Word generation library that produces professional quality MSWord documents (docx) using a simple, HTML-style DSL. }
