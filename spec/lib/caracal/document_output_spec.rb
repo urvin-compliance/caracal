@@ -1,11 +1,14 @@
 require 'spec_helper'
 require 'stringio'
+require 'tempfile'
 
 describe Caracal::Document do
   W_NS = { 'w' => 'http://schemas.openxmlformats.org/wordprocessingml/2006/main' }
 
   let(:png)  { 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='.unpack1('m') }
   let(:jpeg) { "\xFF\xD8\xFF\xE0".b + 'rest of jpeg' }
+  # the PNG plus bytes a text-mode read would mangle on Windows
+  let(:image_bytes) { png + "\r\n\x1A\r\n".b }
 
   def parts(docx)
     result = {}
@@ -85,6 +88,49 @@ describe Caracal::Document do
 
 
   #-------------------------------------------------------------
+  # Image sources
+  #-------------------------------------------------------------
+
+  describe 'image sources' do
+    def media(docx)
+      parts(docx).select { |name, _| name.start_with?('word/media/') }.values
+    end
+
+    it 'embeds a local image byte-for-byte' do
+      file = Tempfile.new(['image', '.png'])
+      file.binmode
+      file.write(image_bytes)
+      file.close
+
+      docx = described_class.new('test.docx')
+      docx.img file.path, width: 10, height: 10
+
+      expect(media(docx)).to eq [image_bytes]
+    end
+
+    it 'fetches an http(s) image via URI.open' do
+      url = 'https://www.example.com/image.png'
+      bytes = image_bytes
+      expect(URI).to receive(:open).with(url, 'rb') { |*_, &blk| blk.call(StringIO.new(bytes)) }
+
+      docx = described_class.new('test.docx')
+      docx.img url, width: 10, height: 10
+
+      expect(media(docx)).to eq [bytes]
+    end
+
+    it 'does not run a "|" target as a shell command' do
+      marker = File.join(Dir.tmpdir, "caracal-pipe-#{ Process.pid }")
+      docx   = described_class.new('test.docx')
+      docx.img "|touch #{ marker }", width: 10, height: 10
+
+      expect { docx.render }.to raise_error(Errno::ENOENT)
+      expect(File.exist?(marker)).to eq false
+    end
+  end
+
+
+  #-------------------------------------------------------------
   # Table column widths
   #-------------------------------------------------------------
 
@@ -141,6 +187,18 @@ describe Caracal::Document do
 
       xml = strict_xml(parts(docx)['word/document.xml'])
       expect(xml.at_xpath('//w:tc//w:t[.="Text from the iframe"]', W_NS)).not_to be_nil
+    end
+
+    it 'renders an iframe fetched from a URL' do
+      url  = 'https://www.example.com/snippet.docx'
+      data = snippet
+      expect(URI).to receive(:open).with(url, 'rb') { |*_, &blk| blk.call(StringIO.new(data)) }
+
+      docx = described_class.new('test.docx')
+      docx.iframe url: url
+
+      xml = strict_xml(parts(docx)['word/document.xml'])
+      expect(xml.at_xpath('//w:body/w:p/w:r/w:t[.="Text from the iframe"]', W_NS)).not_to be_nil
     end
   end
 end

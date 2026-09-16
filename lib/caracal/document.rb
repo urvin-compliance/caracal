@@ -249,7 +249,7 @@ module Caracal
         if rel.relationship_data.to_s.size > 0
           content = rel.relationship_data
         else
-          content = open(rel.relationship_target).read
+          content = ::Caracal::Utilities.read_resource(rel.relationship_target)
         end
 
         zip.put_next_entry("word/#{ rel.formatted_target }")
