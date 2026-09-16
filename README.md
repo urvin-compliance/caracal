@@ -11,7 +11,7 @@ Caracal is not a magical HTML to Word translator. Instead, it is a markup langua
 
 Or, said differently, if you use [Prawn](https://github.com/prawnpdf/prawn) for PDF generation, you'll probably like Caracal. Only you'll probably like it better. :)
 
-Please see the [caracal-example](https://github.com/trade-informatics/caracal-example) repository for
+Please see the [caracal-example](https://github.com/urvin-compliance/caracal-example) repository for
 a working demonstration of the library's capabilities.
 
 
@@ -820,12 +820,12 @@ Again, this feature is considered experimental.  Use at your own risk/discretion
 
 Caracal includes [Tilt](https://github.com/rtomayko/tilt) integration to facilitate its inclusion in other frameworks.
 
-Rails integration can be added via the [Caracal-Rails](https://github.com/trade-informatics/caracal-rails) gem.
+Rails integration can be added via the [Caracal-Rails](https://github.com/urvin-compliance/caracal-rails) gem.
 
 
 ## Using Variables
 
-Lexical scope is a pretty big challenge for Caracal and it often confuses new users. This [closed issue](https://github.com/trade-informatics/caracal/issues/71) covers the discussion both from the user and library persepctive.
+Lexical scope is a pretty big challenge for Caracal and it often confuses new users. This [closed issue](https://github.com/urvin-compliance/caracal/issues/71) covers the discussion both from the user and library persepctive.
 
 
 ## Filing an Issue
@@ -844,7 +844,7 @@ happy to answer questions and provide what guidance we can. We just won't write 
 
 For those using reasonably current versions of Word, please consider the following:
 
-- Before you file an issue, please run the example Caracal project [caracal-example](https://github.com/trade-informatics/caracal-example) in your development environment and
+- Before you file an issue, please run the example Caracal project [caracal-example](https://github.com/urvin-compliance/caracal-example) in your development environment and
 check the output.  This project implements nearly every feature Caracal supports and renders the expected output
 correctly.  It can be thought of as a canonical implementation of the library.
 
@@ -873,7 +873,7 @@ for 2010/2013, a set for 2016, etc.).
 
 ## Contributing
 
-1. Fork it ( https://github.com/trade-informatics/caracal/fork )
+1. Fork it ( https://github.com/urvin-compliance/caracal/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
@@ -894,4 +894,4 @@ A tip of the hat to the wonderful PDF generation library [Prawn](https://github.
 
 Copyright (c) 2014 Urvin LLC
 
-[MIT License](https://github.com/trade-informatics/caracal/blob/master/LICENSE.txt)
+[MIT License](https://github.com/urvin-compliance/caracal/blob/master/LICENSE.txt)
