@@ -207,6 +207,19 @@ All Caracal models perform basic validations on their attributes, but this is, w
 In forthcoming versions of Caracal, we'll be looking to expand the `InvalidModelError` class to provide broader error reporting abilities across the entire library.
 
 
+## Security
+
+Caracal reads whatever path or URL you hand it. Both `img` and `iframe` accept a local filesystem path or an http(s) URL, and Caracal reads or fetches it while the document renders.
+
+**Treat those values as trusted input.** If a path or URL can be influenced by an end user, validate it before passing it to Caracal:
+
+* **Local paths** are read with the permissions of your application's process. Any file that process can read can be embedded in the generated document, so `docx.img '/etc/passwd'` embeds the contents of that file.
+* **URLs** are fetched from your application's network position, and redirects are followed. A user-supplied URL can therefore reach internal services, `localhost`, or cloud metadata endpoints that are not otherwise reachable from outside.
+* **Documents embedded with `iframe`** are parsed, and their markup is copied into your output. Only embed documents you trust. See [IFrames](#iframes).
+
+Caracal deliberately does not restrict paths, hosts, or directories, because it cannot know what is legitimate for your application. That policy belongs in your code: an allowlist of permitted directories or hosts, or simply never passing user-supplied values through to Caracal.
+
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -626,6 +639,8 @@ is a bit hacky, but it allows the library to key the image more effectively and
 Caracal needs a file extension to apply to the renamed media file. This seemed
 the simplest solution to both problems.*
 
+*If the URL or path can come from user input, read [Security](#security) first. Caracal will read any local file your process can read, and will fetch any URL you give it.*
+
 
 ### Tables
 
@@ -797,6 +812,8 @@ advanced features of Word require similar adjustments, Caracal won't know to do 
 will not operate as expected in the parent Caracal document.
 
 Again, this feature is considered experimental.  Use at your own risk/discretion.
+
+**Only embed documents you trust.** Caracal parses the file you supply and copies its markup into your output, so the embedded document controls part of the result. Caracal also places no limit on how much data it will decompress while reading the file, so a small crafted document can expand to an arbitrarily large one in memory. Documents uploaded by untrusted users should not be passed to `iframe` without your own validation. See [Security](#security).
 
 
 ## Template Rendering
