@@ -113,7 +113,7 @@ module Caracal
           r_href     = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
 
           entry      = zip.glob('word/document.xml').first
-          content    = entry.get_input_stream.read
+          content    = Caracal::Core::Models::IFrameModel.read_entry(entry)
           doc_xml    = Nokogiri::XML(content)
 
           fragment = doc_xml.xpath('//w:body').first.children

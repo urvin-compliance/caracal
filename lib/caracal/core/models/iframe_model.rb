@@ -1,5 +1,6 @@
 require 'tempfile'
 require 'caracal/core/models/base_model'
+require 'caracal/errors'
 
 module Caracal
   module Core
@@ -12,6 +13,9 @@ module Caracal
         #--------------------------------------------------
         # Configuration
         #--------------------------------------------------
+
+        # constants
+        const_set(:DEFAULT_MAX_ENTRY_SIZE, 50 * 1024 * 1024)   # 50MB
 
         # accessors
         attr_reader :iframe_url
@@ -27,6 +31,37 @@ module Caracal
 
 
         #--------------------------------------------------
+        # Class Methods
+        #--------------------------------------------------
+
+        # The largest single entry Caracal will read out of an embedded
+        # document. Zip entries expand to many times their stored size, so
+        # without a limit a small file can exhaust memory. Set to nil to
+        # disable the check.
+        #
+        def self.max_entry_size
+          defined?(@max_entry_size) ? @max_entry_size : DEFAULT_MAX_ENTRY_SIZE
+        end
+
+        def self.max_entry_size=(value)
+          @max_entry_size = value
+        end
+
+        # This method reads a single entry from an embedded document,
+        # refusing anything larger than :max_entry_size.
+        #
+        def self.read_entry(entry)
+          limit = max_entry_size
+
+          if limit && entry.size > limit
+            raise Caracal::Errors::InvalidModelError, "iframe entry #{ entry.name } is #{ entry.size } bytes, over the #{ limit } byte limit."
+          end
+
+          entry.get_input_stream.read
+        end
+
+
+        #--------------------------------------------------
         # Public Methods
         #--------------------------------------------------
 
@@ -36,12 +71,12 @@ module Caracal
           ::Zip::File.open(file) do |zip|
             # locate relationships xml
             entry      = zip.glob('word/_rels/document.xml.rels').first
-            content    = entry.get_input_stream.read
+            content    = self.class.read_entry(entry)
             rel_xml    = Nokogiri::XML(content)
 
             # locate document xml
             entry      = zip.glob('word/document.xml').first
-            content    = entry.get_input_stream.read
+            content    = self.class.read_entry(entry)
             doc_xml    = Nokogiri::XML(content)
 
             # master nodesets
@@ -75,7 +110,7 @@ module Caracal
               p_node  = node.children[0].children[0]
               p_id    = p_node.attributes['id'].to_s.to_i
               p_name  = p_node.attributes['name'].to_s
-              p_data  = zip.glob(r_media).first.get_input_stream.read
+              p_data  = self.class.read_entry(zip.glob(r_media).first)
 
               # register relationship
               array << { id: r_id, type: 'image', target: p_name, data: p_data }

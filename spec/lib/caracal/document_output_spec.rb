@@ -209,4 +209,40 @@ describe Caracal::Document do
       expect(xml.at_xpath('//w:body/w:p/w:r/w:t[.="Text from the iframe"]', W_NS)).not_to be_nil
     end
   end
+
+
+  #-------------------------------------------------------------
+  # Embedded document size limits
+  #-------------------------------------------------------------
+
+  describe 'embedded document entry size limit' do
+    let(:model) { Caracal::Core::Models::IFrameModel }
+
+    # rels is small enough to pass; document.xml is deliberately not
+    let(:oversized) do
+      Zip::OutputStream.write_buffer do |zip|
+        zip.put_next_entry('word/_rels/document.xml.rels')
+        zip.write '<?xml version="1.0"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"></Relationships>'
+        zip.put_next_entry('word/document.xml')
+        zip.write '<?xml version="1.0"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>' + ('<!-- padding -->' * 200) + '<w:sectPr/></w:body></w:document>'
+      end.string
+    end
+
+    around do |example|
+      previous = model.max_entry_size
+      model.max_entry_size = 1024
+      example.run
+      model.max_entry_size = previous
+    end
+
+    it 'defaults to 50MB' do
+      expect(model::DEFAULT_MAX_ENTRY_SIZE).to eq 50 * 1024 * 1024
+    end
+
+    it 'refuses an entry larger than the limit' do
+      docx = described_class.new('test.docx')
+
+      expect { docx.iframe data: oversized }.to raise_error(Caracal::Errors::InvalidModelError, /over the 1024 byte limit/)
+    end
+  end
 end
