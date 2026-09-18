@@ -13,6 +13,12 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/urvin-compliance/caracal'
   spec.license       = 'MIT'
 
+  spec.metadata      = {
+    'source_code_uri' => 'https://github.com/urvin-compliance/caracal',
+    'changelog_uri'   => 'https://github.com/urvin-compliance/caracal/blob/master/CHANGELOG.md',
+    'bug_tracker_uri' => 'https://github.com/urvin-compliance/caracal/issues'
+  }
+
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
@@ -20,7 +26,7 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 3.1'
 
-  spec.add_dependency 'nokogiri', '~> 1.6'
+  spec.add_dependency 'nokogiri', '>= 1.16.2', '< 2.0'
   spec.add_dependency 'rubyzip',  '>= 1.1.6', '< 4.0'
   spec.add_dependency 'tilt',     '>= 1.4'
 
