@@ -35,17 +35,27 @@ module Caracal
                   end
                 end
               end
+              # A complex field is a *sequence* of runs: a begin character, the
+              # instruction text, a separate character, and an end character.
+              # Packing them into a single run, or omitting the separate
+              # character, leaves viewers that do not evaluate fields showing
+              # the raw instruction ("PAGE") instead of the page number.
               xml['w'].r run_options do
-                xml['w'].rPr do
-                  unless document.page_number_number_size.nil?
-                    xml['w'].sz({ 'w:val'  => document.page_number_number_size })
-                    xml['w'].szCs({ 'w:val' => document.page_number_number_size })
-                  end
-                end
+                render_number_properties(xml)
                 xml['w'].fldChar({ 'w:fldCharType' => 'begin' })
+              end
+              xml['w'].r run_options do
+                render_number_properties(xml)
                 xml['w'].instrText({ 'xml:space' => 'preserve' }) do
-                  xml.text 'PAGE'
+                  xml.text ' PAGE '
                 end
+              end
+              xml['w'].r run_options do
+                render_number_properties(xml)
+                xml['w'].fldChar({ 'w:fldCharType' => 'separate' })
+              end
+              xml['w'].r run_options do
+                render_number_properties(xml)
                 xml['w'].fldChar({ 'w:fldCharType' => 'end' })
               end
               xml['w'].r run_options do
@@ -64,6 +74,18 @@ module Caracal
       # Private Methods
       #-------------------------------------------------------------
       private
+
+      # This method renders the run properties shared by every run of the
+      # page number field, so the result Word computes is sized correctly.
+      #
+      def render_number_properties(xml)
+        xml['w'].rPr do
+          unless document.page_number_number_size.nil?
+            xml['w'].sz({ 'w:val'  => document.page_number_number_size })
+            xml['w'].szCs({ 'w:val' => document.page_number_number_size })
+          end
+        end
+      end
 
       def root_options
         {

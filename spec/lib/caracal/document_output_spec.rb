@@ -245,4 +245,35 @@ describe Caracal::Document do
       expect { docx.iframe data: oversized }.to raise_error(Caracal::Errors::InvalidModelError, /over the 1024 byte limit/)
     end
   end
+
+
+  #-------------------------------------------------------------
+  # Page number field
+  #-------------------------------------------------------------
+
+  describe 'the page number field' do
+    let(:footer) do
+      docx = described_class.new('test.docx')
+      docx.page_numbers true
+      strict_xml(parts(docx)['word/footer1.xml'])
+    end
+
+    it 'emits begin, separate and end field characters' do
+      types = footer.xpath('//w:fldChar/@w:fldCharType', W_NS).map(&:value)
+
+      expect(types).to eq %w(begin separate end)
+    end
+
+    it 'carries PAGE as the field instruction' do
+      expect(footer.at_xpath('//w:instrText', W_NS).text.strip).to eq 'PAGE'
+    end
+
+    it 'spreads the field across separate runs rather than packing one' do
+      field_runs = footer.xpath('//w:ftr/w:p/w:r', W_NS).select do |run|
+        run.at_xpath('w:fldChar', W_NS) || run.at_xpath('w:instrText', W_NS)
+      end
+
+      expect(field_runs.size).to eq 4
+    end
+  end
 end
