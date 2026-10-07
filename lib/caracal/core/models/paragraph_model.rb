@@ -192,7 +192,7 @@ module Caracal
         private
 
         def option_keys
-          [:content, :style, :align, :color, :size, :bold, :italic, :underline, :bgcolor]
+          [:content, :style, :align, :color, :size, :bold, :italic, :underline, :bgcolor, :keep_next]
         end
 
       end

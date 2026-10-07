@@ -232,7 +232,7 @@ module Caracal
           k << [:data, :align, :width]
           k << [:border_color, :border_line, :border_size, :border_spacing]
           k << [:border_bottom, :border_left, :border_right, :border_top, :border_horizontal, :border_vertical]
-          k << [:column_widths]
+          k << [:column_widths, :header_rows]
           k.flatten
         end
         
