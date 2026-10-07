@@ -20,10 +20,17 @@ module Caracal
             options = Caracal::Utilities.extract_options!(args)
 
             model = Caracal::Core::Models::HeaderModel.new(options, &block)
-
-            @header_content = model
-
+            if model.valid?
+              relationship({ target: 'header1.xml', type: :header })
+              @header_content = model
+            else
+              raise Caracal::Errors::InvalidModelError, 'header must contain at least one paragraph, list, table, rule or image.'
+            end
             model
+          end
+
+          def header_content
+            @header_content
           end
         end
       end

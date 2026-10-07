@@ -97,6 +97,8 @@ module Caracal
       # File.open(docx.path, 'wb') { |f| f.write(buffer.string) }
     end
 
+
+
     #------------------------------------------------------
     # Public Instance Methods
     #------------------------------------------------------
@@ -130,14 +132,6 @@ module Caracal
     #
     def contents
       @contents ||= []
-    end
-
-    def footer_content
-      @footer_content
-    end
-
-    def header_content
-      @header_content
     end
 
 
@@ -253,13 +247,19 @@ module Caracal
 
       zip.put_next_entry('word/footer1.xml')
       zip.write(content)
+
+      render_part_relationships(zip, 'footer1.xml', footer_content)
     end
 
     def render_header(zip)
+      return if header_content.nil?
+
       content = ::Caracal::Renderers::HeaderRenderer.render(self)
 
       zip.put_next_entry('word/header1.xml')
       zip.write(content)
+
+      render_part_relationships(zip, 'header1.xml', header_content)
     end
 
     def render_media(zip)
@@ -294,6 +294,18 @@ module Caracal
       content = ::Caracal::Renderers::RelationshipsRenderer.render(self)
 
       zip.put_next_entry('word/_rels/document.xml.rels')
+      zip.write(content)
+    end
+
+    # Headers and footers resolve their images and links against their
+    # own relationships part, not the document's.
+    #
+    def render_part_relationships(zip, part, model)
+      return if model.nil? || model.relationships.empty?
+
+      content = ::Caracal::Renderers::RelationshipsRenderer.render(self, model.relationships)
+
+      zip.put_next_entry("word/_rels/#{ part }.rels")
       zip.write(content)
     end
 

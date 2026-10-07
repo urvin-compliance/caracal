@@ -31,11 +31,15 @@ module Caracal
               #============= PAGE SETTINGS ==============================
 
               xml['w'].sectPr do
-                if rel = document.find_relationship('footer1.xml')
-                  xml['w'].footerReference({ 'r:id' => rel.formatted_id, 'w:type' => 'default' })
+                if document.header_content
+                  if rel = document.find_relationship('header1.xml')
+                    xml['w'].headerReference({ 'r:id' => rel.formatted_id, 'w:type' => 'default' })
+                  end
                 end
-                if rel = document.find_relationship('header1.xml')
-                  xml['w'].headerReference({ 'r:id' => rel.formatted_id, 'w:type' => 'default' })
+                if document.page_number_show || document.footer_content
+                  if rel = document.find_relationship('footer1.xml')
+                    xml['w'].footerReference({ 'r:id' => rel.formatted_id, 'w:type' => 'default' })
+                  end
                 end
                 xml['w'].pgSz page_size_options
                 xml['w'].pgMar page_margin_options
@@ -62,6 +66,13 @@ module Caracal
       def render_method_for_model(model)
         type = model.class.name.split('::').last.downcase.gsub('model', '')
         "render_#{ type }"
+      end
+
+      # This method registers a relationship needed by the part being
+      # rendered. Images and links in the body belong to the document.
+      #
+      def relationship(options)
+        document.relationship(options)
       end
 
       # This method renders a standard node of run properties based on the
@@ -146,7 +157,7 @@ module Caracal
           raise Caracal::Errors::NoDefaultStyleError 'Document must declare a default paragraph style.'
         end
 
-        rel      = document.relationship({ type: :image, target: model.image_url, data: model.image_data })
+        rel      = relationship({ type: :image, target: model.image_url, data: model.image_data })
         rel_id   = rel.relationship_id
         rel_name = rel.formatted_target
 
@@ -206,7 +217,7 @@ module Caracal
 
       def render_link(xml, model)
         if model.external?
-          rel = document.relationship({ target: model.link_href, type: :link })
+          rel = relationship({ target: model.link_href, type: :link })
           hyperlink_options = { 'r:id' => rel.formatted_id }
         else
           hyperlink_options = { 'w:anchor' => model.link_href }
@@ -220,18 +231,25 @@ module Caracal
         end
       end
 
+      # A complex field is a sequence of runs: begin, instruction, separate
+      # and end. Viewers that don't evaluate fields show the instruction
+      # text when the field characters aren't in runs of their own.
+      #
       def render_field(xml, model)
-        xml['w'].fldChar({ 'w:fldCharType' => 'begin' })
-        xml['w'].r do
-          xml['w'].rPr do
+        xml['w'].r run_options do
+          render_run_attributes(xml, model, false)
+          xml['w'].fldChar({ 'w:fldCharType' => 'begin' })
+        end
+        xml['w'].r run_options do
+          render_run_attributes(xml, model, false)
+          xml['w'].instrText({ 'xml:space' => 'preserve' }, " #{ model.formatted_type } ")
+        end
+        %w(separate end).each do |type|
+          xml['w'].r run_options do
             render_run_attributes(xml, model, false)
-          end
-          xml['w'].instrText({ 'xml:space' => 'preserve' }) do
-            xml.text model.formatted_type
+            xml['w'].fldChar({ 'w:fldCharType' => type })
           end
         end
-        xml['w'].fldChar({ 'w:fldCharType' => 'separate' })
-        xml['w'].fldChar({ 'w:fldCharType' => 'end' })
       end
 
       def render_list(xml, model)

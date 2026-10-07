@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Caracal::Core::Text do
+describe Caracal::Core::Footer do
   subject { Caracal::Document.new }
 
   #-------------------------------------------------------------
@@ -22,10 +22,16 @@ describe Caracal::Core::Text do
   describe 'public method tests' do
 
     describe '.footer' do
-      before { subject.footer }
+      describe 'when content provided' do
+        before { subject.footer { p 'Acme Corp' } }
 
-      it { expect(subject.footer_content).not_to be_nil }
-      it { expect(subject.footer_content).to be_a(Caracal::Core::Models::FooterModel) }
+        it { expect(subject.footer_content).to be_a(Caracal::Core::Models::FooterModel) }
+        it { expect(subject.footer_content.contents.size).to eq 1 }
+      end
+
+      describe 'when content not provided' do
+        it { expect { subject.footer }.to raise_error(Caracal::Errors::InvalidModelError) }
+      end
     end
   end
 end

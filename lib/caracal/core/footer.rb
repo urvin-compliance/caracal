@@ -20,10 +20,16 @@ module Caracal
             options = Caracal::Utilities.extract_options!(args)
 
             model = Caracal::Core::Models::FooterModel.new(options, &block)
-
-            @footer_content = model
-
+            if model.valid?
+              @footer_content = model
+            else
+              raise Caracal::Errors::InvalidModelError, 'footer must contain at least one paragraph, list, table, rule or image.'
+            end
             model
+          end
+
+          def footer_content
+            @footer_content
           end
 
         end

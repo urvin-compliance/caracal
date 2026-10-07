@@ -329,16 +329,19 @@ end
 
 The `size` option and the `label_size` and `number_size` options are mutually exclusive.
 
-### Footer
+### Headers and Footers
 
-A footer appearing on every page can be added via the `footer` method. Its block takes a footer object that supports text and table methods.
-
-_This is superceded by `page_numbers`, but can be used instead to provide a more complex page number footer._
+A header or footer that appears on every page can be added with the `header` and `footer` methods. Their blocks accept the same paragraph, list, table, rule and image methods as the document body.
 
 ```ruby
-docx.footer do |footer|
-  footer.p do
-    text 'Pages '
+docx.header do
+  img 'logo.png', width: 120, height: 32, align: :right
+  p 'Quarterly Report', align: :center
+end
+
+docx.footer do
+  p align: :center do
+    text 'Page '
     field :page
     text ' of '
     field :numpages
@@ -346,15 +349,9 @@ docx.footer do |footer|
 end
 ```
 
-### Header
+If you also turn on `page_numbers`, the page number is rendered below the footer content.
 
-A header appearing on every page can be added via the `header` method. Its block takes a header object that supports text and table methods.
-
-```ruby
-docx.header do |header|
-  header.p 'hello there'
-end
-```
+*Headers and footers must contain content. Calling `header` or `footer` with an empty block raises an `InvalidModelError`.*
 
 ### Fonts
 
@@ -472,14 +469,15 @@ docx.p do
 end
 ```
 
-PAGE and NUMPAGES fields can be added to runs using the `field` method
+Fields that Word fills in can be added with the `field` method. It accepts `:page` (the current page number) and `:numpages` (the total number of pages), along with the same formatting options as `text`.
 
 ```ruby
 docx.p do
-  text 'Pages '
-  field :page
-  text ' to '
+  text 'Page '
+  field :page, bold: true
+  text ' of '
   field :numpages
+end
 ```
 
 ### Links

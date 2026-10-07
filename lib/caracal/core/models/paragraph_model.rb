@@ -128,7 +128,7 @@ module Caracal
           model
         end
 
-        # .page_num
+        # .field
         def field(*args, &block)
           options = Caracal::Utilities.extract_options!(args)
           options = options.merge({ type: args[0] })
@@ -137,7 +137,7 @@ module Caracal
           if model.valid?
             runs << model
           else
-            raise Caracal::Errors::InvalidModelError, ':page_num method must receive a string for the display text.'
+            raise Caracal::Errors::InvalidModelError, ':field method must receive :page or :numpages.'
           end
           model
         end

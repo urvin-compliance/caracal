@@ -5,8 +5,8 @@ module Caracal
   module Core
     module Models
 
-      # This class encapsulates the logic needed to store and manipulate
-      # text data.
+      # This class encapsulates the logic needed to store and render a
+      # field, such as the current page number, inside a paragraph.
       #
       class FieldModel < BaseModel
 
@@ -18,7 +18,6 @@ module Caracal
         const_set(:TYPE_MAP, { page: 'PAGE', numpages: 'NUMPAGES' })
 
         # accessors
-        attr_reader :field_dirty
         attr_reader :field_type
         attr_reader :field_style
         attr_reader :field_font
@@ -44,13 +43,11 @@ module Caracal
         # Public Instance Methods
         #-------------------------------------------------------------
 
-        #=============== GETTERS ==============================
+        #========== GETTERS ===============================
 
         def formatted_type
           self.class.formatted_type(field_type)
         end
-
-        #========== GETTERS ===============================
 
         # .run_attributes
         def run_attributes
@@ -86,7 +83,7 @@ module Caracal
         end
 
         # strings
-        [:bgcolor, :color, :dirty, :font, :highlight_color, :style, :type,].each do |m|
+        [:bgcolor, :color, :font, :highlight_color, :style, :type].each do |m|
           define_method "#{ m }" do |value|
             instance_variable_set("@field_#{ m }", value.to_s)
           end
@@ -103,8 +100,7 @@ module Caracal
         #========== VALIDATION ============================
 
         def valid?
-          a = [:type]
-          a.map { |m| send("field_#{ m }") }.compact.size == a.size
+          TYPE_MAP.key?(field_type.to_s.to_sym)
         end
 
 
@@ -118,8 +114,6 @@ module Caracal
         end
 
         def method_missing(method, *args, &block)
-          # TODO: Better field centric description
-
           # I'm on the fence with respect to this implementation. We're ignoring
           # :method_missing errors to allow syntax flexibility for paragraph-type
           # models.  The issue is the syntax format of those models--the way we pass

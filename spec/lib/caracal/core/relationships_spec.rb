@@ -15,7 +15,7 @@ describe Caracal::Core::Relationships do
 
     # .default_relationships
     describe '.default_relationships' do
-      let(:expected) { [:font, :footer, :header, :numbering, :setting, :style] }
+      let(:expected) { [:font, :footer, :numbering, :setting, :style] }
       let(:actual)   { subject.class.default_relationships.map { |r| r[:type] } }
 
       it { expect(actual).to eq expected }
