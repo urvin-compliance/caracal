@@ -11,17 +11,16 @@ module Caracal
       # Public Methods
       #-------------------------------------------------------------
 
-      # This method produces the xml required for the `word/footer1.xml`
-      # sub-document. Footer content comes first, then the page number.
-      # Without footer content the page number is always rendered, so the
-      # part is valid even when no section refers to it.
+      # This method produces the xml required for a footer sub-document,
+      # such as `word/footer1.xml`. Footer content comes first, then the
+      # page number.
       #
       def to_xml
         builder = ::Nokogiri::XML::Builder.with(declaration_xml) do |xml|
           xml['w'].ftr root_options do
             render_contents(xml) if part_content
 
-            if document.page_number_show || part_content.nil?
+            if @page_number
               xml['w'].p paragraph_options do
                 xml['w'].pPr do
                   xml['w'].contextualSpacing({ 'w:val' => '0' })
@@ -80,10 +79,6 @@ module Caracal
       # Private Methods
       #-------------------------------------------------------------
       private
-
-      def part_content
-        document.footer_content
-      end
 
       # This method renders the run properties shared by every run of the
       # page number field, so the result Word computes is sized correctly.

@@ -31,9 +31,8 @@ module Caracal
             xml.send 'Override', { 'PartName' => '/docProps/core.xml',   'ContentType' => 'application/vnd.openxmlformats-package.core-properties+xml' }
             xml.send 'Override', { 'PartName' => '/docProps/custom.xml', 'ContentType' => 'application/vnd.openxmlformats-officedocument.custom-properties+xml' }
             xml.send 'Override', { 'PartName' => '/word/document.xml',   'ContentType' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml' }
-            xml.send 'Override', { 'PartName' => '/word/footer1.xml',    'ContentType' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml' }
-            if document.header_content
-              xml.send 'Override', { 'PartName' => '/word/header1.xml',  'ContentType' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml' }
+            document.header_footer_parts.each do |part|
+              xml.send 'Override', { 'PartName' => "/word/#{ part.target }", 'ContentType' => "application/vnd.openxmlformats-officedocument.wordprocessingml.#{ part.kind }+xml" }
             end
             xml.send 'Override', { 'PartName' => '/word/fontTable.xml',  'ContentType' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml' }
             xml.send 'Override', { 'PartName' => '/word/numbering.xml',  'ContentType' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml' }

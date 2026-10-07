@@ -126,7 +126,7 @@ describe Caracal::Core::Models::PageNumberModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:align, :label, :label_size, :number_size, :show].sort }
+      let(:expected) { [:align, :label, :label_size, :number_size, :show, :first_page].sort }
 
       it { expect(actual).to eq expected }
     end
