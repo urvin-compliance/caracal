@@ -624,6 +624,7 @@ Images can be added by using the `img` method.  The method accepts several optio
 ```ruby
 docx.img 'https://www.example.com/logo.png' do
   data    raw_data  # sets the file data directly instead of opening the url
+  ppi     72        # sets the pixels per inch used to convert width and height. defaults to 72.
   width   396       # sets the image width. units specified in pixels.
   height  216       # sets the image height. units specified in pixels.
   align   :right    # controls the justification of the image. default is :left.
@@ -633,6 +634,16 @@ docx.img 'https://www.example.com/logo.png' do
   right   10        # sets the right margin. units specified in pixels.
 end
 ```
+
+Every setting can also be passed as an option instead of in a block:
+
+```ruby
+docx.img 'logo.png', data: File.binread('path/to/logo.png'), width: 396, height: 216
+```
+
+*Note: `data` must be the raw bytes of the image, not Base64. Caracal writes it
+into the document unchanged, so Base64-encoded data produces a corrupt image.
+Read files with `File.binread` so line endings are not translated on Windows.*
 
 *Note: If you provide the image data, you should still supply a URL. I know this
 is a bit hacky, but it allows the library to key the image more effectively and
