@@ -608,7 +608,7 @@ docx.ul do
 end
 ```
 
-Lists can nested as many levels deep as you wish and mixed in any combination.
+Lists can be nested as many levels deep as you wish and mixed in any combination. An item can contain more than one nested list. Text that follows a nested list renders after it, as an unnumbered paragraph aligned with the item's text.
 
 ```ruby
 docx.ul do

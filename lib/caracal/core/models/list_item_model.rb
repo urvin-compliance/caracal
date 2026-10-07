@@ -17,7 +17,7 @@ module Caracal
         #-------------------------------------------------------------
 
         # accessors
-        attr_accessor :nested_list
+        attr_writer :continuation
 
         # readers (create aliases for superclass methods to conform
         # to expected naming convention.)
@@ -54,6 +54,51 @@ module Caracal
         end
 
 
+        #=============== NESTED LISTS =========================
+
+        # This method returns the nested lists in the order they were
+        # added, each with the number of runs that came before it, so text
+        # after a nested list can be rendered after it.
+        #
+        def nested_lists
+          @nested_lists ||= []
+        end
+
+        def nested_list
+          (pair = nested_lists.last) && pair.last
+        end
+
+        def nested_list=(model)
+          nested_lists << [runs.size, model]
+        end
+
+        # This method returns whether this is the text that follows a
+        # nested list, which renders as an unnumbered paragraph indented
+        # with the item.
+        #
+        def continuation?
+          !!@continuation
+        end
+
+        # This method returns this item and everything nested in it in
+        # document order: the item's text up to its first nested list, the
+        # nested list's items, then any text that follows, and so on.
+        #
+        def recursive_items
+          return [self] if nested_lists.empty?
+
+          items = []
+          start = 0
+          nested_lists.each do |(index, list)|
+            items << segment(start...index, items.any?) if items.empty? || index > start
+            items.concat(list.recursive_items)
+            start = index
+          end
+          items << segment(start...runs.size, true) if runs.size > start
+          items
+        end
+
+
         #=============== SUB-METHODS ===========================
 
         # .ol
@@ -62,7 +107,7 @@ module Caracal
 
           model = Caracal::Core::Models::ListModel.new(options, &block)
           if model.valid?
-            @nested_list = model
+            self.nested_list = model
           else
             raise Caracal::Errors::InvalidModelError, 'Ordered lists require at least one list item.'
           end
@@ -75,7 +120,7 @@ module Caracal
 
           model = Caracal::Core::Models::ListModel.new(options, &block)
           if model.valid?
-            @nested_list = model
+            self.nested_list = model
           else
             raise Caracal::Errors::InvalidModelError, 'Unordered lists require at least one list item.'
           end
@@ -96,6 +141,15 @@ module Caracal
         # Private Instance Methods
         #-------------------------------------------------------------
         private
+
+        # This method returns a copy of the item holding only the given runs.
+        def segment(range, continuation)
+          copy = dup
+          copy.instance_variable_set(:@runs, runs[range])
+          copy.instance_variable_set(:@nested_lists, [])
+          copy.continuation = continuation
+          copy
+        end
 
         def option_keys
           [:type, :level, :content, :style, :color, :size, :bold, :italic, :underline, :bgcolor]
