@@ -329,6 +329,29 @@ end
 
 The `size` option and the `label_size` and `number_size` options are mutually exclusive.
 
+### Headers and Footers
+
+A header or footer that appears on every page can be added with the `header` and `footer` methods. Their blocks accept the same paragraph, list, table, rule and image methods as the document body.
+
+```ruby
+docx.header do
+  img 'logo.png', width: 120, height: 32, align: :right
+  p 'Quarterly Report', align: :center
+end
+
+docx.footer do
+  p align: :center do
+    text 'Page '
+    field :page
+    text ' of '
+    field :numpages
+  end
+end
+```
+
+If you also turn on `page_numbers`, the page number is rendered below the footer content.
+
+*Headers and footers must contain content. Calling `header` or `footer` with an empty block raises an `InvalidModelError`.*
 
 ### Fonts
 
@@ -446,6 +469,16 @@ docx.p do
 end
 ```
 
+Fields that Word fills in can be added with the `field` method. It accepts `:page` (the current page number) and `:numpages` (the total number of pages), along with the same formatting options as `text`.
+
+```ruby
+docx.p do
+  text 'Page '
+  field :page, bold: true
+  text ' of '
+  field :numpages
+end
+```
 
 ### Links
 

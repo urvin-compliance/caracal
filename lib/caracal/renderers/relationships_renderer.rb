@@ -8,16 +8,34 @@ module Caracal
     class RelationshipsRenderer < XmlRenderer
       
       #-------------------------------------------------------------
+      # Class Methods
+      #-------------------------------------------------------------
+
+      # The relationships default to the document's. Headers and footers
+      # pass their own.
+      #
+      def self.render(doc, relationships = nil)
+        renderer = new(doc, relationships)
+        renderer.to_xml
+      end
+
+
+      #-------------------------------------------------------------
       # Public Methods
       #-------------------------------------------------------------
-      
-      # This method produces the xml required for the `word/settings.xml` 
-      # sub-document.
+
+      def initialize(doc, relationships = nil)
+        super(doc)
+        @relationships = relationships || document.relationships
+      end
+
+      # This method produces the xml required for a relationships
+      # sub-document, such as `word/_rels/document.xml.rels`.
       #
       def to_xml
         builder = ::Nokogiri::XML::Builder.with(declaration_xml) do |xml|
           xml.send 'Relationships', root_options do
-            document.relationships.each do |rel|
+            @relationships.each do |rel|
               xml.send 'Relationship', rel_options(rel)
             end
           end

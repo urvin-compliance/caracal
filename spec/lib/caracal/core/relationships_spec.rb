@@ -105,7 +105,7 @@ describe Caracal::Core::Relationships do
         it { expect(subject.relationships.size).to eq default_length }
       end
       describe 'when not registered' do
-        before do 
+        before do
           subject.register_relationship(m1)
           subject.unregister_relationship(m2.relationship_target)
         end

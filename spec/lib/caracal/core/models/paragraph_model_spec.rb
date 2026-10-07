@@ -144,6 +144,27 @@ describe Caracal::Core::Models::ParagraphModel do
       it { expect(subject.runs.size).to eq length + 1 }
     end
 
+    # .field
+    describe '.field' do
+      let!(:length) { subject.runs.length }
+
+      context ':page' do
+        before { subject.field :page }
+
+        it { expect(subject.runs.size).to eq length + 1 }
+      end
+
+      context ':numpages' do
+        before { subject.field :numpages }
+
+        it { expect(subject.runs.size).to eq length + 1 }
+      end
+
+      context 'an unknown type' do
+        it { expect { subject.field :date }.to raise_error(Caracal::Errors::InvalidModelError) }
+      end
+    end
+
     # .bookmark
     describe '.bookmark_start' do
       let!(:length) { subject.runs.length }

@@ -276,4 +276,170 @@ describe Caracal::Document do
       expect(field_runs.size).to eq 4
     end
   end
+
+
+  #-------------------------------------------------------------
+  # Headers and footers
+  #-------------------------------------------------------------
+
+  describe 'headers and footers' do
+    R_NS   = { 'r' => 'http://schemas.openxmlformats.org/package/2006/relationships' }
+    CT_NS  = { 'ct' => 'http://schemas.openxmlformats.org/package/2006/content-types' }
+
+    def section(files)
+      strict_xml(files['word/document.xml']).at_xpath('//w:body/w:sectPr', W_NS)
+    end
+
+    def rels(files, part)
+      strict_xml(files["word/_rels/#{ part }.rels"]).xpath('//r:Relationship', R_NS)
+    end
+
+    # Every relationship of every part must resolve to a part in the package,
+    # and every XML part must be well formed. Word refuses to open the file
+    # otherwise.
+    def expect_consistent_package(files)
+      files.each do |name, content|
+        next unless name.end_with?('.xml', '.rels')
+        expect { strict_xml(content) }.not_to raise_error, name
+      end
+      files.keys.grep(%r{\Aword/_rels/.+\.rels\z}).each do |name|
+        strict_xml(files[name]).xpath('//r:Relationship', R_NS).each do |rel|
+          next if rel['TargetMode'] == 'External'
+          expect(files).to have_key("word/#{ rel['Target'] }"), "#{ name } -> #{ rel['Target'] }"
+        end
+      end
+    end
+
+    describe 'a document without a header' do
+      let(:files) { parts(described_class.new('test.docx') { p 'body' }) }
+
+      it 'writes no header part and refers to none' do
+        expect(files).not_to have_key('word/header1.xml')
+        expect(section(files).at_xpath('w:headerReference', W_NS)).to be_nil
+        expect(files['[Content_Types].xml']).not_to include('header1.xml')
+        expect(files['word/_rels/document.xml.rels']).not_to include('header1.xml')
+        expect_consistent_package(files)
+      end
+    end
+
+    describe 'a document with a header and no page numbers' do
+      let(:files) do
+        parts(described_class.new('test.docx') do
+          header { p 'hello there' }
+          p 'body'
+        end)
+      end
+
+      it 'writes the header and refers to it from the section' do
+        hdr = strict_xml(files['word/header1.xml'])
+        ref = section(files).at_xpath('w:headerReference', W_NS)
+        rel = rels(files, 'document.xml').find { |r| r['Target'] == 'header1.xml' }
+
+        expect(hdr.at_xpath('/w:hdr/w:p//w:t', W_NS).text).to eq 'hello there'
+        expect(ref['r:id']).to eq rel['Id']
+        expect(files['[Content_Types].xml']).to include('/word/header1.xml')
+        expect_consistent_package(files)
+      end
+
+      it 'does not refer to the unused footer' do
+        expect(section(files).at_xpath('w:footerReference', W_NS)).to be_nil
+      end
+    end
+
+    describe 'a footer with page and page count fields' do
+      let(:files) do
+        parts(described_class.new('test.docx') do
+          footer do
+            p do
+              text 'Page '
+              field :page, bold: true
+              text ' of '
+              field :numpages
+            end
+          end
+        end)
+      end
+      let(:ftr) { strict_xml(files['word/footer1.xml']) }
+
+      it 'renders each field as begin, instruction, separate and end runs' do
+        runs     = ftr.xpath('/w:ftr/w:p/w:r', W_NS)
+        sequence = runs.map do |r|
+          (c = r.at_xpath('w:fldChar', W_NS)) ? c['w:fldCharType'] : r.at_xpath('w:instrText|w:t', W_NS).text
+        end
+
+        # a paragraph built from a block starts with an empty text run
+        expect(sequence.reject(&:empty?)).to eq ['Page ', 'begin', ' PAGE ', 'separate', 'end', ' of ', 'begin', ' NUMPAGES ', 'separate', 'end']
+        expect(ftr.xpath('//w:p/w:fldChar', W_NS)).to be_empty
+      end
+
+      it 'applies the run formatting to every run of the field' do
+        bold = ftr.xpath('/w:ftr/w:p/w:r[w:rPr/w:b[@w:val="1"]]', W_NS)
+
+        expect(bold.size).to eq 4
+      end
+
+      it 'refers to the footer from the section' do
+        expect(section(files).at_xpath('w:footerReference', W_NS)).not_to be_nil
+        expect_consistent_package(files)
+      end
+    end
+
+    describe 'a footer combined with page numbers' do
+      let(:ftr) do
+        docx = described_class.new('test.docx') do
+          footer { p 'Confidential' }
+          page_numbers true, label: 'Page'
+        end
+        strict_xml(parts(docx)['word/footer1.xml'])
+      end
+
+      it 'renders the footer content above the page number' do
+        paragraphs = ftr.xpath('/w:ftr/w:p', W_NS)
+
+        expect(paragraphs.size).to eq 2
+        expect(paragraphs[0].text).to eq 'Confidential'
+        expect(paragraphs[1].at_xpath('.//w:instrText', W_NS).text.strip).to eq 'PAGE'
+      end
+    end
+
+    describe 'images and links in a header or footer' do
+      let(:files) do
+        png = self.png
+        parts(described_class.new('test.docx') do
+          header { img 'logo.png', data: png, width: 10, height: 10 }
+          footer { p { link 'example', 'https://www.example.com' } }
+          img 'other.png', data: png + 'x', width: 10, height: 10
+        end)
+      end
+
+      it 'resolves the header image through the header relationships' do
+        embed = strict_xml(files['word/header1.xml']).at_xpath('//a:blip/@r:embed', W_NS.merge(
+          'a' => 'http://schemas.openxmlformats.org/drawingml/2006/main',
+          'r' => 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
+        )).value
+        rel = rels(files, 'header1.xml').find { |r| r['Id'] == embed }
+
+        expect(rel['Target']).to match(%r{\Amedia/image\d+\.png\z})
+        expect(files["word/#{ rel['Target'] }"]).to eq png
+      end
+
+      it 'gives the header and body images distinct media parts' do
+        media = files.keys.grep(%r{\Aword/media/})
+
+        expect(media.size).to eq 2
+      end
+
+      it 'resolves the footer link through the footer relationships' do
+        id  = strict_xml(files['word/footer1.xml']).at_xpath('//w:hyperlink', W_NS)['r:id']
+        rel = rels(files, 'footer1.xml').find { |r| r['Id'] == id }
+
+        expect(rel['Target']).to eq 'https://www.example.com'
+        expect(rel['TargetMode']).to eq 'External'
+      end
+
+      it 'produces a consistent package' do
+        expect_consistent_package(files)
+      end
+    end
+  end
 end
