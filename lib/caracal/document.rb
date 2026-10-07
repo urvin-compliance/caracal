@@ -200,53 +200,59 @@ module Caracal
 
     #============ RENDERERS ===============================
 
+    # This method adds a part to the package. Giving rubyzip the size up
+    # front stops rubyzip 3 from adding a zip64 extra field "just in case"
+    # to every entry, which LibreOffice 7.4 and older can't read.
+    #
+    def write_entry(zip, name, content)
+      content = content.to_s
+      entry   = ::Zip::Entry.new('', name)
+      entry.size = content.bytesize
+
+      zip.put_next_entry(entry)
+      zip.write(content)
+    end
+
     def render_app(zip)
       content = ::Caracal::Renderers::AppRenderer.render(self)
 
-      zip.put_next_entry('docProps/app.xml')
-      zip.write(content)
+      write_entry(zip, 'docProps/app.xml', content)
     end
 
     def render_content_types(zip)
       content = ::Caracal::Renderers::ContentTypesRenderer.render(self)
 
-      zip.put_next_entry('[Content_Types].xml')
-      zip.write(content)
+      write_entry(zip, '[Content_Types].xml', content)
     end
 
     def render_core(zip)
       content = ::Caracal::Renderers::CoreRenderer.render(self)
 
-      zip.put_next_entry('docProps/core.xml')
-      zip.write(content)
+      write_entry(zip, 'docProps/core.xml', content)
     end
 
     def render_custom(zip)
       content = ::Caracal::Renderers::CustomRenderer.render(self)
 
-      zip.put_next_entry('docProps/custom.xml')
-      zip.write(content)
+      write_entry(zip, 'docProps/custom.xml', content)
     end
 
     def render_document(zip)
       content = ::Caracal::Renderers::DocumentRenderer.render(self)
 
-      zip.put_next_entry('word/document.xml')
-      zip.write(content)
+      write_entry(zip, 'word/document.xml', content)
     end
 
     def render_fonts(zip)
       content = ::Caracal::Renderers::FontsRenderer.render(self)
 
-      zip.put_next_entry('word/fontTable.xml')
-      zip.write(content)
+      write_entry(zip, 'word/fontTable.xml', content)
     end
 
     def render_footer(zip)
       content = ::Caracal::Renderers::FooterRenderer.render(self)
 
-      zip.put_next_entry('word/footer1.xml')
-      zip.write(content)
+      write_entry(zip, 'word/footer1.xml', content)
 
       render_part_relationships(zip, 'footer1.xml', footer_content)
     end
@@ -256,8 +262,7 @@ module Caracal
 
       content = ::Caracal::Renderers::HeaderRenderer.render(self)
 
-      zip.put_next_entry('word/header1.xml')
-      zip.write(content)
+      write_entry(zip, 'word/header1.xml', content)
 
       render_part_relationships(zip, 'header1.xml', header_content)
     end
@@ -271,30 +276,26 @@ module Caracal
           content = ::Caracal::Utilities.read_resource(rel.relationship_target)
         end
 
-        zip.put_next_entry("word/#{ rel.formatted_target }")
-        zip.write(content)
+        write_entry(zip, "word/#{ rel.formatted_target }", content)
       end
     end
 
     def render_numbering(zip)
       content = ::Caracal::Renderers::NumberingRenderer.render(self)
 
-      zip.put_next_entry('word/numbering.xml')
-      zip.write(content)
+      write_entry(zip, 'word/numbering.xml', content)
     end
 
     def render_package_relationships(zip)
       content = ::Caracal::Renderers::PackageRelationshipsRenderer.render(self)
 
-      zip.put_next_entry('_rels/.rels')
-      zip.write(content)
+      write_entry(zip, '_rels/.rels', content)
     end
 
     def render_relationships(zip)
       content = ::Caracal::Renderers::RelationshipsRenderer.render(self)
 
-      zip.put_next_entry('word/_rels/document.xml.rels')
-      zip.write(content)
+      write_entry(zip, 'word/_rels/document.xml.rels', content)
     end
 
     # Headers and footers resolve their images and links against their
@@ -305,22 +306,19 @@ module Caracal
 
       content = ::Caracal::Renderers::RelationshipsRenderer.render(self, model.relationships)
 
-      zip.put_next_entry("word/_rels/#{ part }.rels")
-      zip.write(content)
+      write_entry(zip, "word/_rels/#{ part }.rels", content)
     end
 
     def render_settings(zip)
       content = ::Caracal::Renderers::SettingsRenderer.render(self)
 
-      zip.put_next_entry('word/settings.xml')
-      zip.write(content)
+      write_entry(zip, 'word/settings.xml', content)
     end
 
     def render_styles(zip)
       content = ::Caracal::Renderers::StylesRenderer.render(self)
 
-      zip.put_next_entry('word/styles.xml')
-      zip.write(content)
+      write_entry(zip, 'word/styles.xml', content)
     end
 
   end

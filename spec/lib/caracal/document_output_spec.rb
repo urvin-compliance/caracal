@@ -24,6 +24,48 @@ describe Caracal::Document do
 
 
   #-------------------------------------------------------------
+  # Zip container
+  #-------------------------------------------------------------
+
+  describe 'the zip container' do
+    let(:bytes) do
+      png  = self.png
+      docx = described_class.new('test.docx') do
+        p 'hello'
+        img 'logo.png', data: png, width: 10, height: 10
+      end
+      docx.render.string.b
+    end
+
+    # LibreOffice 7.4 and older refuse to open a package whose entries
+    # carry zip64 extra fields, which rubyzip 3 adds when it doesn't know
+    # an entry's size in advance.
+    it 'writes no zip64 records' do
+      offsets = []
+      bytes.scan("PK\x03\x04".b) { offsets << $~.begin(0) }
+      versions = offsets.map { |o| bytes[o + 4, 2].unpack1('v') }
+      extras   = offsets.map do |o|
+        name_len, extra_len = bytes[o + 26, 4].unpack('vv')
+        bytes[o + 30 + name_len, extra_len]
+      end
+
+      expect(offsets).not_to be_empty
+      expect(versions).to all(be < 45)
+      expect(extras.map { |e| e.unpack('v*').each_slice(2).map(&:first) }.flatten).not_to include(0x0001)
+      expect(bytes).not_to include("PK\x06\x06".b)
+    end
+
+    it 'still produces a readable package' do
+      names = []
+      Zip::File.open_buffer(StringIO.new(bytes)) { |zip| zip.each { |e| names << e.name } }
+
+      expect(names).to include('word/document.xml', '[Content_Types].xml')
+      expect(names.grep(%r{\Aword/media/}).size).to eq 1
+    end
+  end
+
+
+  #-------------------------------------------------------------
   # Control characters
   #-------------------------------------------------------------
 
