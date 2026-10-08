@@ -329,6 +329,13 @@ end
 
 The `size` option and the `label_size` and `number_size` options are mutually exclusive.
 
+The `start` option sets the number of the first page, which is useful when the document continues another one, or has a cover page you don't want counted. It also applies to `field :page` in a custom footer, so it can be set without showing the built-in page number:
+
+```ruby
+docx.page_numbers true, start: 0   # the cover page is page 0, so the next page is page 1
+docx.page_numbers start: 12        # number from 12 without the built-in page number
+```
+
 ### Headers and Footers
 
 A header or footer that appears on every page can be added with the `header` and `footer` methods. Their blocks accept the same paragraph, list, table, rule and image methods as the document body.
