@@ -93,7 +93,7 @@ module Caracal
         private
 
         def option_keys
-          [:align, :label, :label_size, :number_size, :show, :start]
+          [:align, :label, :label_size, :number_size, :show, :size, :start]
         end
 
       end
