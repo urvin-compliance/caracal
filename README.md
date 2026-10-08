@@ -321,9 +321,9 @@ Page numbers can be added to the footer via the `page_numbers` method.  The meth
 docx.page_numbers true do
   align        :right  # sets the alignment. accepts :left, :center, and :right.
   label        'Page'  # sets the text that will go to the left of the page number. Defaults to nil.
-  size:        24      # sets the label and number size simultaneously. units in half points.
-  label_size:  24      # sets the label size only. units in half points.
-  number_size: 20      # sets the number size only. units in half points.
+  size         24      # sets the label and number size simultaneously. units in half points.
+  label_size   24      # sets the label size only. units in half points.
+  number_size  20      # sets the number size only. units in half points.
 end
 ```
 

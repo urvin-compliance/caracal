@@ -188,7 +188,7 @@ describe Caracal::Core::Models::ListStyleModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:type, :level, :format, :value, :align, :left, :indent, :start].sort }
+      let(:expected) { [:type, :level, :format, :value, :align, :left, :indent, :start, :restart].sort }
       
       it { expect(actual).to eq expected }    
     end
