@@ -1,3 +1,25 @@
+#### v1.6.0
+
+* Enhancements
+  * Added `header` and `footer`, which accept the same content as the document body: paragraphs, images, tables and links. Images and links resolve through each part's own relationships. (@benjaminketron, @jamesridgway, @dlauer)
+  * Added the `field` paragraph method, which inserts a `:page` or `:numpages` field, so a footer can read "Page 2 of 7". (@benjaminketron, @jamesridgway, @dlauer)
+  * Added a different first page: `header first: true` and `footer first: true` give the first page its own header or footer, or leave it blank when called without a block, and `page_numbers first_page: false` leaves the number off the first page. (@dlauer)
+  * Added the `start` option to `page_numbers`, which sets the number of the first page. (@dlauer)
+  * `img` now accepts `data:` and `ppi:` as options, not only inside its block. Previously the options were silently dropped and the image was read from the path instead. (@victorpolko, @dlauer)
+  * `keep_next`, `header_rows`, the list style `restart` and the page number `size` are likewise accepted as options. (@dlauer)
+  * Entries read from documents embedded with `iframe` are capped by `IFrameModel.max_entry_size` (50MB by default), so a small upload cannot expand into an arbitrarily large allocation. (@dlauer)
+  * Raised the nokogiri floor to 1.16.2 and added source, changelog and issue tracker links to the gem metadata. (@dlauer)
+
+* Changes
+  * `footer` and `page_numbers` now combine, with the page number rendered below the footer content. Previously `page_numbers` replaced the footer.
+  * `header` and `footer` raise `InvalidModelError` when given an empty block.
+
+* Bug Fixes
+  * Page numbers are rendered as a complete complex field, so viewers that do not evaluate fields, such as WPS Office, show the number rather than "PAGE". (@dlauer)
+  * Text added to a list item after a nested list now appears after that list, aligned with the item's text, rather than before it. An item can also hold more than one nested list. (@dlauer)
+  * Documents written with rubyzip 3 no longer carry zip64 records, which LibreOffice 7.4 and earlier refuse to open. (@dlauer)
+
+
 #### v1.5.0
 
 * Enhancements
