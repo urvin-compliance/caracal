@@ -321,6 +321,41 @@ describe Caracal::Document do
 
 
   #-------------------------------------------------------------
+  # Page number start
+  #-------------------------------------------------------------
+
+  describe 'the page number start' do
+    def section_for(docx)
+      strict_xml(parts(docx)['word/document.xml']).at_xpath('//w:body/w:sectPr', W_NS)
+    end
+
+    it 'is not set by default' do
+      expect(section_for(described_class.new('test.docx')).at_xpath('w:pgNumType', W_NS)).to be_nil
+    end
+
+    it 'sets the starting number after the page margins' do
+      docx = described_class.new('test.docx')
+      docx.page_numbers true, start: 0
+      sect = section_for(docx)
+
+      expect(sect.at_xpath('w:pgNumType', W_NS)['w:start']).to eq '0'
+      expect(sect.at_xpath('w:pgMar/following-sibling::*[1]', W_NS).name).to eq 'pgNumType'
+    end
+
+    it 'can be set without showing the built-in page number' do
+      docx = described_class.new('test.docx')
+      docx.page_numbers start: 5
+
+      expect(section_for(docx).at_xpath('w:pgNumType', W_NS)['w:start']).to eq '5'
+    end
+
+    it 'rejects a negative start' do
+      expect { described_class.new('test.docx').page_numbers true, start: -1 }.to raise_error(Caracal::Errors::InvalidModelError)
+    end
+  end
+
+
+  #-------------------------------------------------------------
   # Headers and footers
   #-------------------------------------------------------------
 

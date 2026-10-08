@@ -26,6 +26,7 @@ module Caracal
           attr_reader :page_number_number_size
           attr_reader :page_number_show
           attr_reader :page_number_first
+          attr_reader :page_number_start
 
 
           #-------------------------------------------------------------
@@ -47,8 +48,9 @@ module Caracal
               @page_number_number_size  = model.page_number_number_size
               @page_number_show         = model.page_number_show
               @page_number_first        = model.page_number_first
+              @page_number_start        = model.page_number_start
             else
-              raise Caracal::Errors::InvalidModelError, 'page_numbers :align parameter must be :left, :center, or :right'
+              raise Caracal::Errors::InvalidModelError, 'page_numbers :align must be :left, :center, or :right, and :start must not be negative.'
             end
           end
 

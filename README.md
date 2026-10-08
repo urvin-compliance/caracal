@@ -321,13 +321,20 @@ Page numbers can be added to the footer via the `page_numbers` method.  The meth
 docx.page_numbers true do
   align        :right  # sets the alignment. accepts :left, :center, and :right.
   label        'Page'  # sets the text that will go to the left of the page number. Defaults to nil.
-  size:        24      # sets the label and number size simultaneously. units in half points.
-  label_size:  24      # sets the label size only. units in half points.
-  number_size: 20      # sets the number size only. units in half points.
+  size         24      # sets the label and number size simultaneously. units in half points.
+  label_size   24      # sets the label size only. units in half points.
+  number_size  20      # sets the number size only. units in half points.
 end
 ```
 
 The `size` option and the `label_size` and `number_size` options are mutually exclusive.
+
+The `start` option sets the number of the first page, which is useful when the document continues another one, or has a cover page you don't want counted. It also applies to `field :page` in a custom footer, so it can be set without showing the built-in page number:
+
+```ruby
+docx.page_numbers true, start: 0   # the cover page is page 0, so the next page is page 1
+docx.page_numbers start: 12        # number from 12 without the built-in page number
+```
 
 ### Headers and Footers
 

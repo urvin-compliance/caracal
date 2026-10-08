@@ -214,7 +214,7 @@ describe Caracal::Core::Models::ParagraphModel do
     # .option_keys
     describe '.option_keys' do
       let(:actual)   { subject.send(:option_keys).sort }
-      let(:expected) { [:content, :style, :align, :color, :size, :bold, :italic, :underline, :bgcolor].sort }
+      let(:expected) { [:content, :style, :align, :color, :size, :bold, :italic, :underline, :bgcolor, :keep_next].sort }
 
       it { expect(actual).to eq expected }
     end
