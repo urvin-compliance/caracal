@@ -321,6 +321,81 @@ describe Caracal::Document do
 
 
   #-------------------------------------------------------------
+  # Nested lists
+  #-------------------------------------------------------------
+
+  describe 'nested lists' do
+    def paragraphs(docx)
+      strict_xml(parts(docx)['word/document.xml']).xpath('//w:body/w:p', W_NS).map do |p|
+        level = p.at_xpath('w:pPr/w:numPr/w:ilvl/@w:val', W_NS)
+        [p.xpath('.//w:t', W_NS).map(&:text).join, level && level.value.to_i]
+      end
+    end
+
+    # #87
+    it 'renders text added after a nested list after it' do
+      docx = described_class.new('test.docx') do
+        ul do
+          li do
+            ol do
+              li 'First'
+            end
+            text 'Second'
+          end
+        end
+      end
+
+      expect(paragraphs(docx)).to eq [['', 0], ['First', 1], ['Second', nil]]
+    end
+
+    it 'indents the continuation with the item text' do
+      docx = described_class.new('test.docx') do
+        ul do
+          li 'Intro' do
+            ul { li 'Nested' }
+            text 'Outro'
+          end
+        end
+      end
+      xml   = strict_xml(parts(docx)['word/document.xml'])
+      intro = xml.at_xpath('//w:body/w:p[1]/w:pPr/w:ind', W_NS)
+      outro = xml.at_xpath('//w:body/w:p[3]/w:pPr/w:ind', W_NS)
+
+      expect(outro['w:left']).to eq intro['w:left']
+      expect(outro['w:hanging']).to be_nil
+    end
+
+    it 'keeps every nested list in an item, in order' do
+      docx = described_class.new('test.docx') do
+        ol do
+          li 'Item' do
+            ol { li 'A' }
+            text 'between'
+            ul { li 'B' }
+          end
+          li 'Next'
+        end
+      end
+
+      expect(paragraphs(docx)).to eq [['Item', 0], ['A', 1], ['between', nil], ['B', 1], ['Next', 0]]
+    end
+
+    it 'renders a nested list that ends the item as before' do
+      docx = described_class.new('test.docx') do
+        ol do
+          li 'First' do
+            ol { li 'Sub 1'; li 'Sub 2' }
+          end
+          li 'Second'
+        end
+      end
+
+      expect(paragraphs(docx)).to eq [['First', 0], ['Sub 1', 1], ['Sub 2', 1], ['Second', 0]]
+      end
+    end
+
+
+  #-------------------------------------------------------------
   # Page number start
   #-------------------------------------------------------------
 

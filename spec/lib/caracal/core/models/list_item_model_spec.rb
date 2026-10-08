@@ -151,6 +151,24 @@ describe Caracal::Core::Models::ListItemModel do
         end
 
         it { expect(subject.nested_list).to be_a(Caracal::Core::Models::ListModel) }
+        it { expect(subject.recursive_items.map(&:continuation?)).to eq [false, false] }
+      end
+      describe 'when text follows the nested list' do
+        subject do
+          described_class.new type: :ordered, level: 0 do
+            text 'Before.'
+            ol do
+              li 'Nested.'
+            end
+            text 'After.'
+          end
+        end
+        let(:texts) { subject.recursive_items.map { |i| i.runs.map(&:text_content).join } }
+
+        it { expect(subject.nested_lists.map(&:first)).to eq [2] }
+        it { expect(texts).to eq ['Before.', 'Nested.', 'After.'] }
+        it { expect(subject.recursive_items.map(&:continuation?)).to eq [false, false, true] }
+        it { expect(subject.runs.size).to eq 3 }
       end
     end
 
