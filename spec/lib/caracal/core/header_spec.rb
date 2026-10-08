@@ -32,6 +32,17 @@ describe Caracal::Core::Header do
       describe 'when content not provided' do
         it { expect { subject.header }.to raise_error(Caracal::Errors::InvalidModelError) }
       end
+
+      describe 'for the first page' do
+        before { subject.header(first: true) { p 'Cover' } }
+
+        it { expect(subject.first_header_content.contents.size).to eq 1 }
+        it { expect(subject.header_content).to be_nil }
+      end
+
+      describe 'for the first page without content' do
+        it { expect { subject.header(first: true) }.not_to raise_error }
+      end
     end
   end
 end

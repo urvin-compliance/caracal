@@ -134,6 +134,49 @@ module Caracal
       @contents ||= []
     end
 
+    # A header or footer part to write: which kind it is, which pages it
+    # covers ('default' or 'first'), the content to render, whether to
+    # add the page number, and whether the section refers to it.
+    #
+    HeaderFooterPart = Struct.new(:kind, :type, :target, :model, :page_number, :referenced)
+
+    # This method returns the header and footer parts the document needs.
+    # footer1.xml is always written, as it always has been, but is only
+    # referenced when it has something to show.
+    #
+    def header_footer_parts
+      parts = []
+      if header_content
+        parts << HeaderFooterPart.new(:header, 'default', 'header1.xml', header_content, false, true)
+      end
+      shown = page_number_show || !footer_content.nil?
+      parts << HeaderFooterPart.new(:footer, 'default', 'footer1.xml', footer_content, page_number_show || footer_content.nil?, shown)
+
+      if title_page?
+        # The first page uses only first-page parts, so fall back to the
+        # default content for whichever one wasn't customized.
+        first_header = first_header_content || header_content
+        if first_header && first_header.valid?
+          parts << HeaderFooterPart.new(:header, 'first', 'header2.xml', first_header, false, true)
+        end
+
+        first_footer = first_footer_content || footer_content
+        first_footer = nil unless first_footer && first_footer.valid?
+        first_number = page_number_show && page_number_first
+        if first_footer || first_number
+          parts << HeaderFooterPart.new(:footer, 'first', 'footer2.xml', first_footer, first_number, true)
+        end
+      end
+      parts
+    end
+
+    # This method returns whether the first page has its own header and
+    # footer (Word's "Different First Page").
+    #
+    def title_page?
+      !first_header_content.nil? || !first_footer_content.nil? || (page_number_show && !page_number_first)
+    end
+
 
     #============ RENDERING ===============================
 
@@ -142,6 +185,9 @@ module Caracal
     #
     def render
       register_nested_iframes(contents)
+      header_footer_parts.each do |part|
+        relationship({ target: part.target, type: part.kind })
+      end
 
       buffer = ::Zip::OutputStream.write_buffer do |zip|
         render_package_relationships(zip)
@@ -150,8 +196,7 @@ module Caracal
         render_core(zip)
         render_custom(zip)
         render_fonts(zip)
-        render_footer(zip)
-        render_header(zip)
+        render_headers_and_footers(zip)
         render_settings(zip)
         render_styles(zip)
         render_document(zip)
@@ -249,22 +294,16 @@ module Caracal
       write_entry(zip, 'word/fontTable.xml', content)
     end
 
-    def render_footer(zip)
-      content = ::Caracal::Renderers::FooterRenderer.render(self)
+    def render_headers_and_footers(zip)
+      header_footer_parts.each do |part|
+        renderer = (part.kind == :header) ? ::Caracal::Renderers::HeaderRenderer : ::Caracal::Renderers::FooterRenderer
+        content  = renderer.render(self, part.model, part.page_number)
 
-      write_entry(zip, 'word/footer1.xml', content)
+        write_entry(zip, "word/#{ part.target }", content)
 
-      render_part_relationships(zip, 'footer1.xml', footer_content)
-    end
-
-    def render_header(zip)
-      return if header_content.nil?
-
-      content = ::Caracal::Renderers::HeaderRenderer.render(self)
-
-      write_entry(zip, 'word/header1.xml', content)
-
-      render_part_relationships(zip, 'header1.xml', header_content)
+        # rendering collects the relationships, so write them straight away
+        render_part_relationships(zip, part.target, part.model)
+      end
     end
 
     def render_media(zip)

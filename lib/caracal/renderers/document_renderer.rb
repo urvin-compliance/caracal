@@ -31,18 +31,17 @@ module Caracal
               #============= PAGE SETTINGS ==============================
 
               xml['w'].sectPr do
-                if document.header_content
-                  if rel = document.find_relationship('header1.xml')
-                    xml['w'].headerReference({ 'r:id' => rel.formatted_id, 'w:type' => 'default' })
-                  end
-                end
-                if document.page_number_show || document.footer_content
-                  if rel = document.find_relationship('footer1.xml')
-                    xml['w'].footerReference({ 'r:id' => rel.formatted_id, 'w:type' => 'default' })
+                document.header_footer_parts.select(&:referenced).each do |part|
+                  if rel = document.find_relationship(part.target)
+                    xml['w'].send("#{ part.kind }Reference", { 'r:id' => rel.formatted_id, 'w:type' => part.type })
                   end
                 end
                 xml['w'].pgSz page_size_options
                 xml['w'].pgMar page_margin_options
+                unless document.page_number_start.nil?
+                  xml['w'].pgNumType({ 'w:start' => document.page_number_start })
+                end
+                xml['w'].titlePg if document.title_page?
               end
 
             end
