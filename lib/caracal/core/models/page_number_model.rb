@@ -24,6 +24,7 @@ module Caracal
         attr_reader :page_number_label_size
         attr_reader :page_number_number_size
         attr_reader :page_number_show
+        attr_reader :page_number_first
         attr_reader :page_number_start
 
         # initialization
@@ -33,6 +34,7 @@ module Caracal
           @page_number_label_size   = nil
           @page_number_number_size  = nil
           @page_number_show         = DEFAULT_PAGE_NUMBER_SHOW
+          @page_number_first        = true
           @page_number_start        = nil
 
           super options, &block
@@ -67,6 +69,11 @@ module Caracal
           @page_number_show = !!value
         end
 
+        # false leaves the page number off the first page
+        def first_page(value)
+          @page_number_first = !!value
+        end
+
         def start(value)
           @page_number_start = value.nil? ? nil : value.to_i
         end
@@ -93,7 +100,7 @@ module Caracal
         private
 
         def option_keys
-          [:align, :label, :label_size, :number_size, :show, :size, :start]
+          [:align, :label, :label_size, :number_size, :show, :size, :start, :first_page]
         end
 
       end

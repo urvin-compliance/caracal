@@ -360,6 +360,23 @@ If you also turn on `page_numbers`, the page number is rendered below the footer
 
 *Headers and footers must contain content. Calling `header` or `footer` with an empty block raises an `InvalidModelError`.*
 
+#### Different First Page
+
+Pass `first: true` to give the first page its own header or footer, such as a cover page. Without a block, it leaves the first page's header or footer blank. Use `first_page: false` to leave the page number off the first page.
+
+```ruby
+docx.header first: true do       # replaces the header on the first page only
+  p 'Annual Report 2026', align: :center, size: 36
+end
+
+docx.header first: true          # no header on the first page
+docx.footer first: true          # no footer content on the first page
+
+docx.page_numbers true, first_page: false   # no page number on the first page
+```
+
+When the first page has its own header or footer, any part you don't set for it falls back to the default. So `first_page: false` on its own hides only the page number, and the default header and footer content still appear.
+
 ### Fonts
 
 Fonts are added to the font table file by calling the `font` method and passing the name of the font.

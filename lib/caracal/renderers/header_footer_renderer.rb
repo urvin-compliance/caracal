@@ -13,16 +13,39 @@ module Caracal
     class HeaderFooterRenderer < DocumentRenderer
 
       #-------------------------------------------------------------
+      # Class Methods
+      #-------------------------------------------------------------
+
+      # A document can have more than one header or footer part, so the
+      # caller says which content to render, and whether to add the page
+      # number.
+      #
+      def self.render(doc, model, page_number = false)
+        renderer = new(doc, model, page_number)
+        renderer.to_xml
+      end
+
+
+      #-------------------------------------------------------------
+      # Public Methods
+      #-------------------------------------------------------------
+
+      def initialize(doc, model, page_number = false)
+        super(doc)
+        @part_content = model
+        @page_number  = page_number
+      end
+
+
+      #-------------------------------------------------------------
       # Private Methods
       #-------------------------------------------------------------
       private
 
-      # This method returns the HeaderModel or FooterModel being rendered.
-      # A concrete implementation must be provided by the subclass.
+      # This method returns the HeaderModel or FooterModel being rendered,
+      # which is nil for a footer that only shows the page number.
       #
-      def part_content
-        raise NotImplementedError, 'header and footer renderers must implement the method :part_content.'
-      end
+      attr_reader :part_content
 
       def render_contents(xml)
         part_content.relationships.clear

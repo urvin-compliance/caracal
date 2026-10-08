@@ -11,8 +11,8 @@ module Caracal
       # Public Methods
       #-------------------------------------------------------------
 
-      # This method produces the xml required for the `word/header1.xml`
-      # sub-document.
+      # This method produces the xml required for a header sub-document,
+      # such as `word/header1.xml`.
       #
       def to_xml
         builder = ::Nokogiri::XML::Builder.with(declaration_xml) do |xml|
@@ -21,16 +21,6 @@ module Caracal
           end
         end
         builder.to_xml(save_options)
-      end
-
-
-      #-------------------------------------------------------------
-      # Private Methods
-      #-------------------------------------------------------------
-      private
-
-      def part_content
-        document.header_content
       end
 
     end
